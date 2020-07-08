@@ -1,6 +1,6 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import logo from "./logo.svg";
+import "./App.css";
 
 function App() {
   return (
@@ -8,16 +8,20 @@ function App() {
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <p>
-          Edit <code>src/App.js</code> and save to reload.
+          Hi! Welcome to my portfolio website, currently under construction. As
+          you can see, I like using React.
         </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+        <p>
+          Can't wait?
+          <a
+            className="App-link"
+            href="mailto:sean@seandonn.io"
+            target="_blank"
+          >
+            Email
+          </a>
+          me today!
+        </p>
       </header>
     </div>
   );
