@@ -20,7 +20,7 @@ function App() {
           >
             Email
           </a>{" "}
-          me today!5
+          me today!
         </p>
       </header>
     </div>
