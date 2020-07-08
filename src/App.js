@@ -12,15 +12,15 @@ function App() {
           you can see, I like using React.
         </p>
         <p>
-          Can't wait?
+          Can't wait?{" "}
           <a
             className="App-link"
             href="mailto:sean@seandonn.io"
             target="_blank"
           >
             Email
-          </a>
-          me today! hey look a change.
+          </a>{" "}
+          me today!
         </p>
       </header>
     </div>
