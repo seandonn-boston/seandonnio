@@ -8,11 +8,10 @@ function App() {
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <p>
-          Hi! Welcome to my portfolio website, currently under construction. As
-          you can see, I like using React.
+          Hi! Welcome to Sean Donnellan's portfolio website. This website is currently under construction, and as you can tell I am building building it in React. I am also going to utilize SASS, Jest, Node, Github, and a few other tools of the trade to get the job done ASAP. If you'd like to see my work in progress, feel free to checkout my <a className="App-Link" href="https://github.com/seandonn-boston/seandonnio" target="_blank">GitHub</a>. Check back soon for the real thing!
         </p>
         <p>
-          Can't wait?{" "}
+          Can't wait to get in touch?{" "}
           <a
             className="App-link"
             href="mailto:sean@seandonn.io"
