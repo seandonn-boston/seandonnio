@@ -3,11 +3,11 @@ import List from "../List/List";
 import ListItem from "../ListItem/ListItem";
 
 const Nav = () => (
-  <nav>
+  <nav className="Nav">
     <List>
-      <ListItem value="One" />
-      <ListItem value="Two" />
-      <ListItem value="Three" />
+      <ListItem value="About" link="#" />
+      <ListItem value="Portfolio" link="#" />
+      <ListItem value="Contact" link="#" />
     </List>
   </nav>
 );
