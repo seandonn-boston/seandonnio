@@ -1,6 +1,6 @@
 import React from "react";
-import List from "../../Utilities/List/List";
-import ListItem from "../../Utilities/ListItem/ListItem";
+import List from "../../Global/List/List";
+import ListItem from "../../Global/ListItem/ListItem";
 import "./Nav.scss";
 
 const Nav = () => (
