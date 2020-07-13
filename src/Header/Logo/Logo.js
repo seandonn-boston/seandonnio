@@ -1,5 +1,6 @@
 import React from "react";
+import "./Logo.scss";
 
-const Logo = () => <img />;
+const Logo = () => <span className="Logo" />;
 
 export default Logo;
