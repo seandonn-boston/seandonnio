@@ -6,5 +6,5 @@ const List = ({ children: child }) => <ul className="List">{child}</ul>;
 export default List;
 
 List.propTypes = {
-  child: PropTypes.instanceOf(Element).isRequired,
+  children: PropTypes.instanceOf(Element).isRequired,
 };
