@@ -9,9 +9,9 @@ const Header = () => (
     <div className="Header-innerWrapper">
       <Logo />
       <Nav />
-      <div className="Header-item--rightAlign">
+      <span className="Header-item--rightAlign">
         <Button content="Resume" />
-      </div>
+      </span>
     </div>
   </div>
 );

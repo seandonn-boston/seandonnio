@@ -1,7 +1,7 @@
 .Header {
   position: relative;
   width: 100%;
-  padding: 0 16px;
+  padding: 0;
   background-color: #494144;
 
   &-innerWrapper {
@@ -11,7 +11,7 @@
   &-item {
     &--rightAlign {
       display: inline-flex;
-      margin-left: auto;
+      margin: 0 16px 0 auto;
     }
   }
 }
@@ -19,10 +19,14 @@
 /* Medium devices (landscape tablets, 768px and up) */
 @media only screen and (min-width: 768px) {
   .Header {
-    padding: 0;
     &-innerWrapper {
       max-width: 90%;
       margin: auto;
+    }
+    &-item {
+      &--rightAlign {
+        margin: 0 0 0 auto;
+      }
     }
   }
 }

@@ -1,6 +1,14 @@
 .Logo {
   display: inline-flex;
   background-color: red;
-  height: 65px;
-  width: 65px;
+  height: 50px;
+  width: 50px;
+}
+
+/* Medium devices (landscape tablets, 768px and up) */
+@media only screen and (min-width: 768px) {
+  .Logo {
+    height: 65px;
+    width: 65px;
+  }
 }
