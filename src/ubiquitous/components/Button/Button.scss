@@ -1,0 +1,25 @@
+.Button {
+  display: flex;
+  position: relative;
+  height: 24px;
+  margin: auto;
+  padding: 4px 12px;
+  border-radius: 4px;
+  background-color: red;
+  color: black;
+  text-align: center;
+  text-decoration: none;
+
+  &-content {
+    display: inline-flex;
+    margin: auto;
+  }
+}
+
+/* Medium devices (landscape tablets, 768px and up) */
+@media only screen and (min-width: 768px) {
+  .Button {
+    height: 32px;
+    padding: 4px 20px;
+  }
+}
