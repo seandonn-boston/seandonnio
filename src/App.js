@@ -3,7 +3,7 @@ import Header from "./Header/Header";
 import "./App.scss";
 
 function App() {
-  return <div className="App">Clean Slate</div>;
+  return <div className="App"><Header/></div>;
 }
 
 export default App;
