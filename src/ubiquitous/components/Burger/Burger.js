@@ -4,9 +4,8 @@ import "./Burger.scss";
 
 const Burger = () => (
   <div className="Burger">
-    {/*Should be clickable*/}
-    <Patty position="top" />
-    <Patty position="bottom" />
+    <Patty />
+    <Patty reversed />
   </div>
 );
 
