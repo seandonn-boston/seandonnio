@@ -1,8 +1,10 @@
+@import "../ubiquitous/styles/colors";
+
 .Header {
   position: relative;
   width: 100%;
   padding: 0;
-  background-color: #494144;
+  background-color: $theme-primary;
 
   &-innerWrapper {
     display: flex;
