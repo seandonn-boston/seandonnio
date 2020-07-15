@@ -1,7 +1,7 @@
 import React from "react";
 import Logo from "./Logo/Logo";
 import Nav from "./Nav/Nav";
-import Button from "../Global/Button/Button";
+import Button from "../ubiquitous/Components/Button/Button";
 import "./Header.scss";
 
 const Header = () => (
