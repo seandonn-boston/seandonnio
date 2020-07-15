@@ -1,6 +1,6 @@
 import React from "react";
-import List from "../../ubiquitous/Components/List/List";
-import ListItem from "../../ubiquitous/Components/ListItem/ListItem";
+import List from "../../ubiquitous/components/List/List";
+import ListItem from "../../ubiquitous/components/ListItem/ListItem";
 import "./Nav.scss";
 
 const Nav = () => (
