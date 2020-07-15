@@ -1,10 +1,8 @@
 import React from "react";
-import Header from "./Header/Header";
+import "./App.scss";
 
-const App = () => (
-  <div className="App">
-    <Header />
-  </div>
-);
+function App() {
+  return <div className="App">Clean Slate</div>;
+}
 
 export default App;

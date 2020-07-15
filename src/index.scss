@@ -1,0 +1,7 @@
+@import-normalize; /* bring in PostCSS normalize.css styles for adding CSS reset - should be first css import of entire project*/
+
+body {
+  margin: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
