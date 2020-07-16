@@ -10,7 +10,7 @@ const Header = () => (
       <Logo />
       <Nav />
       <span className="Header-item--rightAlign">
-        <Button content="Resume" />
+        <Button content="Resume" link="#" />
       </span>
     </div>
   </div>

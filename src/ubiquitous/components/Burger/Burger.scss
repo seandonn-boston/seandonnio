@@ -1,0 +1,17 @@
+.Burger {
+  top: 0.25rem;
+  bottom: 0.25rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  width: 2rem;
+  height: 2rem;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+
+  &:focus {
+    outline: none;
+  }
+}
