@@ -3,13 +3,14 @@ import Burger from "../../ubiquitous/components/Burger/Burger";
 import List from "../../ubiquitous/components/List/List";
 import ListItem from "../../ubiquitous/components/ListItem/ListItem";
 import Button from "../../ubiquitous/components/Button/Button";
-import useWindowSize from "../../ubiquitous/functions/useWindowSize";
+import useWindowSize from "../../ubiquitous/hooks/useWindowSize";
 import "./Nav.scss";
 
 const Nav = () => {
   const isMobile = useWindowSize().width < 768;
 
-  console.log("isMobile is", isMobile); // REMOVE
+  console.log("isMobile is ", isMobile);
+
   return (
     <>
       {isMobile && <Burger />}
