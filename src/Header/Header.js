@@ -13,7 +13,7 @@ const Header = () => {
   return (
     <div className="Header">
       <div className="Header-innerWrapper">
-        <Burger />
+        {isMobile && <Burger />}
         <Logo />
         <Nav />
         {!isMobile && (
