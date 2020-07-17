@@ -1,17 +1,17 @@
 .Burger {
-  top: 0.25rem;
-  bottom: 0.25rem;
+  position: absolute;
   display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-  width: 2rem;
-  height: 2rem;
-  background: transparent;
-  border: none;
+  align-items: center;
+  top: 0;
+  bottom: 0;
+  width: 50px;
+  height: 50px;
+  margin: auto 0 auto 0;
   cursor: pointer;
-  padding: 0;
+  transition: all 0.25s;
+  transform-origin: center;
+}
 
-  &:focus {
-    outline: none;
-  }
+.open {
+  transform: rotate(90deg);
 }
