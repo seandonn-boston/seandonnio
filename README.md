@@ -1,3 +1,5 @@
+Hello visitor, if you're looking for the most recent changes, look in the Dev branch!
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
@@ -26,6 +28,27 @@ The build is minified and the filenames include the hashes.<br />
 Your app is ready to be deployed!
 
 See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+
+### `npm run analyze`
+
+`source-map-explorer \"build/static/js/*.js\" --html ./build/sme-analysis-report.html && xdg-open ./build/sme-analysis-report.html`
+
+This script was specially deisnged to run on Linux Ubuntu operating system.
+
+This script runs source-map-explorer to create a treemap visualization of the minified version of the entire prject, thus giving insight into byte size of the minified project which helps to identify code bloat. Read the README section at [source-hap-explorer](https://www.npmjs.com/package/source-map-explorer) to learn more.
+
+### `npm run predeploy`
+
+This script effectively runs `npm run build` and that's it. If anything, this provides a more logical name of a command to run before the deploy command. This script was added as part of setting up gh-pages with create-react-app, learn more about the setup process [here](https://blog.usejournal.com/how-to-deploy-your-react-app-into-github-pages-b2c96292b18e)
+
+### `npm run deploy`
+`npm run build && echo \"seandonn.io\" > ./build/CNAME && gh-pages -d build`
+
+This script was specially designed to ensure gh-pages does not overwrite the CNAME file being generated, and thus this script ensures the website is being deployed to the custom domain and not the gh-pages generated domain.
+
+This script will build the run the build command and then ensure a CNAME file with the appropriate domain name is created within the built project folders.
+
+**WARNING: running the deploy script will deploy the master branch to the homepage domain. Do not use until you are ready to deploy live.**
 
 ### `npm run eject`
 
