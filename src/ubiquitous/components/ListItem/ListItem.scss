@@ -1,6 +1,6 @@
 .ListItem {
-  display: inline-flex;
-  margin: auto;
+  width: 100%;
+  display: block;
   &-link {
     color: white;
     text-decoration: none;
@@ -9,5 +9,13 @@
     &:hover {
       background-color: red;
     }
+  }
+}
+
+/* Medium devices (landscape tablets, 768px and up) */
+@media only screen and (min-width: 768px) {
+  .ListItem {
+    display: inline-flex;
+    margin: auto;
   }
 }

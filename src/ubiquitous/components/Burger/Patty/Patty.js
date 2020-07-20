@@ -5,7 +5,7 @@ import "./Patty.scss";
 const Patty = ({ reversed, isOpen }) => (
   <div
     className={`Patty ${reversed ? "Patty--bottom" : "Patty--top"} ${
-      isOpen ? "open" : ""
+      isOpen ? "Patty-open" : ""
     }`}
   />
 );

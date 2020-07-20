@@ -2,8 +2,8 @@ import React from "react";
 import PropTypes from "prop-types";
 import "./ListItem.scss";
 
-const ListItem = ({ content, link, children: child = null }) => (
-  <li className="ListItem ListItem-navigation ListItem-navigation--active">
+const ListItem = ({ content = "", link = "#", children: child = null }) => (
+  <li className="ListItem ListItem-navigation">
     {link ? (
       <a href={link} className="ListItem-link">
         {content}

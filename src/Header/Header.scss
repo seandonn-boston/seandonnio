@@ -4,10 +4,12 @@
   position: relative;
   width: 100%;
   padding: 0;
-  background-color: $theme-primary;
 
   &-innerWrapper {
     display: flex;
+    background-color: $theme-primary;
+    position: relative;
+    z-index: 10;
   }
 
   &-item {
@@ -21,6 +23,7 @@
 /* Medium devices (landscape tablets, 768px and up) */
 @media only screen and (min-width: 768px) {
   .Header {
+    background-color: $theme-primary;
     &-innerWrapper {
       max-width: 90%;
       margin: auto;

@@ -22,17 +22,17 @@
     bottom: 23px;
     transform: translateY(3px);
   }
-}
 
-.open {
-  &.Patty {
-    &--top {
-      top: 24.5px;
-      transform: rotate(45deg) translateY(0px);
-    }
-    &--bottom {
-      bottom: 24.5px;
-      transform: rotate(-45deg) translateY(0px);
+  &-open {
+    &.Patty {
+      &--top {
+        top: 24.5px;
+        transform: rotate(45deg) translateY(0px);
+      }
+      &--bottom {
+        bottom: 24.5px;
+        transform: rotate(-45deg) translateY(0px);
+      }
     }
   }
 }

@@ -2,7 +2,9 @@ import React from "react";
 import PropTypes from "prop-types";
 import "./List.scss";
 
-const List = ({ children }) => <ul className="List">{children}</ul>;
+const List = ({ children, isOpen }) => (
+  <ul className={`List ${isOpen ? "List-open" : ""}`}>{children}</ul>
+);
 
 export default List;
 

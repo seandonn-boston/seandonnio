@@ -1,7 +1,17 @@
 .Nav {
-  display: none;
-  margin: 0 0 0 8px;
+  display: block;
+  position: absolute;
+  width: 100%;
+  bottom: 0;
+  transform: translateY(0);
+  background-color: green;
+  margin: 0;
   padding: 0;
+  transition: all linear 0.25s;
+  z-index: 1;
+  &-open {
+    transform: translateY(100%);
+  }
 }
 
 /* Medium devices (landscape tablets, 768px and up) */
