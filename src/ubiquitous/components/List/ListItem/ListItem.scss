@@ -1,0 +1,48 @@
+@import "../../../styles/colors";
+
+.ListItem {
+  display: block;
+  width: 100%;
+  text-align: center;
+  padding: 4px 0;
+  &:first-child {
+    padding: 0 0 4px;
+  }
+  &:last-child {
+    padding: 4px 0 0;
+  }
+  &-link {
+    color: $black;
+    text-decoration: none;
+    width: 100%;
+    display: block;
+    padding: 12px 0;
+    &:hover {
+      background-color: $theme-secondary;
+    }
+  }
+}
+
+/* Medium devices (landscape tablets, 768px and up) */
+@media only screen and (min-width: 768px) {
+  .ListItem {
+    display: inline-flex;
+    width: initial;
+    margin: auto;
+    &,
+    &:first-child,
+    &:last-child {
+      padding: 0;
+    }
+    &-link {
+      padding: 16px;
+      margin: 0 4px;
+      &:first-child {
+        margin: 0 4px 0 0;
+      }
+      &:last-child {
+        margin: 0 0 0 4px;
+      }
+    }
+  }
+}
