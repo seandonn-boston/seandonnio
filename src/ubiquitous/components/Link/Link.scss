@@ -1,0 +1,20 @@
+@import "../../styles/colors";
+
+.Link {
+  color: $black;
+  text-decoration: none;
+  width: 100%;
+  display: block;
+  padding: 12px 0;
+  &:hover {
+    background-color: $theme-secondary;
+  }
+}
+
+/* Medium devices (landscape tablets, 768px and up) */
+@media only screen and (min-width: 768px) {
+  .Link {
+    padding: 16px;
+    margin: 0 4px;
+  }
+}
