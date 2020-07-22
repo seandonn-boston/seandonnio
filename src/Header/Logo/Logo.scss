@@ -1,9 +1,11 @@
+@import "../../ubiquitous/styles/colors";
+
 .Logo {
   height: 50px;
   width: 50px;
   margin: 0 auto;
   display: inline-flex;
-  background-color: red;
+  background-color: $theme-secondary;
 }
 
 /* Medium devices (landscape tablets, 768px and up) */

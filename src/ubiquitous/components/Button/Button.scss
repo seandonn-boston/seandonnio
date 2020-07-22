@@ -1,25 +1,27 @@
+@import "../../styles/colors";
+
 .Button {
-  display: flex;
-  position: relative;
-  height: 24px;
-  margin: auto;
-  padding: 4px 12px;
+  display: inline-block;
+  padding: 12px 20px;
   border-radius: 4px;
-  background-color: red;
-  color: black;
+  color: $black;
+  background-color: $theme-secondary;
   text-align: center;
   text-decoration: none;
-
-  &-content {
-    display: inline-flex;
-    margin: auto;
-  }
 }
 
 /* Medium devices (landscape tablets, 768px and up) */
 @media only screen and (min-width: 768px) {
   .Button {
-    height: 32px;
+    display: flex;
+    position: relative;
+    margin: auto;
     padding: 4px 20px;
+    height: 32px;
+
+    &-content {
+      display: inline-flex;
+      margin: auto;
+    }
   }
 }

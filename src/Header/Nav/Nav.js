@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import List from "../../ubiquitous/components/List/List";
-import ListItem from "../../ubiquitous/components/ListItem/ListItem";
+import ListItem from "../../ubiquitous/components/List/ListItem/ListItem";
 import Button from "../../ubiquitous/components/Button/Button";
 import useWindowSize from "../../ubiquitous/hooks/useWindowSize";
 import "./Nav.scss";
