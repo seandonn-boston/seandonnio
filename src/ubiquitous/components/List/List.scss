@@ -1,3 +1,5 @@
+@import "../../styles/breakpoints";
+
 .List {
   margin: auto; // overwrite default margin, result shrinks margin and total height
   display: block;
@@ -5,7 +7,7 @@
 }
 
 /* Medium devices (landscape tablets, 768px and up) */
-@media only screen and (min-width: 768px) {
+@media only screen and (min-width: $bp-m) {
   .Nav {
     display: flex;
   }

@@ -2,6 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import List from "../../ubiquitous/components/List/List";
 import ListItem from "../../ubiquitous/components/List/ListItem/ListItem";
+import Link from "../../ubiquitous/components/Link/Link";
 import Button from "../../ubiquitous/components/Button/Button";
 import useWindowSize from "../../ubiquitous/hooks/useWindowSize";
 import "./Nav.scss";
@@ -13,9 +14,15 @@ const Nav = ({ isOpen }) => {
   return (
     <nav className={`Nav ${isOpen ? "Nav-open" : ""}`}>
       <List {...isOpen}>
-        <ListItem content="About" link="#" />
-        <ListItem content="Portfolio" link="#" />
-        <ListItem content="Contact" link="#" />
+        <ListItem isHoverable>
+          <Link content="About" link="#" />
+        </ListItem>
+        <ListItem isHoverable>
+          <Link content="Portfolio" link="#" />
+        </ListItem>
+        <ListItem isHoverable>
+          <Link content="Contact" link="#" />
+        </ListItem>
         {isMobile && (
           <ListItem>
             <Button content="Resume" link="#" />
