@@ -1,16 +1,12 @@
-import React, { useState } from "react";
+import React from "react";
+import PropTypes from "prop-types";
 import Burger from "../ubiquitous/components/Burger/Burger";
 import Logo from "./Logo/Logo";
 import Nav from "./Nav/Nav";
 import Button from "../ubiquitous/components/Button/Button";
-import useWindowSize from "../ubiquitous/hooks/useWindowSize";
 import "./Header.scss";
 
-const MOBILE_MAX_WIDTH = 768;
-
-const Header = () => {
-  const [isMobileNavOpen, setIsMobileNavOpen] = useState(false);
-  const isMobile = useWindowSize().width < MOBILE_MAX_WIDTH;
+const Header = ({ isMobile, isMobileNavOpen, setIsMobileNavOpen }) => {
   return (
     <div className="Header">
       {isMobile ? (
@@ -38,3 +34,7 @@ const Header = () => {
 };
 
 export default Header;
+
+Header.propTypes = {
+  isMobile: PropTypes.bool.isRequired,
+};
