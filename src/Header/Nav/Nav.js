@@ -4,6 +4,7 @@ import List from "../../ubiquitous/components/List/List";
 import ListItem from "../../ubiquitous/components/List/ListItem/ListItem";
 import Link from "../../ubiquitous/components/Link/Link";
 import Button from "../../ubiquitous/components/Button/Button";
+import ResumePdf from "../../ubiquitous/assets/pdf/sean_donnellan_resume.pdf";
 import useWindowSize from "../../ubiquitous/hooks/useWindowSize";
 import "./Nav.scss";
 
@@ -25,7 +26,7 @@ const Nav = ({ isOpen }) => {
         </ListItem>
         {isMobile && (
           <ListItem>
-            <Button content="Resume" link="#" />
+            <Button content="Resume" link={ResumePdf} target="_blank" />
           </ListItem>
         )}
       </List>

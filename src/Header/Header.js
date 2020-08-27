@@ -3,6 +3,7 @@ import Burger from "../ubiquitous/components/Burger/Burger";
 import Logo from "./Logo/Logo";
 import Nav from "./Nav/Nav";
 import Button from "../ubiquitous/components/Button/Button";
+import ResumePdf from "../ubiquitous/assets/pdf/sean_donnellan_resume.pdf";
 import useWindowSize from "../ubiquitous/hooks/useWindowSize";
 import "./Header.scss";
 
@@ -29,7 +30,7 @@ const Header = () => {
           <Logo />
           <Nav />
           <span className="Header-item--rightAlign">
-            <Button content="Resume" link="#" />
+            <Button content="Resume" link={ResumePdf} target="_blank" />
           </span>
         </div>
       )}
