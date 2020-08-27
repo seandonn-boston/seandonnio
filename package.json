@@ -11,8 +11,8 @@
     "node-sass": "^4.14.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
-    "react-scripts": "3.4.1",
-    "source-map-explorer": "^2.4.2"
+    "react-scripts": "^3.4.3",
+    "source-map-explorer": "^2.5.0"
   },
   "scripts": {
     "analyze": "source-map-explorer \"build/static/js/*.js\" --html ./build/sme-analysis-report.html && xdg-open ./build/sme-analysis-report.html",
