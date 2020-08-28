@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import "./Patty.scss";
+import styles from "./Patty.module.scss";
 
 const Patty = ({ reversed, isOpen }) => (
   <div
