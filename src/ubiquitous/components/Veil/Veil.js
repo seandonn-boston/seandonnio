@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 import cx from "classnames";
 import styles from "./Veil.module.scss";
 
@@ -13,3 +14,8 @@ const Veil = ({ isMobileNavOpen, setIsMobileNavOpen }) => {
 };
 
 export default Veil;
+
+Veil.propTypes = {
+  isMobileNavOpen: PropTypes.bool.isRequired,
+  setIsMobileNavOpen: PropTypes.func.isRequired,
+};

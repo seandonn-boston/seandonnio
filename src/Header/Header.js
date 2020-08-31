@@ -5,15 +5,10 @@ import Logo from "./Logo/Logo";
 import Nav from "./Nav/Nav";
 import Button from "../ubiquitous/components/Button/Button";
 import ResumePdf from "../ubiquitous/assets/pdf/sean_donnellan_resume.pdf";
-import useWindowSize from "../ubiquitous/hooks/useWindowSize";
 import cx from "classnames";
 import styles from "./Header.module.scss";
 
-const MOBILE_MAX_WIDTH = 768;
-
-const Header = () => {
-  const [isMobileNavOpen, setIsMobileNavOpen] = useState(false);
-  const isMobile = useWindowSize().width < MOBILE_MAX_WIDTH;
+const Header = ({ isMobile, isMobileNavOpen, setIsMobileNavOpen }) => {
   const headerClasses = cx(styles.Header);
   const headerInnerWrapperClasses = cx(styles["Header-innerWrapper"]);
   const headerItemRightAlign = cx(styles["Header-item--rightAlign"]);
