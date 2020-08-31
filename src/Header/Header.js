@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 import Burger from "../ubiquitous/components/Burger/Burger";
 import Logo from "./Logo/Logo";
@@ -9,6 +9,7 @@ import cx from "classnames";
 import styles from "./Header.module.scss";
 
 const Header = ({ isMobile, isMobileNavOpen, setIsMobileNavOpen }) => {
+  console.log(styles);
   const headerClasses = cx(styles.Header);
   const headerInnerWrapperClasses = cx(styles["Header-innerWrapper"]);
   const headerItemRightAlign = cx(styles["Header-item--rightAlign"]);
