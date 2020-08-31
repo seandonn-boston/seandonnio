@@ -5,18 +5,22 @@ import Nav from "./Nav/Nav";
 import Button from "../ubiquitous/components/Button/Button";
 import ResumePdf from "../ubiquitous/assets/pdf/sean_donnellan_resume.pdf";
 import useWindowSize from "../ubiquitous/hooks/useWindowSize";
-import "./Header.scss";
+import cx from "classnames";
+import styles from "./Header.module.scss";
 
 const MOBILE_MAX_WIDTH = 768;
 
 const Header = () => {
   const [isMobileNavOpen, setIsMobileNavOpen] = useState(false);
   const isMobile = useWindowSize().width < MOBILE_MAX_WIDTH;
+  const headerClasses = cx(styles.Header);
+  const headerInnerWrapperClasses = cx(styles["Header-innerWrapper"]);
+  const headerItemRightAlign = cx(styles["Header-item--rightAlign"]);
   return (
-    <div className="Header">
+    <div className={headerClasses}>
       {isMobile ? (
         <>
-          <div className="Header-innerWrapper">
+          <div className={headerInnerWrapperClasses}>
             <Burger
               handleIsOpen={setIsMobileNavOpen}
               isOpen={isMobileNavOpen}
@@ -26,10 +30,10 @@ const Header = () => {
           <Nav isOpen={isMobileNavOpen} />
         </>
       ) : (
-        <div className="Header-innerWrapper">
+        <div className={headerInnerWrapperClasses}>
           <Logo />
           <Nav />
-          <span className="Header-item--rightAlign">
+          <span className={headerItemRightAlign}>
             <Button content="Resume" link={ResumePdf} target="_blank" />
           </span>
         </div>

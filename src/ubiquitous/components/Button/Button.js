@@ -1,12 +1,17 @@
 import React from "react";
 import PropTypes from "prop-types";
-import "./Button.scss";
+import cx from "classnames";
+import styles from "./Button.module.scss";
 
-const Button = ({ content, link, target }) => (
-  <a href={link} className="Button" target={target}>
-    <span className="Button-content">{content}</span>
-  </a>
-);
+const Button = ({ content, link, target }) => {
+  const anchorClasses = cx(styles.Button);
+  const contentClasses = cx(styles["Button-content"]);
+  return (
+    <a href={link} className={anchorClasses} target={target}>
+      <span className={contentClasses}>{content}</span>
+    </a>
+  );
+};
 
 export default Button;
 
@@ -17,5 +22,5 @@ Button.propTypes = {
 };
 
 Button.defaultProps = {
-  target: null
+  target: null,
 };
