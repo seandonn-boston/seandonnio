@@ -1,10 +1,12 @@
 import React from "react";
 import PropTypes from "prop-types";
-import "./List.scss";
+import cx from "classnames";
+import styles from "./List.module.scss";
 
-const List = ({ children, isOpen }) => (
-  <ul className={`List ${isOpen ? "List-open" : ""}`}>{children}</ul>
-);
+const List = ({ children, isOpen }) => {
+  const listClasses = cx(styles.List, { [styles["List-open"]]: isOpen });
+  return <ul className={listClasses}>{children}</ul>;
+};
 
 export default List;
 

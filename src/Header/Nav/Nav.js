@@ -4,15 +4,18 @@ import List from "../../ubiquitous/components/List/List";
 import ListItem from "../../ubiquitous/components/List/ListItem/ListItem";
 import Link from "../../ubiquitous/components/Link/Link";
 import Button from "../../ubiquitous/components/Button/Button";
+import ResumePdf from "../../ubiquitous/assets/pdf/sean_donnellan_resume.pdf";
 import useWindowSize from "../../ubiquitous/hooks/useWindowSize";
-import "./Nav.scss";
+import cx from "classnames";
+import styles from "./Nav.module.scss";
 
 const MOBILE_MAX_WIDTH = 768;
 
 const Nav = ({ isOpen }) => {
   const isMobile = useWindowSize().width < MOBILE_MAX_WIDTH;
+  const navClasses = cx(styles.Nav, {[styles["Nav-open"]]: isOpen});
   return (
-    <nav className={`Nav ${isOpen ? "Nav-open" : ""}`}>
+    <nav className={navClasses}>
       <List {...isOpen}>
         <ListItem isHoverable>
           <Link content="About" link="#" />
@@ -25,7 +28,7 @@ const Nav = ({ isOpen }) => {
         </ListItem>
         {isMobile && (
           <ListItem>
-            <Button content="Resume" link="#" />
+            <Button content="Resume" link={ResumePdf} target="_blank" />
           </ListItem>
         )}
       </List>

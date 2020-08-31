@@ -1,19 +1,18 @@
 import React from "react";
 import PropTypes from "prop-types";
 import Patty from "./Patty/Patty";
-import "./Burger.scss";
+import cx from "classnames";
+import styles from "./Burger.module.scss";
 
-const Burger = ({ handleIsOpen, isOpen }) => (
-  <div
-    className={`Burger ${isOpen ? "Burger-open" : ""}`}
-    onClick={() => {
-      handleIsOpen(!isOpen);
-    }}
-  >
-    <Patty {...{ isOpen }} />
-    <Patty {...{ isOpen }} reversed />
-  </div>
-);
+const Burger = ({ handleIsOpen, isOpen }) => {
+  const burgerClasses = cx(styles.Burger, { [styles["Burger-open"]]: isOpen });
+  return (
+    <div className={burgerClasses} onClick={() => handleIsOpen(!isOpen)}>
+      <Patty {...{ isOpen }} />
+      <Patty {...{ isOpen }} reversed />
+    </div>
+  );
+};
 
 export default Burger;
 

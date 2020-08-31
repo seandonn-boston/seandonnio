@@ -1,12 +1,16 @@
 import React from "react";
 import PropTypes from "prop-types";
-import "./Link.scss";
+import cx from "classnames";
+import styles from "./Link.module.scss";
 
-const Link = ({ content = "", link = null }) => (
-  <a href={link} className="Link">
-    {content}
-  </a>
-);
+const Link = ({ content = "", link = null }) => {
+  const linkClasses = cx(styles.Link);
+  return (
+    <a href={link} className={linkClasses}>
+      {content}
+    </a>
+  );
+};
 
 export default Link;
 
