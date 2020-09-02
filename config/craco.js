@@ -1,4 +1,4 @@
-const sassModuleRegex = /\.module\.(scss|sass)$/;
+const SassModuleRegex = /\.module\.(scss|sass)$/;
 
 module.exports = {
   webpack: {
@@ -10,11 +10,13 @@ module.exports = {
       // keep an eye on css-loader updates: https://github.com/webpack-contrib/css-loader
       webpackConfig.module.rules
         .find((item) => item.oneOf)
-        .oneOf.find((item) => String(item.test) == String(sassModuleRegex))
+        .oneOf.find((item) => String(item.test) == String(SassModuleRegex))
         .use.find(
           (item) => item.loader == require.resolve("css-loader")
         ).options.localsConvention = "camelCaseOnly";
 
+      // TODO: Configure the file extensions to remove '.module'
+      // TODO: configure a smarter import system to remove instances of './..'
       return webpackConfig;
     },
   },
