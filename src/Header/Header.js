@@ -9,7 +9,7 @@ import {
   header,
   headerInnerWrapper,
   headerItemRightAlign,
-} from "./Header.module.scss";
+} from "./Header.scss";
 
 const Header = ({ isMobile, isMobileNavOpen, setIsMobileNavOpen }) => (
   <div className={header}>

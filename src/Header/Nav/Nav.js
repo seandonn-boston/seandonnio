@@ -7,7 +7,7 @@ import Button from "../../ubiquitous/components/Button/Button";
 import ResumePdf from "../../ubiquitous/assets/pdf/sean_donnellan_resume.pdf";
 import useWindowSize from "../../ubiquitous/hooks/useWindowSize";
 import cx from "classnames";
-import { nav, navOpen } from "./Nav.module.scss";
+import { nav, navOpen } from "./Nav.scss";
 
 const MOBILE_MAX_WIDTH = 768;
 

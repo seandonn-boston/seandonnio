@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import cx from "classnames";
-import { listItem, listItemHover } from "./ListItem.module.scss";
+import { listItem, listItemHover } from "./ListItem.scss";
 
 const ListItem = ({ isHoverable = false, children: child = null }) => {
   const listItemClasses = cx(listItem, { [listItemHover]: isHoverable });

@@ -1,68 +1,62 @@
-// previous style files regexes
-const prevCssRegex = /\.css$/;
-const prevCssModuleRegex = /\.module\.css$/;
-const prevSassRegex = /\.(scss|sass)$/;
-const prevSassModuleRegex = /\.module\.(scss|sass)$/;
+// TODO: configure a smarter import system to remove instances of './..'
 
-// new style files regexes
-const newCssRegex = /\.global\.css$/;
-const newCssModuleRegex = /\.css$/;
-const newSassRegex = /\.global\.(scss|sass)$/;
-const newSassModuleRegex = /\.(scss|sass)$/;
+// previous style files regexes
+const cssRegex = /\.css$/;
+const sassRegex = /\.(scss|sass)$/;
+const moduleCssRegex = /\.module\.css$/;
+const moduleSassRegex = /\.module\.(scss|sass)$/;
+const globalCssRegex = /\.global\.css$/;
+const globalSassRegex = /\.global\.(scss|sass)$/;
 
 module.exports = {
   webpack: {
     configure: (webpackConfig) => {
+      // NOTE: due to the find-by-moduleSassRegex, this config logic must come before the file extension changing logic
       // this css-loader config addition converts SCSS kebab-case selectors to camelCase in the imported css-modules styles object within components
       // traverse down the large webpackConfig object and then create and set `localsConvention: "camelCaseOnly"`
       // css-loader is currently v3.4.2 as of create-react-app v3.4.1
       // keep an eye on CRA updates: https://github.com/facebook/create-react-app
       // keep an eye on css-loader updates: https://github.com/webpack-contrib/css-loader
-      webpackConfig.module.rules
+      let moduleSassRegexCssLoaderOptions = webpackConfig.module.rules
         .find((item) => item.oneOf)
-        .oneOf.find((item) => String(item.test) == String(prevSassModuleRegex))
-        .use.find(
-          (item) => item.loader == require.resolve("css-loader")
-        ).options.localsConvention = "camelCaseOnly";
+        .oneOf.find((item) => String(item.test) == String(moduleSassRegex))
+        .use.find((item) => item.loader == require.resolve("css-loader"))
+        .options;
 
-      webpackConfig.module.rules
+      moduleSassRegexCssLoaderOptions.localsConvention = "camelCaseOnly";
+
+      // These config adjustments are for changing the extensions used in the css and scss file naming conventions
+      // `*.module.scss` and `*.module.css` becomes `*.scss` and `*.css`
+      // non module-scss `*.scss` and `*.css` becomes `*.global.scss` and `*.global.css`
+      let cssRegexTest = webpackConfig.module.rules
         .find((item) => item.oneOf)
-        .oneOf.find(
-          (item) => String(item.test) == String(prevCssRegex)
-        ).test = newCssRegex;
+        .oneOf.find((item) => String(item.test) == String(cssRegex));
 
-      webpackConfig.module.rules
+      let moduleCssRegexExclude = webpackConfig.module.rules
         .find((item) => item.oneOf)
-        .oneOf.find(
-          (item) => String(item.exclude) == String(prevCssModuleRegex)
-        ).test = newCssModuleRegex;
+        .oneOf.find((item) => String(item.exclude) == String(moduleCssRegex));
 
-      webpackConfig.module.rules
+      let moduleCssRegexTest = webpackConfig.module.rules
         .find((item) => item.oneOf)
-        .oneOf.find(
-          (item) => String(item.test) == String(prevCssModuleRegex)
-        ).test = newCssModuleRegex;
+        .oneOf.find((item) => String(item.test) == String(moduleCssRegex));
 
-      webpackConfig.module.rules
+      let sassRegexTest = webpackConfig.module.rules
         .find((item) => item.oneOf)
-        .oneOf.find(
-          (item) => String(item.test) == String(prevSassRegex)
-        ).test = newSassRegex;
+        .oneOf.find((item) => String(item.test) == String(sassRegex));
 
-      webpackConfig.module.rules
+      let moduleSassRegexExclude = webpackConfig.module.rules
         .find((item) => item.oneOf)
-        .oneOf.find(
-          (item) => String(item.exclude) == String(prevSassModuleRegex)
-        ).test = newSassModuleRegex;
+        .oneOf.find((item) => String(item.exclude) == String(moduleSassRegex));
 
-      webpackConfig.module.rules
+      let moduleSassRegexTest = webpackConfig.module.rules
         .find((item) => item.oneOf)
-        .oneOf.find(
-          (item) => String(item.test) == String(prevSassModuleRegex)
-        ).test = newSassModuleRegex;
+        .oneOf.find((item) => String(item.test) == String(moduleSassRegex));
 
-      // TODO: Configure the file extensions to remove '.module'
-      // TODO: configure a smarter import system to remove instances of './..'
+      cssRegexTest.test = globalCssRegex;
+      moduleCssRegexExclude.exclude = moduleCssRegexTest.test = cssRegex;
+      sassRegexTest.test = globalSassRegex;
+      moduleSassRegexExclude.exclude = moduleSassRegexTest.test = sassRegex;
+
       return webpackConfig;
     },
   },

@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { link } from "./Link.module.scss";
+import { link } from "./Link.scss";
 
 const Link = ({ content = "", href = null }) => (
   <a href={href} className={link}>

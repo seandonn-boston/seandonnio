@@ -1,5 +1,5 @@
 import React from "react";
-import { logo } from "./Logo.module.scss";
+import { logo } from "./Logo.scss";
 
 const Logo = () => <span className={logo} />;
 

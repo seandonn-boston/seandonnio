@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import cx from "classnames";
-import { patty, pattyBottom, pattyTop, pattyOpen } from "./Patty.module.scss";
+import { patty, pattyBottom, pattyTop, pattyOpen } from "./Patty.scss";
 
 const Patty = ({ reversed, isOpen }) => {
   const pattyClasses = cx(patty, {
