@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Header from "./Header/Header";
 import Veil from "./ubiquitous/components/Veil/Veil";
 import useWindowSize from "./ubiquitous/hooks/useWindowSize";
-import { app } from "./App.module.scss";
+import { app } from "./App.scss";
 
 const MOBILE_MAX_WIDTH = 768;
 

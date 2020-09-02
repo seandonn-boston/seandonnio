@@ -1,4 +1,14 @@
-const SassModuleRegex = /\.module\.(scss|sass)$/;
+// previous style files regexes
+const prevCssRegex = /\.css$/;
+const prevCssModuleRegex = /\.module\.css$/;
+const prevSassRegex = /\.(scss|sass)$/;
+const prevSassModuleRegex = /\.module\.(scss|sass)$/;
+
+// new style files regexes
+const newCssRegex = /\.global\.css$/;
+const newCssModuleRegex = /\.css$/;
+const newSassRegex = /\.global\.(scss|sass)$/;
+const newSassModuleRegex = /\.(scss|sass)$/;
 
 module.exports = {
   webpack: {
@@ -10,10 +20,46 @@ module.exports = {
       // keep an eye on css-loader updates: https://github.com/webpack-contrib/css-loader
       webpackConfig.module.rules
         .find((item) => item.oneOf)
-        .oneOf.find((item) => String(item.test) == String(SassModuleRegex))
+        .oneOf.find((item) => String(item.test) == String(prevSassModuleRegex))
         .use.find(
           (item) => item.loader == require.resolve("css-loader")
         ).options.localsConvention = "camelCaseOnly";
+
+      webpackConfig.module.rules
+        .find((item) => item.oneOf)
+        .oneOf.find(
+          (item) => String(item.test) == String(prevCssRegex)
+        ).test = newCssRegex;
+
+      webpackConfig.module.rules
+        .find((item) => item.oneOf)
+        .oneOf.find(
+          (item) => String(item.exclude) == String(prevCssModuleRegex)
+        ).test = newCssModuleRegex;
+
+      webpackConfig.module.rules
+        .find((item) => item.oneOf)
+        .oneOf.find(
+          (item) => String(item.test) == String(prevCssModuleRegex)
+        ).test = newCssModuleRegex;
+
+      webpackConfig.module.rules
+        .find((item) => item.oneOf)
+        .oneOf.find(
+          (item) => String(item.test) == String(prevSassRegex)
+        ).test = newSassRegex;
+
+      webpackConfig.module.rules
+        .find((item) => item.oneOf)
+        .oneOf.find(
+          (item) => String(item.exclude) == String(prevSassModuleRegex)
+        ).test = newSassModuleRegex;
+
+      webpackConfig.module.rules
+        .find((item) => item.oneOf)
+        .oneOf.find(
+          (item) => String(item.test) == String(prevSassModuleRegex)
+        ).test = newSassModuleRegex;
 
       // TODO: Configure the file extensions to remove '.module'
       // TODO: configure a smarter import system to remove instances of './..'
