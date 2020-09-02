@@ -1,3 +1,5 @@
+//index.global.scss
+
 @import-normalize; /* bring in PostCSS normalize.css styles for adding CSS reset - should be first css import of entire project*/
 @import "ubiquitous/styles/body.scss";
 @import "ubiquitous/styles/reset.scss";
