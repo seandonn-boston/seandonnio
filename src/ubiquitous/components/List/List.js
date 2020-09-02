@@ -1,10 +1,10 @@
 import React from "react";
 import PropTypes from "prop-types";
 import cx from "classnames";
-import styles from "./List.module.scss";
+import { list, listOpen } from "./List.module.scss";
 
 const List = ({ children, isOpen }) => {
-  const listClasses = cx(styles.List, { [styles["List-open"]]: isOpen });
+  const listClasses = cx(list, { [listOpen]: isOpen });
   return <ul className={listClasses}>{children}</ul>;
 };
 

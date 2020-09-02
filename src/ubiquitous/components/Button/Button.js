@@ -1,17 +1,12 @@
 import React from "react";
 import PropTypes from "prop-types";
-import cx from "classnames";
-import styles from "./Button.module.scss";
+import { button, buttonContent } from "./Button.module.scss";
 
-const Button = ({ content, link, target }) => {
-  const anchorClasses = cx(styles.Button);
-  const contentClasses = cx(styles["Button-content"]);
-  return (
-    <a href={link} className={anchorClasses} target={target}>
-      <span className={contentClasses}>{content}</span>
-    </a>
-  );
-};
+const Button = ({ content, link, target }) => (
+  <a href={link} className={button} target={target}>
+    <span className={buttonContent}>{content}</span>
+  </a>
+);
 
 export default Button;
 

@@ -1,17 +1,10 @@
 import React from "react";
 import PropTypes from "prop-types";
-import cx from "classnames";
-import styles from "./Veil.module.scss";
+import { veil } from "./Veil.module.scss";
 
-const Veil = ({ isMobileNavOpen, setIsMobileNavOpen }) => {
-  const veilClasses = cx(styles.Veil);
-  return (
-    <div
-      className={veilClasses}
-      onClick={() => setIsMobileNavOpen(!isMobileNavOpen)}
-    />
-  );
-};
+const Veil = ({ isMobileNavOpen, setIsMobileNavOpen }) => (
+  <div className={veil} onClick={() => setIsMobileNavOpen(!isMobileNavOpen)} />
+);
 
 export default Veil;
 

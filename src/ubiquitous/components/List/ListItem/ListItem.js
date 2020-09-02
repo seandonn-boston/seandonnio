@@ -1,15 +1,11 @@
 import React from "react";
 import PropTypes from "prop-types";
 import cx from "classnames";
-import styles from "./ListItem.module.scss";
+import { listItem, listItemHover } from "./ListItem.module.scss";
 
 const ListItem = ({ isHoverable = false, children: child = null }) => {
-  const listItemClasses = cx(styles.ListItem, { [styles["ListItem--hover"]]: isHoverable });
-  return (
-    <li className={listItemClasses}>
-      {child}
-    </li>
-  );
+  const listItemClasses = cx(listItem, { [listItemHover]: isHoverable });
+  return <li className={listItemClasses}>{child}</li>;
 };
 
 export default ListItem;

@@ -1,10 +1,6 @@
 import React from "react";
-import cx from "classnames";
-import styles from "./Logo.module.scss";
+import { logo } from "./Logo.module.scss";
 
-const Logo = () => {
-  const logoStyles = cx(styles.Logo);
-  return <span className={logoStyles} />;
-};
+const Logo = () => <span className={logo} />;
 
 export default Logo;
