@@ -1,0 +1,16 @@
+// List.scss
+
+@import "../../styles/config";
+
+.List {
+  margin: auto; // overwrite default margin, result shrinks margin and total height
+  display: block;
+  padding: 0;
+}
+
+/* Medium devices (landscape tablets, 768px and up) */
+@media only screen and (min-width: $bp-m) {
+  .Nav {
+    display: flex;
+  }
+}
