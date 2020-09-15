@@ -10,19 +10,19 @@ const App = () => {
   const [isMobileNavOpen, setIsMobileNavOpen] = useState(false);
   const isMobile = useWindowSize().width < MOBILE_MAX_WIDTH;
   return (
-      <div className={app}>
-        <Navigation
-          isMobile={isMobile}
+    <div className={app}>
+      <Navigation
+        isMobile={isMobile}
+        isMobileNavOpen={isMobileNavOpen}
+        setIsMobileNavOpen={setIsMobileNavOpen}
+      />
+      {isMobile && isMobileNavOpen && (
+        <Veil
           isMobileNavOpen={isMobileNavOpen}
           setIsMobileNavOpen={setIsMobileNavOpen}
         />
-        {isMobile && isMobileNavOpen && (
-          <Veil
-            isMobileNavOpen={isMobileNavOpen}
-            setIsMobileNavOpen={setIsMobileNavOpen}
-          />
-        )}
-      </div>
+      )}
+    </div>
   );
 };
 
