@@ -1,10 +1,10 @@
 import React from "react";
 import PropTypes from "prop-types";
-import Burger from "../ubiquitous/ui/Burger/Burger";
+import Burger from "../global/ui/Burger/Burger";
 import Logo from "./Logo/Logo";
 import Nav from "./Nav/Nav";
-import Button from "../ubiquitous/ui/Button/Button";
-import ResumePdf from "../ubiquitous/assets/pdf/sean_donnellan_resume.pdf";
+import Button from "../global/ui/Button/Button";
+import ResumePdf from "../global/assets/pdf/sean_donnellan_resume.pdf";
 import {
   navigation,
   navigationInnerWrapper,

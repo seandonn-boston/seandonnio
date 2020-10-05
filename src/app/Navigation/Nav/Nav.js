@@ -1,11 +1,11 @@
 import React from "react";
 import PropTypes from "prop-types";
-import List from "../../global/ui/List/List";
-import ListItem from "../../global/ui/List/ListItem/ListItem";
-import Link from "../../global/ui/Link/Link";
-import Button from "../../global/ui/Button/Button";
-import ResumePdf from "../../global/assets/pdf/sean_donnellan_resume.pdf";
-import useWindowSize from "../../global/hooks/useWindowSize";
+import List from "../../../global/ui/List/List";
+import ListItem from "../../../global/ui/List/ListItem/ListItem";
+import NavigationLink from "../NavigationLink/NavigationLink";
+import Button from "../../../global/ui/Button/Button";
+import ResumePdf from "../../../global/assets/pdf/sean_donnellan_resume.pdf";
+import useWindowSize from "../../../global/hooks/useWindowSize";
 import cx from "classnames";
 import { nav, navOpen } from "./Nav.scss";
 
@@ -18,13 +18,13 @@ const Nav = ({ isOpen }) => {
     <nav className={navClasses}>
       <List {...isOpen}>
         <ListItem isHoverable>
-          <Link content="About" href="#" />
+          <NavigationLink content="About" path="/about" active={false} />
         </ListItem>
         <ListItem isHoverable>
-          <Link content="Portfolio" href="#" />
+          <NavigationLink content="Portfolio" path="/portfolio" active={false} />
         </ListItem>
         <ListItem isHoverable>
-          <Link content="Contact" href="#" />
+          <NavigationLink content="Contact" path="/contact" active={false} />
         </ListItem>
         {isMobile && (
           <ListItem>

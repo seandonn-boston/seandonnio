@@ -1,7 +1,14 @@
 import React, { useState } from "react";
-import Navigation from "./Navigation/Navigation";
-import Veil from "./ubiquitous/ui/Veil/Veil";
-import useWindowSize from "./ubiquitous/hooks/useWindowSize";
+import { BrowserRouter, Switch, Route } from "react-router-dom";
+import useWindowSize from "./global/hooks/useWindowSize";
+
+import Navigation from './app/Navigation/Navigation'
+import Veil from "./global/ui/Veil/Veil";
+import AboutPage from "./features/AboutPage/AboutPage"
+import Contact from "./features/AboutPage/AboutPage"
+import Portfolio from "./features/AboutPage/AboutPage"
+import Resume from "./features/AboutPage/AboutPage"
+
 import { app } from "./App.scss";
 
 const MOBILE_MAX_WIDTH = 768;
@@ -10,12 +17,27 @@ const App = () => {
   const [isMobileNavOpen, setIsMobileNavOpen] = useState(false);
   const isMobile = useWindowSize().width < MOBILE_MAX_WIDTH;
   return (
+    <BrowserRouter>
+    <Navigation
+      isMobile={isMobile}
+      isMobileNavOpen={isMobileNavOpen}
+      setIsMobileNavOpen={setIsMobileNavOpen}
+    />
     <div className={app}>
-      <Navigation
-        isMobile={isMobile}
-        isMobileNavOpen={isMobileNavOpen}
-        setIsMobileNavOpen={setIsMobileNavOpen}
-      />
+      <Switch>
+        <Route path="/about">
+          <AboutPage/>
+        </Route>
+        <Route path="/contact">
+          <Contact/>
+        </Route>
+        <Route path="/portfolio">
+          <Portfolio/>
+        </Route>
+        <Route path="/resume">
+          <Resume/>
+        </Route>
+      </Switch>
       {isMobile && isMobileNavOpen && (
         <Veil
           isMobileNavOpen={isMobileNavOpen}
@@ -23,6 +45,7 @@ const App = () => {
         />
       )}
     </div>
+    </BrowserRouter>
   );
 };
 
