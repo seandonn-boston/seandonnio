@@ -1,8 +1,10 @@
 import React from "react";
 import PropTypes from "prop-types";
+
 import Patty from "./Patty/Patty";
-import cx from "classnames";
+
 import { burger, burgerOpen } from "./Burger.scss";
+import cx from "classnames";
 
 const Burger = ({ handleIsOpen, isOpen }) => {
   const burgerClasses = cx(burger, { [burgerOpen]: isOpen });
