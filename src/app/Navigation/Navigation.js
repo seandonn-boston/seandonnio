@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-import NavigationLinks from "./NavigationLinks/NavigationLinks";
+import NavLinks from "./NavLinks/NavLinks";
 import Logo from "../Logo/Logo";
 import Burger from "../../global/ui/Burger/Burger";
 import Button from "../../global/ui/Button/Button";
@@ -22,12 +22,12 @@ const Navigation = ({ isMobile, isMobileNavOpen, setIsMobileNavOpen }) => (
           <Burger handleIsOpen={setIsMobileNavOpen} isOpen={isMobileNavOpen} />
           <Logo />
         </div>
-        <NavigationLinks isOpen={isMobileNavOpen} />
+        <NavLinks isOpen={isMobileNavOpen} />
       </>
     ) : (
       <div className={navigationInnerWrapper}>
         <Logo />
-        <NavigationLinks />
+        <NavLinks />
         <span className={navigationItemRightAlign}>
           <Button content="Resume" link={ResumePdf} target="_blank" />
         </span>

@@ -25,15 +25,18 @@ const App = () => {
       />
       <div className={app}>
         <Switch>
-          <Route path="/about">
-            <AboutPage />
+          <Route path="/portfolio">
+            <PortfolioPage />
           </Route>
           <Route path="/contact">
             <ContactPage />
           </Route>
-          <Route path="/portfolio">
-            <PortfolioPage />
+          <Route path="/about">
+            <AboutPage />
           </Route>
+          {/* <Route path="/resume">
+            <Resume />
+          </Route> */}
         </Switch>
         {isMobile && isMobileNavOpen && (
           <Veil
