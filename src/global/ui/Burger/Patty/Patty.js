@@ -1,15 +1,21 @@
 import React from "react";
 import PropTypes from "prop-types";
-
-import { patty, pattyBottom, pattyTop, pattyOpen } from "./Patty.scss";
+import { useSelector } from "react-redux";
 import cx from "classnames";
 
-const Patty = ({ reversed, isOpen }) => {
+import { selectIsActive } from "../burgerSlice";
+
+import { patty, pattyBottom, pattyTop, pattyActive } from "./Patty.scss";
+
+const Patty = ({ reversed }) => {
+  const burgerIsActive = useSelector(selectIsActive);
+
   const pattyClasses = cx(patty, {
     [pattyBottom]: reversed,
     [pattyTop]: !reversed,
-    [pattyOpen]: isOpen,
+    [pattyActive]: burgerIsActive,
   });
+
   return <div className={pattyClasses} />;
 };
 
@@ -17,10 +23,8 @@ export default Patty;
 
 Patty.propTypes = {
   reversed: PropTypes.bool,
-  isOpen: PropTypes.bool,
 };
 
 Patty.defaultProps = {
   reversed: false,
-  isOpen: false,
 };

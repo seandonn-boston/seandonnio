@@ -1,12 +1,15 @@
 import React from "react";
-import PropTypes from "prop-types";
+import { useSelector } from "react-redux";
 
 import NavLinks from "./NavLinks/NavLinks";
 import Logo from "../Logo/Logo";
 import Burger from "../../global/ui/Burger/Burger";
 import Button from "../../global/ui/Button/Button";
 
-import ResumePdf from "../../global/assets/pdf/sean_donnellan_resume.pdf";
+import { selectIsOpen } from "./NavLinks/navLinksSlice";
+import { selectIsMobile } from "../../global/slices/clientSlice";
+
+import ResumePdf from "../../global/assets/pdf/sean_donnellan_resume.pdf"; // TODO open in a modal
 
 import {
   navigation,
@@ -14,30 +17,31 @@ import {
   navigationItemRightAlign,
 } from "./Navigation.scss";
 
-const Navigation = ({ isMobile, isMobileNavOpen, setIsMobileNavOpen }) => (
-  <section className={navigation}>
-    {isMobile ? (
-      <>
+const Navigation = () => {
+  const areNavLinksOpen = useSelector(selectIsOpen); // TODO research: can the use of useSelector be reduced into one instance??
+  const isClientMobile = useSelector(selectIsMobile);
+
+  return (
+    <section className={navigation}>
+      {isClientMobile ? (
+        <>
+          <div className={navigationInnerWrapper}>
+            <Burger />
+            <Logo />
+          </div>
+          {areNavLinksOpen && <NavLinks />}
+        </>
+      ) : (
         <div className={navigationInnerWrapper}>
-          <Burger handleIsOpen={setIsMobileNavOpen} isOpen={isMobileNavOpen} />
           <Logo />
+          <NavLinks />
+          <span className={navigationItemRightAlign}>
+            <Button content="Resume" link={ResumePdf} target="_blank" />
+          </span>
         </div>
-        <NavLinks isOpen={isMobileNavOpen} />
-      </>
-    ) : (
-      <div className={navigationInnerWrapper}>
-        <Logo />
-        <NavLinks />
-        <span className={navigationItemRightAlign}>
-          <Button content="Resume" link={ResumePdf} target="_blank" />
-        </span>
-      </div>
-    )}
-  </section>
-);
+      )}
+    </section>
+  );
+};
 
 export default Navigation;
-
-Navigation.propTypes = {
-  isMobile: PropTypes.bool.isRequired,
-};

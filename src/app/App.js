@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React from "react";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 import Navigation from "./Navigation/Navigation";
 import Veil from "./Veil/Veil";
@@ -7,23 +8,22 @@ import AboutPage from "../features/AboutPage/AboutPage";
 import ContactPage from "../features/ContactPage/ContactPage";
 import PortfolioPage from "../features/PortfolioPage/PortfolioPage";
 
-import useWindowSize from "../global/hooks/useWindowSize";
+import { selectIsOpen } from "./Veil/veilSlice";
+
+import useWindowResizer from "../global/hooks/useWindowResizer";
 
 import { app } from "./App.scss";
 
-const MOBILE_MAX_WIDTH = 768;
-
+// Could start looking into converting these arrow functions into exportable function declartations instead
 const App = () => {
-  const [isMobileNavOpen, setIsMobileNavOpen] = useState(false);
-  const isMobile = useWindowSize().width < MOBILE_MAX_WIDTH;
+  useWindowResizer(); // useWindowResizer is called here once in the entire app to initialize window resize event listeners
+
+  const isVeilOpen = useSelector(selectIsOpen);
+
   return (
     <BrowserRouter>
-      <Navigation
-        isMobile={isMobile}
-        isMobileNavOpen={isMobileNavOpen}
-        setIsMobileNavOpen={setIsMobileNavOpen}
-      />
-      <div className={app}>
+      <Navigation />
+      <section className={app}>
         <Switch>
           <Route path="/portfolio">
             <PortfolioPage />
@@ -34,17 +34,9 @@ const App = () => {
           <Route path="/about">
             <AboutPage />
           </Route>
-          {/* <Route path="/resume">
-            <Resume />
-          </Route> */}
         </Switch>
-        {isMobile && isMobileNavOpen && (
-          <Veil
-            isMobileNavOpen={isMobileNavOpen}
-            setIsMobileNavOpen={setIsMobileNavOpen}
-          />
-        )}
-      </div>
+        {isVeilOpen && <Veil />}
+      </section>
     </BrowserRouter>
   );
 };

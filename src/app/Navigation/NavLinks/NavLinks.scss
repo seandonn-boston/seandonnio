@@ -16,16 +16,28 @@
   &-open {
     transform: translateY(100%);
   }
+  &:first-child {
+    margin: 0 0 4px;
+  }
+  &:last-child {
+    margin: 4px 0 0;
+  }
 }
 
 .NavLink {
+  display: block;
   color: $black;
   text-decoration: none;
   width: 100%;
   display: block;
   padding: 12px 0;
+  margin: 4px 0;
+  text-align: center;
   &-active {
     background-color: red;
+  }
+  &:hover {
+    background-color: $theme-secondary;
   }
 }
 
@@ -35,12 +47,20 @@
     display: inline-flex;
     position: relative;
     width: auto;
-    margin: 0 0 0 40px;
+    margin: 0 4px 0 44px;
     bottom: initial;
     z-index: initial;
     background-color: transparent;
     transform: none;
     transition: initial;
+    &:last-child {
+      margin: 0 0 0 4px;
+      padding: 0;
+    }
+    &:first-child {
+      margin: 0 4px 0 0;
+      padding: 0;
+    }
   }
 
   .NavLink {

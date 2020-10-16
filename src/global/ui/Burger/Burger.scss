@@ -12,7 +12,7 @@
   transition: all 0.25s;
   transform-origin: center;
 
-  &-open {
+  &-active {
     transform: rotate(90deg);
   }
 }
