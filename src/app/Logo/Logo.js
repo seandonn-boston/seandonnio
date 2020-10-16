@@ -3,6 +3,6 @@ import { Link } from "react-router-dom";
 
 import { logo } from "./Logo.scss";
 
-const Logo = () => <Link to="/" className={logo} />;
-
-export default Logo;
+export default function Logo() {
+  return <Link to="/" className={logo} />;
+}

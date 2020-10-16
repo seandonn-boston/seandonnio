@@ -1,6 +1,3 @@
-// store.js
-// creates the Redux store instance
-
 import { configureStore } from "@reduxjs/toolkit";
 
 import veilReducer from "./Veil/veilSlice";

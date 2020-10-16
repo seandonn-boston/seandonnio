@@ -15,14 +15,16 @@ import {
   navLinksOpen,
   navLink,
   navLinkActive,
-} from "./NavLinks.scss"; // TODO fix the render + animation issue (won't animate)
+} from "./NavLinks.scss"; // TODO fix the render + animation issue (won't animate) https://reactjs.org/docs/animation.html
 
-const NavLinks = () => {
-  const isClientMobile = useSelector(selectIsMobile); // TODO research: can the use of useSelector be reduced into one instance??
+export default function NavLinks() {
+  const isClientMobile = useSelector(selectIsMobile);
   const areNavLinksOpen = useSelector(selectIsOpen);
 
   const navLinksClasses = cx(navLinks, { [navLinksOpen]: areNavLinksOpen });
 
+  // Consider building these NavLinks with an array? store the navigation data (to, content) somewhere perhaps? Move to a separate Component?
+  // Button can stay where it is, it's only used in mobile
   return (
     <nav className={navLinksClasses}>
       <NavLink to="/about" className={navLink} activeClassName={navLinkActive}>
@@ -49,6 +51,4 @@ const NavLinks = () => {
       )}
     </nav>
   );
-};
-
-export default NavLinks;
+}

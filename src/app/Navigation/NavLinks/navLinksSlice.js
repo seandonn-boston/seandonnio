@@ -5,7 +5,9 @@ import { createSlice } from "@reduxjs/toolkit";
 
 export const navLinksSlice = createSlice({
   name: "navLinks",
-  initialState: { isOpen: false },
+  initialState: {
+    isOpen: false,
+  },
   reducers: {
     navLinksOpener: (state) => {
       state.isOpen = !state.isOpen;

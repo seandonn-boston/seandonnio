@@ -3,13 +3,13 @@ import PropTypes from "prop-types";
 
 import { button, buttonContent } from "./Button.scss";
 
-const Button = ({ content, link, target }) => (
-  <a href={link} className={button} target={target}>
-    <span className={buttonContent}>{content}</span>
-  </a>
-);
-
-export default Button;
+export default function Button({ content, link, target }) {
+  return (
+    <a href={link} className={button} target={target}>
+      <span className={buttonContent}>{content}</span>
+    </a>
+  );
+}
 
 Button.propTypes = {
   content: PropTypes.string.isRequired,

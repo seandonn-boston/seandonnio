@@ -1,6 +1,3 @@
-// clientSlice.js
-// the Redux logic for client data
-
 import { createSlice } from "@reduxjs/toolkit";
 
 import { bpM } from "../styles/config/_breakpoints.scss";

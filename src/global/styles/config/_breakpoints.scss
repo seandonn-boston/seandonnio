@@ -1,5 +1,3 @@
-// breakpoints.scss
-
 $bp-s: 480;
 $bp-m: 768;
 $bp-l: 1024;
@@ -15,6 +13,7 @@ $bp-xl-px: $bp-xl + px;
   bpM: $bp-m;
   bpL: $bp-l;
   bpXl: $bp-xl;
+
   bpSpx: $bp-s-px;
   bpMpx: $bp-m-px;
   bpLpx: $bp-l-px;

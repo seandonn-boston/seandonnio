@@ -1,6 +1,3 @@
-// veilSlice.js
-// the Redux logic for the veil feature
-
 import { createSlice } from "@reduxjs/toolkit";
 
 export const veilSlice = createSlice({

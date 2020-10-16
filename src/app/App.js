@@ -14,9 +14,9 @@ import useMatchMediaQueries from "../global/hooks/useMatchMediaQueries";
 
 import { app } from "./App.scss";
 
-// Could start looking into converting these arrow functions into exportable function declartations instead
-const App = () => {
-  useMatchMediaQueries(); // useMatchMediaQueries is called here once in the entire app to initialize window resize event listeners
+export default function App() {
+  // useMatchMediaQueries is called here once in the entire app to initialize window.matchMedia event listener (for responsive conditional loading)`
+  useMatchMediaQueries();
 
   const isVeilOpen = useSelector(selectIsOpen);
 
@@ -39,6 +39,4 @@ const App = () => {
       </section>
     </BrowserRouter>
   );
-};
-
-export default App;
+}

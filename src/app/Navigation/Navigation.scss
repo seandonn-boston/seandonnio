@@ -1,5 +1,3 @@
-// Navigation.scss
-
 @import "../global/styles/config";
 
 .Navigation {
@@ -22,7 +20,6 @@
   }
 }
 
-/* Medium devices (768px and up) */
 @media only screen and (min-width: $bp-m-px) {
   .Navigation {
     background-color: $theme-primary;

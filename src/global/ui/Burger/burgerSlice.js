@@ -1,6 +1,3 @@
-// burgerSlice.js
-// the Redux logic for the burger ui element
-
 import { createSlice } from "@reduxjs/toolkit";
 
 export const burgerSlice = createSlice({

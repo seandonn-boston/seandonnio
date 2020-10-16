@@ -17,8 +17,8 @@ import {
   navigationItemRightAlign,
 } from "./Navigation.scss";
 
-const Navigation = () => {
-  const areNavLinksOpen = useSelector(selectIsOpen); // TODO research: can the use of useSelector be reduced into one instance??
+export default function Navigation() {
+  const areNavLinksOpen = useSelector(selectIsOpen);
   const isClientMobile = useSelector(selectIsMobile);
 
   return (
@@ -42,6 +42,4 @@ const Navigation = () => {
       )}
     </section>
   );
-};
-
-export default Navigation;
+}
