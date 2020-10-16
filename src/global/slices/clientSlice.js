@@ -3,17 +3,16 @@
 
 import { createSlice } from "@reduxjs/toolkit";
 
-// TODO Still need a file of breakpoint constants
-const BREAKPOINT_SMALL = 768;
+import { bpM } from "../styles/config/_breakpoints.scss";
 
 export const clientSlice = createSlice({
   name: "client",
   initialState: {
-    isMobile: window.innerWidth < BREAKPOINT_SMALL,
+    isMobile: window.innerWidth < bpM,
   },
   reducers: {
     setIsMobile: (state) => {
-      state.isMobile = window.innerWidth < BREAKPOINT_SMALL;
+      state.isMobile = window.innerWidth < bpM;
     },
   },
 });

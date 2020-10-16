@@ -10,13 +10,13 @@ import PortfolioPage from "../features/PortfolioPage/PortfolioPage";
 
 import { selectIsOpen } from "./Veil/veilSlice";
 
-import useWindowResizer from "../global/hooks/useWindowResizer";
+import useMatchMediaQueries from "../global/hooks/useMatchMediaQueries";
 
 import { app } from "./App.scss";
 
 // Could start looking into converting these arrow functions into exportable function declartations instead
 const App = () => {
-  useWindowResizer(); // useWindowResizer is called here once in the entire app to initialize window resize event listeners
+  useMatchMediaQueries(); // useMatchMediaQueries is called here once in the entire app to initialize window resize event listeners
 
   const isVeilOpen = useSelector(selectIsOpen);
 

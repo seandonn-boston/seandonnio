@@ -1,6 +1,22 @@
 // breakpoints.scss
 
-$bp-s: 480px;
-$bp-m: 768px;
-$bp-l: 1024px;
-$bp-xl: 1200px;
+$bp-s: 480;
+$bp-m: 768;
+$bp-l: 1024;
+$bp-xl: 1200;
+
+$bp-s-px: $bp-s + px;
+$bp-m-px: $bp-m + px;
+$bp-l-px: $bp-l + px;
+$bp-xl-px: $bp-xl + px;
+
+:export {
+  bpS: $bp-s;
+  bpM: $bp-m;
+  bpL: $bp-l;
+  bpXl: $bp-xl;
+  bpSpx: $bp-s-px;
+  bpMpx: $bp-m-px;
+  bpLpx: $bp-l-px;
+  bpXlpx: $bp-xl-px;
+}

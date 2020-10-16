@@ -11,7 +11,7 @@
 }
 
 /* Tablet devices (768px and up) */
-@media only screen and (min-width: $bp-m) {
+@media only screen and (min-width: $bp-m-px) {
   .Logo {
     margin: 0;
     height: 65px;
