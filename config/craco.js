@@ -1,3 +1,5 @@
+// NOTE: This is a personal preference to include. I wanted to learn and this was a fun challenge to complete because it broke me out of my comfort zone in more ways than one. To be continued! Initial inspiration: https://medium.com/clover-platform-blog/modular-scss-and-why-you-need-it-6bb2d8c40fd8
+
 // TODO: configure a smarter import system to remove instances of './..'
 
 // previous style files regexes
