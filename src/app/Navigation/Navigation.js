@@ -1,5 +1,6 @@
 import React from "react";
 import { useSelector } from "react-redux";
+import { CSSTransition } from "react-transition-group";
 
 import NavLinks from "./NavLinks/NavLinks";
 import Logo from "../Logo/Logo";
@@ -17,9 +18,23 @@ import {
   navigationItemRightAlign,
 } from "./Navigation.scss";
 
+import {
+  navLinksEnter,
+  navLinksEnterActive,
+  navLinksExitActive,
+  navLinksExit,
+} from "./NavLinks/NavLinks.scss";
+
 export default function Navigation() {
-  const areNavLinksOpen = useSelector(selectIsOpen);
   const isClientMobile = useSelector(selectIsMobile);
+  const areNavLinksOpen = useSelector(selectIsOpen);
+
+  const navLinksCSSTransitionClassNames = {
+    enter: navLinksEnter,
+    enterActive: navLinksEnterActive,
+    exitActive: navLinksExitActive,
+    exit: navLinksExit,
+  };
 
   return (
     <section className={navigation}>
@@ -29,7 +44,18 @@ export default function Navigation() {
             <Burger />
             <Logo />
           </div>
-          {areNavLinksOpen && <NavLinks />}
+          <CSSTransition
+            in={areNavLinksOpen}
+            timeout={400}
+            classNames={navLinksCSSTransitionClassNames}
+            mountOnEnter
+            unmountOnExit
+            appear
+            enter
+            exit
+          >
+            <NavLinks />
+          </CSSTransition>
         </>
       ) : (
         <div className={navigationInnerWrapper}>

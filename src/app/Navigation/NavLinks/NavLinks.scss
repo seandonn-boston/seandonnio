@@ -9,14 +9,31 @@
   bottom: 0;
   z-index: 1;
   background-color: $white;
-  transform: translateY(0);
-  transition: all linear 0.25s;
-  &-open {
-    transform: translateY(100%);
+
+  // begin react-transition-group special class declarations
+  transition: transform 400ms linear;
+  transform: translateY(100%);
+  &-enter {
+    transform: translateY(0);
+
+    &-active {
+      transform: translateY(100%);
+    }
   }
+
+  &-exit {
+    transform: translateY(100%);
+
+    &-active {
+      transform: translateY(0);
+    }
+  }
+  // end react-transition-group classes
+
   &:first-child {
     margin: 0 0 4px;
   }
+
   &:last-child {
     margin: 4px 0 0;
   }
@@ -31,9 +48,11 @@
   padding: 12px 0;
   margin: 4px 0;
   text-align: center;
+
   &-active {
     background-color: red;
   }
+
   &:hover {
     background-color: $theme-secondary;
   }
@@ -50,10 +69,12 @@
     background-color: transparent;
     transform: none;
     transition: initial;
+
     &:last-child {
       margin: 0 0 0 4px;
       padding: 0;
     }
+
     &:first-child {
       margin: 0 4px 0 0;
       padding: 0;
