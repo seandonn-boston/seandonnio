@@ -1,3 +1,5 @@
+@import "../../styles/config";
+
 .Burger {
   position: absolute;
   align-items: center;
@@ -7,7 +9,7 @@
   height: 50px;
   margin: auto 0 auto 0;
   cursor: pointer;
-  transition: all 200ms;
+  transition: all $to-s-ms;
   transform-origin: center;
 
   &-active {

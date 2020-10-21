@@ -11,7 +11,7 @@
   background-color: $white;
 
   // begin react-transition-group special class declarations
-  transition: transform 400ms linear;
+  transition: transform $to-l-ms linear;
   transform: translateY(100%);
   &-enter {
     transform: translateY(0);

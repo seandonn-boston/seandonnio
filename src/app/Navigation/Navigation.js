@@ -17,13 +17,13 @@ import {
   navigationInnerWrapper,
   navigationItemRightAlign,
 } from "./Navigation.scss";
-
 import {
   navLinksEnter,
   navLinksEnterActive,
   navLinksExitActive,
   navLinksExit,
 } from "./NavLinks/NavLinks.scss";
+import { toL } from "../../global/styles/config/_timeouts.scss";
 
 export default function Navigation() {
   const isClientMobile = useSelector(selectIsMobile);
@@ -46,13 +46,10 @@ export default function Navigation() {
           </div>
           <CSSTransition
             in={areNavLinksOpen}
-            timeout={400}
+            timeout={Number(toL)}
             classNames={navLinksCSSTransitionClassNames}
             mountOnEnter
             unmountOnExit
-            appear
-            enter
-            exit
           >
             <NavLinks />
           </CSSTransition>
