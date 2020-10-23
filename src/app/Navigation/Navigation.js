@@ -20,6 +20,7 @@ import {
 import {
   navLinksEnter,
   navLinksEnterActive,
+  navLinksEnterDone,
   navLinksExitActive,
   navLinksExit,
 } from "./NavLinks/NavLinks.scss";
@@ -32,6 +33,7 @@ export default function Navigation() {
   const navLinksCSSTransitionClassNames = {
     enter: navLinksEnter,
     enterActive: navLinksEnterActive,
+    enterDone: navLinksEnterDone,
     exitActive: navLinksExitActive,
     exit: navLinksExit,
   };

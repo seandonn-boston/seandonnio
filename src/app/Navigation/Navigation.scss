@@ -9,7 +9,7 @@
     display: flex;
     background-color: $theme-primary;
     position: relative;
-    z-index: 10;
+    z-index: $z-200;
   }
 
   &-item {

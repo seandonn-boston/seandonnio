@@ -36,8 +36,8 @@ export default function App() {
             <AboutPage />
           </Route>
         </Switch>
-        {isVeilOpen && <Veil />}
       </section>
+      {isVeilOpen && <Veil />}
     </BrowserRouter>
   );
 }
