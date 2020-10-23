@@ -3,12 +3,14 @@ import { BrowserRouter, Switch, Route } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 import Navigation from "./Navigation/Navigation";
+import Modal from "./Modal/Modal";
 import Veil from "./Veil/Veil";
 import AboutPage from "../features/AboutPage/AboutPage";
 import ContactPage from "../features/ContactPage/ContactPage";
 import PortfolioPage from "../features/PortfolioPage/PortfolioPage";
 
-import { selectIsOpen } from "./Veil/veilSlice";
+import { selectIsOpen as selectIsVeilOpen } from "./Veil/veilSlice";
+import { selectIsOpen as selectIsModalOpen } from "./Modal/modalSlice";
 
 import useMatchMediaQueries from "../global/hooks/useMatchMediaQueries";
 
@@ -19,11 +21,14 @@ export default function App() {
   // useMatchMediaQueries initializes window.matchMedia event listener via useEffect, thus tethering mobile conditionals in JS directly to their CSS media queries and their breakpoints. BONUS: you can export scss breakpoint variables and import them in JS
   useMatchMediaQueries();
 
-  const isVeilOpen = useSelector(selectIsOpen);
+  const isVeilOpen = useSelector(selectIsVeilOpen);
+  const isModalOpen = useSelector(selectIsModalOpen);
 
   return (
     <BrowserRouter>
       <Navigation />
+      {isModalOpen && <Modal />}
+      {isVeilOpen && <Veil />}
       <section className={app}>
         <Switch>
           <Route path="/portfolio">
@@ -37,7 +42,6 @@ export default function App() {
           </Route>
         </Switch>
       </section>
-      {isVeilOpen && <Veil />}
     </BrowserRouter>
   );
 }
