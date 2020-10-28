@@ -5,27 +5,37 @@ import { useDispatch, useSelector } from "react-redux";
 import Button from "../../../global/ui/Button/Button";
 
 import { selectIsMobile } from "../../../global/slices/clientSlice";
-import { setBurgerIsActive } from "../../../global/ui/Burger/burgerSlice";
-import { modalOpener } from "../../Modal/modalSlice";
-import { navLinksOpener } from "./navLinksSlice";
-import { veilOpener } from "../../Veil/veilSlice";
+import {
+  setBurgerIsActive,
+  selectBurgerIsActive,
+} from "../../../global/ui/Burger/burgerSlice";
+import { modalOpener, selectModalIsOpen } from "../../Modal/modalSlice";
+import { setModalContent } from "../../Modal/ModalContent/modalContentSlice";
+import { navLinksOpener, selectNavLinksIsOpen } from "./navLinksSlice";
+import { veilOpener, selectVeilIsOpen } from "../../Veil/veilSlice";
 
 import { navLinks, navLink, navLinkActive } from "./NavLinks.scss";
 
 export default function NavLinks() {
-  const dispatch = useDispatch();
   const isClientMobile = useSelector(selectIsMobile);
+  const isBurgerActive = useSelector(selectBurgerIsActive);
+  const isNavLinksOpen = useSelector(selectNavLinksIsOpen);
+  const isVeilOpen = useSelector(selectVeilIsOpen);
+  const isModalOpen = useSelector(selectModalIsOpen);
+
+  const dispatch = useDispatch();
 
   const handleNavLinkOnClick = () => {
-    dispatch(veilOpener());
-    dispatch(navLinksOpener());
-    dispatch(setBurgerIsActive());
+    isVeilOpen && dispatch(veilOpener());
+    isNavLinksOpen && dispatch(navLinksOpener());
+    isBurgerActive && dispatch(setBurgerIsActive());
   };
 
   const handleResumeOnClick = () => {
-    dispatch(modalOpener());
-    dispatch(navLinksOpener());
-    dispatch(setBurgerIsActive());
+    dispatch(setModalContent("pdf"));
+    !isModalOpen && dispatch(modalOpener());
+    isNavLinksOpen && dispatch(navLinksOpener());
+    isBurgerActive && dispatch(setBurgerIsActive());
   };
 
   // Consider building these NavLinks with an array? store the navigation data (to, content) somewhere perhaps? Move to a separate Component?

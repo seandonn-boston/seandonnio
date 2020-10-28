@@ -9,8 +9,8 @@ import AboutPage from "../features/AboutPage/AboutPage";
 import ContactPage from "../features/ContactPage/ContactPage";
 import PortfolioPage from "../features/PortfolioPage/PortfolioPage";
 
-import { selectIsVeilOpen } from "./Veil/veilSlice";
-import { selectIsModalOpen } from "./Modal/modalSlice";
+import { selectVeilIsOpen } from "./Veil/veilSlice";
+import { selectModalIsOpen } from "./Modal/modalSlice";
 
 import useMatchMediaQueries from "../global/hooks/useMatchMediaQueries";
 
@@ -21,8 +21,8 @@ export default function App() {
   // useMatchMediaQueries initializes window.matchMedia event listener via useEffect, thus tethering mobile conditionals in JS directly to their CSS media queries and their breakpoints. BONUS: you can export scss breakpoint variables and import them in JS
   useMatchMediaQueries();
 
-  const isVeilOpen = useSelector(selectIsVeilOpen);
-  const isModalOpen = useSelector(selectIsModalOpen);
+  const isVeilOpen = useSelector(selectVeilIsOpen);
+  const isModalOpen = useSelector(selectModalIsOpen);
 
   return (
     <BrowserRouter>

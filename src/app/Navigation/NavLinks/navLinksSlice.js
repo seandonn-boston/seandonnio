@@ -1,6 +1,3 @@
-// navLinksSlice.js
-// the Redux logic for the navLinks feature
-
 import { createSlice } from "@reduxjs/toolkit";
 
 export const navLinksSlice = createSlice({
@@ -17,6 +14,6 @@ export const navLinksSlice = createSlice({
 
 export const { navLinksOpener } = navLinksSlice.actions;
 
-export const selectIsNavLinksOpen = (state) => state.navLinks.isOpen;
+export const selectNavLinksIsOpen = (state) => state.navLinks.isOpen;
 
 export default navLinksSlice.reducer;

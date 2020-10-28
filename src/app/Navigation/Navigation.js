@@ -7,17 +7,18 @@ import Logo from "../Logo/Logo";
 import Burger from "../../global/ui/Burger/Burger";
 import Button from "../../global/ui/Button/Button";
 
-import { selectIsNavLinksOpen } from "./NavLinks/navLinksSlice";
+import { selectNavLinksIsOpen } from "./NavLinks/navLinksSlice";
 import { selectIsMobile } from "../../global/slices/clientSlice";
-import { modalOpener } from "../Modal/modalSlice";
-import { veilOpener } from "../Veil/veilSlice";
+import { modalOpener, selectModalIsOpen } from "../Modal/modalSlice";
+import { setModalContent } from "../Modal/ModalContent/modalContentSlice";
+import { veilOpener, selectVeilIsOpen } from "../Veil/veilSlice";
 
 import {
   navigation,
   navigationInnerWrapper,
   navigationItemRightAlign,
 } from "./Navigation.scss";
-// NavLink styles are necessary for CSS Animations
+// NavLink styles and timeout constant are both necessary here for CSS Animations
 import {
   navLinksEnter,
   navLinksEnterActive,
@@ -27,23 +28,26 @@ import {
 } from "./NavLinks/NavLinks.scss";
 import { toL } from "../../global/styles/config/_timeouts.scss";
 
+const navLinksCSSTransitionClassNames = {
+  enter: navLinksEnter,
+  enterActive: navLinksEnterActive,
+  enterDone: navLinksEnterDone,
+  exitActive: navLinksExitActive,
+  exit: navLinksExit,
+};
+
 export default function Navigation() {
+  const isClientMobile = useSelector(selectIsMobile);
+  const areNavLinksOpen = useSelector(selectNavLinksIsOpen);
+  const isVeilOpen = useSelector(selectVeilIsOpen);
+  const isModalOpen = useSelector(selectModalIsOpen);
+
   const dispatch = useDispatch();
 
-  const isClientMobile = useSelector(selectIsMobile);
-  const areNavLinksOpen = useSelector(selectIsNavLinksOpen);
-
-  const navLinksCSSTransitionClassNames = {
-    enter: navLinksEnter,
-    enterActive: navLinksEnterActive,
-    enterDone: navLinksEnterDone,
-    exitActive: navLinksExitActive,
-    exit: navLinksExit,
-  };
-
   const handleResumeOnClick = () => {
-    dispatch(modalOpener());
-    dispatch(veilOpener());
+    dispatch(setModalContent("pdf"));
+    !isModalOpen && dispatch(modalOpener());
+    !isVeilOpen && dispatch(veilOpener());
   };
 
   return (

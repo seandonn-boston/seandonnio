@@ -3,21 +3,26 @@ import { useDispatch, useSelector } from "react-redux";
 
 import Line from "./Line/Line";
 
-import { veilOpener, selectIsVeilOpen } from "../../../app/Veil/veilSlice";
-import { modalOpener, selectIsModalOpen } from "../../../app/Modal/modalSlice";
+import { veilOpener, selectVeilIsOpen } from "../../../app/Veil/veilSlice";
+import { modalOpener, selectModalIsOpen } from "../../../app/Modal/modalSlice";
+import { setModalContent } from "../../../app/Modal/ModalContent/modalContentSlice";
 
 import { x } from "./X.scss";
 
 export default function X() {
-  const dispatch = useDispatch();
+  const isVeilOpen = useSelector(selectVeilIsOpen);
+  const isModalOpen = useSelector(selectModalIsOpen);
 
-  const isVeilOpen = useSelector(selectIsVeilOpen);
-  const isModalOpen = useSelector(selectIsModalOpen);
+  const dispatch = useDispatch();
 
   const handleOnClick = () => {
     isVeilOpen && dispatch(veilOpener());
-    isModalOpen && dispatch(modalOpener());
+    if (isModalOpen) {
+      dispatch(modalOpener());
+      dispatch(setModalContent(""));
+    }
   };
+
   return (
     <div className={x} onClick={() => handleOnClick()}>
       <Line />

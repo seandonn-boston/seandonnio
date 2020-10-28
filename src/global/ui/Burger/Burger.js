@@ -4,13 +4,15 @@ import cx from "classnames";
 
 import Patty from "./Patty/Patty";
 
-import { selectIsBurgerActive, setBurgerIsActive } from "./burgerSlice";
+import { selectBurgerIsActive, setBurgerIsActive } from "./burgerSlice";
 import { navLinksOpener } from "../../../app/Navigation/NavLinks/navLinksSlice";
 import { veilOpener } from "../../../app/Veil/veilSlice";
 
 import { burger, burgerActive } from "./Burger.scss";
 
 export default function Burger() {
+  const burgerIsActive = useSelector(selectBurgerIsActive);
+
   const dispatch = useDispatch();
 
   const handleOnClick = () => {
@@ -18,8 +20,6 @@ export default function Burger() {
     dispatch(navLinksOpener());
     dispatch(veilOpener());
   };
-
-  const burgerIsActive = useSelector(selectIsBurgerActive);
 
   const burgerClasses = cx(burger, { [burgerActive]: burgerIsActive });
 

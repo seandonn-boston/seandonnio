@@ -14,6 +14,6 @@ export const veilSlice = createSlice({
 
 export const { veilOpener } = veilSlice.actions;
 
-export const selectIsVeilOpen = (state) => state.veil.isOpen;
+export const selectVeilIsOpen = (state) => state.veil.isOpen;
 
 export default veilSlice.reducer;

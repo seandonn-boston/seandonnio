@@ -2,36 +2,41 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import cx from "classnames";
 
-import { veilOpener } from "./veilSlice";
+import { veilOpener, selectVeilIsOpen } from "./veilSlice";
 import {
   navLinksOpener,
-  selectIsNavLinksOpen,
+  selectNavLinksIsOpen,
 } from "../Navigation/NavLinks/navLinksSlice";
 import {
   setBurgerIsActive,
-  selectIsBurgerActive,
+  selectBurgerIsActive,
 } from "../../global/ui/Burger/burgerSlice";
-import { modalOpener, selectIsModalOpen } from "../Modal/modalSlice";
+import { modalOpener, selectModalIsOpen } from "../Modal/modalSlice";
+import { setModalContent } from "../Modal/ModalContent/modalContentSlice";
 
-import { veil, veilBehindNav } from "./Veil.scss";
+import { veil, veilBehindNavLinks } from "./Veil.scss";
 
 export default function Veil() {
-  const dispatch = useDispatch();
-  const areNavLinksOpen = useSelector(selectIsNavLinksOpen);
-  const isBurgerActive = useSelector(selectIsBurgerActive);
-  const isModalOpen = useSelector(selectIsModalOpen);
+  const isNavLinksOpen = useSelector(selectNavLinksIsOpen);
+  const isBurgerActive = useSelector(selectBurgerIsActive);
+  const isModalOpen = useSelector(selectModalIsOpen);
+  const isVeilOpen = useSelector(selectVeilIsOpen);
 
-  const veilClasses = cx(veil, {
-    [veilBehindNav]: areNavLinksOpen,
-  });
+  const dispatch = useDispatch();
 
   const handleOnClick = () => {
-    dispatch(veilOpener());
-    // only close the following if it is already open
-    areNavLinksOpen && dispatch(navLinksOpener());
+    isVeilOpen && dispatch(veilOpener());
+    isNavLinksOpen && dispatch(navLinksOpener());
     isBurgerActive && dispatch(setBurgerIsActive());
-    isModalOpen && dispatch(modalOpener());
+    if (isModalOpen) {
+      dispatch(modalOpener());
+      dispatch(setModalContent(""));
+    }
   };
+
+  const veilClasses = cx(veil, {
+    [veilBehindNavLinks]: isNavLinksOpen,
+  });
 
   return <div className={veilClasses} onClick={() => handleOnClick()} />;
 }
