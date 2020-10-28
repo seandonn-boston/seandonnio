@@ -3,20 +3,25 @@ import PropTypes from "prop-types";
 
 import { button, buttonContent } from "./Button.scss";
 
-export default function Button({ content, link, target }) {
+export default function Button({ content, type, handleOnClick }) {
   return (
-    <a href={link} className={button} target={target}>
+    <button
+      className={button}
+      name={content}
+      type={type}
+      onClick={() => handleOnClick()}
+    >
       <span className={buttonContent}>{content}</span>
-    </a>
+    </button>
   );
 }
 
 Button.propTypes = {
   content: PropTypes.string.isRequired,
-  link: PropTypes.string.isRequired,
-  target: PropTypes.oneOf(["_blank", "_self", "_parent", "_top"]),
+  handleOnClick: PropTypes.func.isRequired,
+  type: PropTypes.oneOf(["button", "reset", "submit"]),
 };
 
 Button.defaultProps = {
-  target: null,
+  type: "button",
 };

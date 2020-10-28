@@ -14,6 +14,6 @@ export const burgerSlice = createSlice({
 
 export const { setBurgerIsActive } = burgerSlice.actions;
 
-export const selectIsActive = (state) => state.burger.isActive;
+export const selectIsBurgerActive = (state) => state.burger.isActive;
 
 export default burgerSlice.reducer;

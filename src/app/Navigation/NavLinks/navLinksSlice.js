@@ -17,6 +17,6 @@ export const navLinksSlice = createSlice({
 
 export const { navLinksOpener } = navLinksSlice.actions;
 
-export const selectIsOpen = (state) => state.navLinks.isOpen;
+export const selectIsNavLinksOpen = (state) => state.navLinks.isOpen;
 
 export default navLinksSlice.reducer;

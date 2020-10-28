@@ -9,8 +9,8 @@ import AboutPage from "../features/AboutPage/AboutPage";
 import ContactPage from "../features/ContactPage/ContactPage";
 import PortfolioPage from "../features/PortfolioPage/PortfolioPage";
 
-import { selectIsOpen as selectIsVeilOpen } from "./Veil/veilSlice";
-import { selectIsOpen as selectIsModalOpen } from "./Modal/modalSlice";
+import { selectIsVeilOpen } from "./Veil/veilSlice";
+import { selectIsModalOpen } from "./Modal/modalSlice";
 
 import useMatchMediaQueries from "../global/hooks/useMatchMediaQueries";
 

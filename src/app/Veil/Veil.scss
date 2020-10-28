@@ -10,4 +10,8 @@
   right: 0;
   background-color: $black;
   opacity: 0.5;
+  z-index: $z-300;
+  &--behindNav {
+    z-index: $z-100;
+  }
 }

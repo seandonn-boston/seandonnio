@@ -1,5 +1,5 @@
 import React from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { CSSTransition } from "react-transition-group";
 
 import NavLinks from "./NavLinks/NavLinks";
@@ -7,16 +7,17 @@ import Logo from "../Logo/Logo";
 import Burger from "../../global/ui/Burger/Burger";
 import Button from "../../global/ui/Button/Button";
 
-import { selectIsOpen } from "./NavLinks/navLinksSlice";
+import { selectIsNavLinksOpen } from "./NavLinks/navLinksSlice";
 import { selectIsMobile } from "../../global/slices/clientSlice";
-
-import ResumePdf from "../../global/assets/pdf/sean_donnellan_resume.pdf"; // TODO open in a modal
+import { modalOpener } from "../Modal/modalSlice";
+import { veilOpener } from "../Veil/veilSlice";
 
 import {
   navigation,
   navigationInnerWrapper,
   navigationItemRightAlign,
 } from "./Navigation.scss";
+// NavLink styles are necessary for CSS Animations
 import {
   navLinksEnter,
   navLinksEnterActive,
@@ -27,8 +28,10 @@ import {
 import { toL } from "../../global/styles/config/_timeouts.scss";
 
 export default function Navigation() {
+  const dispatch = useDispatch();
+
   const isClientMobile = useSelector(selectIsMobile);
-  const areNavLinksOpen = useSelector(selectIsOpen);
+  const areNavLinksOpen = useSelector(selectIsNavLinksOpen);
 
   const navLinksCSSTransitionClassNames = {
     enter: navLinksEnter,
@@ -36,6 +39,11 @@ export default function Navigation() {
     enterDone: navLinksEnterDone,
     exitActive: navLinksExitActive,
     exit: navLinksExit,
+  };
+
+  const handleResumeOnClick = () => {
+    dispatch(modalOpener());
+    dispatch(veilOpener());
   };
 
   return (
@@ -61,7 +69,10 @@ export default function Navigation() {
           <Logo />
           <NavLinks />
           <span className={navigationItemRightAlign}>
-            <Button content="Resume" link={ResumePdf} target="_blank" />
+            <Button
+              content="Resume"
+              handleOnClick={() => handleResumeOnClick()}
+            />
           </span>
         </div>
       )}

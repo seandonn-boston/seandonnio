@@ -1,20 +1,37 @@
 import React from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import cx from "classnames";
 
 import { veilOpener } from "./veilSlice";
-import { navLinksOpener } from "../Navigation/NavLinks/navLinksSlice";
-import { setBurgerIsActive } from "../../global/ui/Burger/burgerSlice";
+import {
+  navLinksOpener,
+  selectIsNavLinksOpen,
+} from "../Navigation/NavLinks/navLinksSlice";
+import {
+  setBurgerIsActive,
+  selectIsBurgerActive,
+} from "../../global/ui/Burger/burgerSlice";
+import { modalOpener, selectIsModalOpen } from "../Modal/modalSlice";
 
-import { veil } from "./Veil.scss";
+import { veil, veilBehindNav } from "./Veil.scss";
 
 export default function Veil() {
   const dispatch = useDispatch();
+  const areNavLinksOpen = useSelector(selectIsNavLinksOpen);
+  const isBurgerActive = useSelector(selectIsBurgerActive);
+  const isModalOpen = useSelector(selectIsModalOpen);
+
+  const veilClasses = cx(veil, {
+    [veilBehindNav]: areNavLinksOpen,
+  });
 
   const handleOnClick = () => {
     dispatch(veilOpener());
-    dispatch(navLinksOpener());
-    dispatch(setBurgerIsActive());
+    // only close the following if it is already open
+    areNavLinksOpen && dispatch(navLinksOpener());
+    isBurgerActive && dispatch(setBurgerIsActive());
+    isModalOpen && dispatch(modalOpener());
   };
 
-  return <div className={veil} onClick={() => handleOnClick()} />;
+  return <div className={veilClasses} onClick={() => handleOnClick()} />;
 }
