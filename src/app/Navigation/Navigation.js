@@ -22,7 +22,7 @@ import {
   navigationInnerWrapper,
   navigationItemRightAlign,
 } from "./Navigation.scss";
-// NavLink styles and timeout constant are both necessary here for CSS Animations
+// NavLink styles and timeout constant necessary for CSS Animations
 import {
   navLinksEnter,
   navLinksEnterActive,
@@ -44,7 +44,7 @@ const navLinksCSSTransitionClassNames = {
 
 export default function Navigation() {
   const isClientMobile = useSelector(selectIsMobile);
-  const areNavLinksOpen = useSelector(selectNavLinksIsOpen);
+  const isNavLinksOpen = useSelector(selectNavLinksIsOpen);
   const isVeilOpen = useSelector(selectVeilIsOpen);
   const isModalOpen = useSelector(selectModalIsOpen);
 
@@ -66,7 +66,7 @@ export default function Navigation() {
             <Logo />
           </div>
           <CSSTransition
-            in={areNavLinksOpen}
+            in={isNavLinksOpen}
             timeout={Number(toL)}
             classNames={navLinksCSSTransitionClassNames}
             mountOnEnter
