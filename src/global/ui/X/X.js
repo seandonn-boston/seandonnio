@@ -4,14 +4,20 @@ import { useDispatch, useSelector } from "react-redux";
 import Line from "./Line/Line";
 
 import { veilOpener, selectVeilIsOpen } from "../../../app/Veil/veilSlice";
-import { modalOpener, selectModalIsOpen } from "../../../app/Modal/modalSlice";
-import { setModalContent } from "../../../app/Modal/ModalContent/modalContentSlice";
+import {
+  modalOpener,
+  selectModalIsOpen,
+  selectModalContentFile,
+  setModalContentType,
+  setModalContentFile,
+} from "../../../app/Modal/modalSlice";
 
 import { x } from "./X.scss";
 
 export default function X() {
   const isVeilOpen = useSelector(selectVeilIsOpen);
   const isModalOpen = useSelector(selectModalIsOpen);
+  const modalContentFile = useSelector(selectModalContentFile);
 
   const dispatch = useDispatch();
 
@@ -19,7 +25,8 @@ export default function X() {
     isVeilOpen && dispatch(veilOpener());
     if (isModalOpen) {
       dispatch(modalOpener());
-      dispatch(setModalContent(""));
+      dispatch(setModalContentType(""));
+      modalContentFile && dispatch(setModalContentFile(null));
     }
   };
 

@@ -11,8 +11,13 @@ import {
   setBurgerIsActive,
   selectBurgerIsActive,
 } from "../../global/ui/Burger/burgerSlice";
-import { modalOpener, selectModalIsOpen } from "../Modal/modalSlice";
-import { setModalContent } from "../Modal/ModalContent/modalContentSlice";
+import {
+  modalOpener,
+  selectModalIsOpen,
+  selectModalContentFile,
+  setModalContentType,
+  setModalContentFile,
+} from "../Modal/modalSlice";
 
 import { veil, veilBehindNavLinks } from "./Veil.scss";
 
@@ -21,6 +26,7 @@ export default function Veil() {
   const isBurgerActive = useSelector(selectBurgerIsActive);
   const isModalOpen = useSelector(selectModalIsOpen);
   const isVeilOpen = useSelector(selectVeilIsOpen);
+  const modalContentFile = useSelector(selectModalContentFile);
 
   const dispatch = useDispatch();
 
@@ -30,7 +36,8 @@ export default function Veil() {
     isBurgerActive && dispatch(setBurgerIsActive());
     if (isModalOpen) {
       dispatch(modalOpener());
-      dispatch(setModalContent(""));
+      dispatch(setModalContentType(""));
+      modalContentFile && dispatch(setModalContentFile(null));
     }
   };
 

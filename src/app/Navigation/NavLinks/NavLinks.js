@@ -9,12 +9,18 @@ import {
   setBurgerIsActive,
   selectBurgerIsActive,
 } from "../../../global/ui/Burger/burgerSlice";
-import { modalOpener, selectModalIsOpen } from "../../Modal/modalSlice";
-import { setModalContent } from "../../Modal/ModalContent/modalContentSlice";
+import {
+  modalOpener,
+  selectModalIsOpen,
+  setModalContentType,
+  setModalContentFile,
+} from "../../Modal/modalSlice";
 import { navLinksOpener, selectNavLinksIsOpen } from "./navLinksSlice";
 import { veilOpener, selectVeilIsOpen } from "../../Veil/veilSlice";
 
 import { navLinks, navLink, navLinkActive } from "./NavLinks.scss";
+
+import ResumePdf from "../../../global/assets/pdf/sean_donnellan_resume.pdf";
 
 export default function NavLinks() {
   const isClientMobile = useSelector(selectIsMobile);
@@ -32,7 +38,8 @@ export default function NavLinks() {
   };
 
   const handleResumeOnClick = () => {
-    dispatch(setModalContent("pdf"));
+    dispatch(setModalContentType("pdf"));
+    dispatch(setModalContentFile(ResumePdf));
     !isModalOpen && dispatch(modalOpener());
     isNavLinksOpen && dispatch(navLinksOpener());
     isBurgerActive && dispatch(setBurgerIsActive());

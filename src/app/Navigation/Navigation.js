@@ -9,8 +9,12 @@ import Button from "../../global/ui/Button/Button";
 
 import { selectNavLinksIsOpen } from "./NavLinks/navLinksSlice";
 import { selectIsMobile } from "../../global/slices/clientSlice";
-import { modalOpener, selectModalIsOpen } from "../Modal/modalSlice";
-import { setModalContent } from "../Modal/ModalContent/modalContentSlice";
+import {
+  modalOpener,
+  selectModalIsOpen,
+  setModalContentType,
+  setModalContentFile,
+} from "../Modal/modalSlice";
 import { veilOpener, selectVeilIsOpen } from "../Veil/veilSlice";
 
 import {
@@ -27,6 +31,8 @@ import {
   navLinksExit,
 } from "./NavLinks/NavLinks.scss";
 import { toL } from "../../global/styles/config/_timeouts.scss";
+
+import ResumePdf from "../../global/assets/pdf/sean_donnellan_resume.pdf";
 
 const navLinksCSSTransitionClassNames = {
   enter: navLinksEnter,
@@ -45,7 +51,8 @@ export default function Navigation() {
   const dispatch = useDispatch();
 
   const handleResumeOnClick = () => {
-    dispatch(setModalContent("pdf"));
+    dispatch(setModalContentType("pdf"));
+    dispatch(setModalContentFile(ResumePdf));
     !isModalOpen && dispatch(modalOpener());
     !isVeilOpen && dispatch(veilOpener());
   };
