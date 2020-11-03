@@ -13,6 +13,8 @@ export const buttonClicked = (e, buttonClickActionType) => (
   switch (buttonClickActionType) {
     case "openResumeModal":
       e.preventDefault();
+      // TODO: abstract constants, reference elsewhere
+      // TODO: I still don't like the pdf file bein inserted into the logic here. It's overly reliant on the button and the modal... perhaps a pdf slice with a extra reducer builder listening for... well, for what? idk, thats the problem...
       payload = { type: "pdf", file: ResumePdf };
       const {
         navigationItems: { isOpen: navigationItemsIsOpen },

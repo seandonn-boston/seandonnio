@@ -17,6 +17,7 @@ import useMatchMediaQueries from "../global/hooks/useMatchMediaQueries";
 import { app } from "./App.scss";
 
 export default function App() {
+  // TODO: Can useMatchMediaQueries be moved to index.js?
   // IMPORTANT: useMatchMediaQueries can, should, and must only be called here once in the entire codebase
   // useMatchMediaQueries initializes window.matchMedia event listener via useEffect, thus tethering mobile conditionals in JS directly to their CSS media queries and their breakpoints. BONUS: you can export scss breakpoint variables and import them in JS
   useMatchMediaQueries();

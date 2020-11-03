@@ -60,6 +60,7 @@ export default function Navigation() {
           <NavigationItems />
           <div className={navigationRightAlign}>
             <Button
+              // TODO: abstract these strings into constants, reference elsewhere
               typeAttribute="button"
               buttonClickActionType="openResumeModal"
             >

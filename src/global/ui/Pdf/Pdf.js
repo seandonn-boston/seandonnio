@@ -5,6 +5,7 @@ import Error from "../Error/Error";
 
 export default function Pdf({ pdfFile }) {
   return (
+    // TODO: review, will these strings ever change? width and height may need to be props
     <object data={pdfFile} type="application/pdf" width="100%" height="100%">
       <Error>
         <p>It appears you don't have a PDF plugin for this browser.</p>
