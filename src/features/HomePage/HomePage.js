@@ -14,11 +14,15 @@ export default function HomePage() {
         As you can see, this website is under construction still, however I am
         actively looking for work as a Front End Software Engineer in Boston and
         I encourage hiring managers to {/* TODO create a Link component */}
-        <a href={ResumePdf} target="_blank">
+        <a href={ResumePdf} target="_blank" rel="noopener noreferrer">
           take a look at my resume
         </a>{" "}
         and other software engineers to{" "}
-        <a href="https://github.com/seandonn-boston/seandonnio" target="_blank">
+        <a
+          href="https://github.com/seandonn-boston/seandonnio"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
           peak under the hood in my github account
         </a>
         . I'm actively learning and including many modern frameworks and
