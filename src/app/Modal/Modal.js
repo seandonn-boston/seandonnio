@@ -1,17 +1,21 @@
 import React from "react";
 import { useSelector } from "react-redux";
+import cx from "classnames";
 
 import Pdf from "../../global/ui/Pdf/Pdf";
 import Error from "../../global/ui/Error/Error";
 import X from "../../global/ui/X/X";
 
-import { selectModalContentType, selectModalContentFile } from "./modalSlice";
+import { selectModalContent } from "./modalSlice";
 
-import { modal } from "./Modal.scss";
+import { modal, modalResume } from "./Modal.scss";
 
 export default function Modal() {
-  const modalContentType = useSelector(selectModalContentType);
-  const modalContentFile = useSelector(selectModalContentFile);
+  const { type: modalContentType, file: modalContentFile } = useSelector(
+    selectModalContent
+  );
+
+  const modalClasses = cx(modal, { [modalResume]: modalContentType === "pdf" });
 
   let content;
   switch (modalContentType) {
@@ -27,7 +31,7 @@ export default function Modal() {
   }
 
   return (
-    <div className={modal}>
+    <div className={modalClasses}>
       <X />
       {content}
     </div>

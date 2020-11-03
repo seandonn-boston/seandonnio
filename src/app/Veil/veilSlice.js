@@ -1,34 +1,25 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-import { navLinksOpener } from "../Navigation/NavLinks/navLinksSlice";
-import { setBurgerIsActive } from "../../global/ui/Burger/burgerSlice";
+import { navigationItemsClosed } from "../Navigation/NavigationItems/navigationItemsSlice";
 import {
-  modalOpener,
-  setModalContentFile,
-  setModalContentType,
-} from "../Modal/modalSlice";
+  burgerToggled,
+  burgerActivated,
+  burgerDeactivated,
+} from "../../global/ui/Burger/burgerSlice";
+import { modalClosed } from "../Modal/modalSlice";
 
-export function handleVeilOnClick() {
-  return (dispatch, getState) => {
-    const {
-      veil: { isOpen: veilIsOpen },
-      navLinks: { isOpen: navLinksIsOpen },
-      burger: { isActive: burgerIsActive },
-      modal: {
-        isOpen: modalIsOpen,
-        content: { type: modalContentType, file: modalContentFile },
-      },
-    } = getState();
-    veilIsOpen && dispatch(veilOpener());
-    navLinksIsOpen && dispatch(navLinksOpener());
-    burgerIsActive && dispatch(setBurgerIsActive());
-    if (modalIsOpen) {
-      dispatch(modalOpener());
-      modalContentType && dispatch(setModalContentType(""));
-      modalContentFile && dispatch(setModalContentFile(null));
-    }
-  };
-}
+export const veilClicked = () => (dispatch, getState) => {
+  const {
+    navigationItems: { isOpen: navigationItemsIsOpen },
+    burger: { isActive: burgerIsActive },
+    modal: { isOpen: modalIsOpen },
+  } = getState();
+
+  dispatch(veilClosed());
+  navigationItemsIsOpen && dispatch(navigationItemsClosed());
+  burgerIsActive && dispatch(burgerDeactivated());
+  modalIsOpen && dispatch(modalClosed());
+};
 
 export const veilSlice = createSlice({
   name: "veil",
@@ -36,13 +27,25 @@ export const veilSlice = createSlice({
     isOpen: false,
   },
   reducers: {
-    veilOpener(state) {
-      state.isOpen = !state.isOpen;
+    veilOpened(state) {
+      !state.isOpen && (state.isOpen = true);
     },
+    veilClosed(state) {
+      state.isOpen && (state.isOpen = false);
+    },
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(burgerActivated, (state) => {
+        state.isOpen = true;
+      })
+      .addCase(burgerToggled, (state) => {
+        state.isOpen = !state.isOpen;
+      });
   },
 });
 
-export const { veilOpener } = veilSlice.actions;
+export const { veilOpened, veilClosed } = veilSlice.actions;
 
 export const selectVeilIsOpen = (state) => state.veil.isOpen;
 

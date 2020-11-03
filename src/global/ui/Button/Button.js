@@ -1,15 +1,24 @@
 import React from "react";
 import PropTypes from "prop-types";
+import { useDispatch } from "react-redux";
+
+import { buttonClicked } from "./buttonSlice";
 
 import { button, buttonContent } from "./Button.scss";
 
-export default function Button({ content, type, handleOnClick }) {
+export default function Button({
+  typeAttribute,
+  children: content,
+  buttonClickActionType,
+}) {
+  const dispatch = useDispatch();
+
   return (
     <button
       className={button}
       name={content}
-      type={type}
-      onClick={() => handleOnClick()}
+      type={typeAttribute}
+      onClick={(e) => dispatch(buttonClicked(e, buttonClickActionType))}
     >
       <span className={buttonContent}>{content}</span>
     </button>
@@ -17,11 +26,12 @@ export default function Button({ content, type, handleOnClick }) {
 }
 
 Button.propTypes = {
-  content: PropTypes.string.isRequired,
-  handleOnClick: PropTypes.func.isRequired,
-  type: PropTypes.oneOf(["button", "reset", "submit"]),
+  children: PropTypes.string.isRequired,
+  typeAttribute: PropTypes.oneOf(["button", "reset", "submit"]),
+  buttonClickActionType: PropTypes.string,
 };
 
 Button.defaultProps = {
-  type: "button",
+  typeAttribute: "button",
+  buttonClickActionType: null,
 };

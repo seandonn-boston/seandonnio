@@ -4,10 +4,7 @@ import cx from "classnames";
 
 import Patty from "./Patty/Patty";
 
-import { selectBurgerIsActive, setBurgerIsActive } from "./burgerSlice";
-import { navLinksOpener } from "../../../app/Navigation/NavLinks/navLinksSlice";
-import { veilOpener } from "../../../app/Veil/veilSlice";
-
+import { selectBurgerIsActive, burgerToggled } from "./burgerSlice";
 import { burger, burgerActive } from "./Burger.scss";
 
 export default function Burger() {
@@ -15,16 +12,10 @@ export default function Burger() {
 
   const dispatch = useDispatch();
 
-  const handleOnClick = () => {
-    dispatch(setBurgerIsActive());
-    dispatch(navLinksOpener());
-    dispatch(veilOpener());
-  };
-
   const burgerClasses = cx(burger, { [burgerActive]: burgerIsActive });
 
   return (
-    <div className={burgerClasses} onClick={() => handleOnClick()}>
+    <div className={burgerClasses} onClick={() => dispatch(burgerToggled())}>
       <Patty />
       <Patty reversed />
     </div>

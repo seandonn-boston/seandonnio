@@ -3,7 +3,7 @@ import { configureStore } from "@reduxjs/toolkit";
 import clientReducer from "../global/slices/clientSlice";
 import veilReducer from "./Veil/veilSlice";
 import modalReducer from "./Modal/modalSlice";
-import navLinksReducer from "./Navigation/NavLinks/navLinksSlice";
+import navigationItemsReducer from "./Navigation/NavigationItems/navigationItemsSlice";
 import burgerReducer from "../global/ui/Burger/burgerSlice";
 
 export default configureStore({
@@ -11,7 +11,7 @@ export default configureStore({
     client: clientReducer,
     veil: veilReducer,
     modal: modalReducer,
-    navLinks: navLinksReducer,
+    navigationItems: navigationItemsReducer,
     burger: burgerReducer,
   },
 });

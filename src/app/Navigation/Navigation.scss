@@ -12,11 +12,9 @@
     z-index: $z-300;
   }
 
-  &-item {
-    &--rightAlign {
-      display: inline-flex;
-      margin: 0 16px 0 auto;
-    }
+  &--rightAlign {
+    display: inline-flex;
+    margin: 0 16px 0 auto;
   }
 }
 
@@ -29,10 +27,8 @@
       margin: auto;
     }
 
-    &-item {
-      &--rightAlign {
-        margin: 0 0 0 auto;
-      }
+    &--rightAlign {
+      margin: 0 0 0 auto;
     }
   }
 }

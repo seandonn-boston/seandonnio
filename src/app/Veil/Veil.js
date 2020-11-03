@@ -2,21 +2,21 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import cx from "classnames";
 
-import { handleVeilOnClick } from "./veilSlice";
-import { selectNavLinksIsOpen } from "../Navigation/NavLinks/navLinksSlice";
+import { veilClicked } from "./veilSlice";
+import { selectNavigationItemsIsOpen } from "../Navigation/NavigationItems/navigationItemsSlice";
 
-import { veil, veilBehindNavLinks } from "./Veil.scss";
+import { veil, veilBehindNavigationItems } from "./Veil.scss";
 
 export default function Veil() {
-  const isNavLinksOpen = useSelector(selectNavLinksIsOpen);
+  const isNavigationItemsOpen = useSelector(selectNavigationItemsIsOpen);
 
   const dispatch = useDispatch();
 
-  const handleOnClick = () => dispatch(handleVeilOnClick());
-
   const veilClasses = cx(veil, {
-    [veilBehindNavLinks]: isNavLinksOpen,
+    [veilBehindNavigationItems]: isNavigationItemsOpen,
   });
 
-  return <div className={veilClasses} onClick={() => handleOnClick()} />;
+  return (
+    <div className={veilClasses} onClick={() => dispatch(veilClicked())} />
+  );
 }

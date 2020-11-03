@@ -4,32 +4,23 @@ export const modalSlice = createSlice({
   name: "modal",
   initialState: {
     isOpen: false,
-    content: {
-      type: "",
-      file: null,
-    },
+    content: { type: "", file: null },
   },
   reducers: {
-    modalOpener(state) {
-      state.isOpen = !state.isOpen;
+    modalOpened(state, action) {
+      !state.isOpen && (state.isOpen = true);
+      state.content = action.payload;
     },
-    setModalContentType(state, action) {
-      state.content.type = action.payload;
-    },
-    setModalContentFile(state, action) {
-      state.content.file = action.payload;
+    modalClosed(state) {
+      state.isOpen && (state.isOpen = false);
+      state.content = { type: "", file: null };
     },
   },
 });
 
-export const {
-  modalOpener,
-  setModalContentType,
-  setModalContentFile,
-} = modalSlice.actions;
+export const { modalOpened, modalClosed } = modalSlice.actions;
 
 export const selectModalIsOpen = (state) => state.modal.isOpen;
-export const selectModalContentType = (state) => state.modal.content.type;
-export const selectModalContentFile = (state) => state.modal.content.file;
+export const selectModalContent = (state) => state.modal.content;
 
 export default modalSlice.reducer;

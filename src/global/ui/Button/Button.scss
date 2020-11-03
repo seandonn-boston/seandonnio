@@ -1,8 +1,10 @@
 @import "../../styles/config";
 
 .Button {
-  display: inline-block;
+  display: block;
+  color: $black;
   padding: 12px 20px;
+  margin: 4px auto;
   border-radius: 4px;
   color: $black;
   background-color: $theme-secondary;

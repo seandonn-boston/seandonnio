@@ -1,61 +1,40 @@
 import React from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { CSSTransition } from "react-transition-group";
 
-import NavLinks from "./NavLinks/NavLinks";
+import NavigationItems from "./NavigationItems/NavigationItems";
 import Logo from "../Logo/Logo";
 import Burger from "../../global/ui/Burger/Burger";
 import Button from "../../global/ui/Button/Button";
 
-import { selectNavLinksIsOpen } from "./NavLinks/navLinksSlice";
+import { selectNavigationItemsIsOpen } from "./NavigationItems/navigationItemsSlice";
 import { selectIsMobile } from "../../global/slices/clientSlice";
-import {
-  modalOpener,
-  selectModalIsOpen,
-  setModalContentType,
-  setModalContentFile,
-} from "../Modal/modalSlice";
-import { veilOpener, selectVeilIsOpen } from "../Veil/veilSlice";
 
 import {
   navigation,
   navigationInnerWrapper,
-  navigationItemRightAlign,
+  navigationRightAlign,
 } from "./Navigation.scss";
-// NavLink styles and timeout constant necessary for CSS Animations
 import {
-  navLinksEnter,
-  navLinksEnterActive,
-  navLinksEnterDone,
-  navLinksExitActive,
-  navLinksExit,
-} from "./NavLinks/NavLinks.scss";
+  navigationItemsEnter,
+  navigationItemsEnterActive,
+  navigationItemsEnterDone,
+  navigationItemsExitActive,
+  navigationItemsExit,
+} from "./NavigationItems/NavigationItems.scss";
 import { toL } from "../../global/styles/config/_timeouts.scss";
 
-import ResumePdf from "../../global/assets/pdf/sean_donnellan_resume.pdf";
-
-const navLinksCSSTransitionClassNames = {
-  enter: navLinksEnter,
-  enterActive: navLinksEnterActive,
-  enterDone: navLinksEnterDone,
-  exitActive: navLinksExitActive,
-  exit: navLinksExit,
+const navigationItemsCSSTransitionClassNames = {
+  enter: navigationItemsEnter,
+  enterActive: navigationItemsEnterActive,
+  enterDone: navigationItemsEnterDone,
+  exitActive: navigationItemsExitActive,
+  exit: navigationItemsExit,
 };
 
 export default function Navigation() {
   const isClientMobile = useSelector(selectIsMobile);
-  const isNavLinksOpen = useSelector(selectNavLinksIsOpen);
-  const isVeilOpen = useSelector(selectVeilIsOpen);
-  const isModalOpen = useSelector(selectModalIsOpen);
-
-  const dispatch = useDispatch();
-
-  const handleResumeOnClick = () => {
-    dispatch(setModalContentType("pdf"));
-    dispatch(setModalContentFile(ResumePdf));
-    !isModalOpen && dispatch(modalOpener());
-    !isVeilOpen && dispatch(veilOpener());
-  };
+  const isNavigationItemsOpen = useSelector(selectNavigationItemsIsOpen);
 
   return (
     <section className={navigation}>
@@ -66,25 +45,27 @@ export default function Navigation() {
             <Logo />
           </div>
           <CSSTransition
-            in={isNavLinksOpen}
+            in={isNavigationItemsOpen}
             timeout={Number(toL)}
-            classNames={navLinksCSSTransitionClassNames}
+            classNames={navigationItemsCSSTransitionClassNames}
             mountOnEnter
             unmountOnExit
           >
-            <NavLinks />
+            <NavigationItems />
           </CSSTransition>
         </>
       ) : (
         <div className={navigationInnerWrapper}>
           <Logo />
-          <NavLinks />
-          <span className={navigationItemRightAlign}>
+          <NavigationItems />
+          <div className={navigationRightAlign}>
             <Button
-              content="Resume"
-              handleOnClick={() => handleResumeOnClick()}
-            />
-          </span>
+              typeAttribute="button"
+              buttonClickActionType="openResumeModal"
+            >
+              Resume
+            </Button>
+          </div>
         </div>
       )}
     </section>

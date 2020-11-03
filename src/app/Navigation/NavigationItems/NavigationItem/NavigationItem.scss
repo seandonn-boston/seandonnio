@@ -1,0 +1,26 @@
+@import "../../../global/styles/config.scss";
+
+.NavigationItem {
+  display: block;
+  color: $black;
+  text-decoration: none;
+  width: 100%;
+  display: block;
+  padding: 12px 0;
+  margin: 4px 0;
+  text-align: center;
+
+  &-active {
+    background-color: red;
+  }
+
+  &:hover {
+    background-color: $theme-secondary;
+  }
+}
+
+@media only screen and (min-width: $bp-m-px) {
+  .NavigationItem {
+    padding: 12px 16px;
+  }
+}

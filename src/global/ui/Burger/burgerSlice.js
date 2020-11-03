@@ -6,13 +6,23 @@ export const burgerSlice = createSlice({
     isActive: false,
   },
   reducers: {
-    setBurgerIsActive: (state) => {
+    burgerToggled(state) {
       state.isActive = !state.isActive;
+    },
+    burgerActivated(state) {
+      state.isActive = true;
+    },
+    burgerDeactivated(state) {
+      state.isActive = false;
     },
   },
 });
 
-export const { setBurgerIsActive } = burgerSlice.actions;
+export const {
+  burgerToggled,
+  burgerActivated,
+  burgerDeactivated,
+} = burgerSlice.actions;
 
 export const selectBurgerIsActive = (state) => state.burger.isActive;
 
