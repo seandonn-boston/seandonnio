@@ -1,0 +1,10 @@
+@import "global/styles/config";
+
+.App {
+  color: $black;
+  display: flex;
+  position: relative;
+  flex-direction: row;
+  align-items: center;
+  z-index: $z-000;
+}

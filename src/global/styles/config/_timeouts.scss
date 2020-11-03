@@ -1,0 +1,27 @@
+// Timeout durations
+$to-xs: 100;
+$to-s: 200;
+$to-m: 300;
+$to-l: 400;
+$to-xl: 500;
+
+// Milliseconds
+$to-xs-ms: $to-xs + ms;
+$to-s-ms: $to-s + ms;
+$to-m-ms: $to-m + ms;
+$to-l-ms: $to-l + ms;
+$to-xl-ms: $to-xl + ms;
+
+:export {
+  toXs: $to-xs;
+  toS: $to-s;
+  toM: $to-m;
+  toL: $to-l;
+  toXl: $to-xl;
+
+  toXsms: $to-xs-ms;
+  toSms: $to-s-ms;
+  toMms: $to-m-ms;
+  toLms: $to-l-ms;
+  toXlms: $to-xl-ms;
+}

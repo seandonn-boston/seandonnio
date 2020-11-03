@@ -1,0 +1,66 @@
+@import "../../../global/styles/config.scss";
+
+.NavigationItems {
+  display: block;
+  position: absolute;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  bottom: 0;
+  z-index: $z-200;
+  background-color: $white;
+  transition: transform $to-l-ms linear;
+  // begin react-transition-group special class declarations
+  &-enter {
+    transform: translateY(0);
+
+    &-active {
+      transform: translateY(100%);
+    }
+
+    &-done {
+      transform: translateY(100%);
+    }
+  }
+
+  &-exit {
+    transform: translateY(100%);
+
+    &-active {
+      transform: translateY(0);
+    }
+  }
+  // end react-transition-group classes
+
+  &:first-child {
+    margin: 0 0 4px;
+  }
+
+  &:last-child {
+    margin: 4px 0 0;
+  }
+}
+
+@media only screen and (min-width: $bp-m-px) {
+  .NavigationItems {
+    display: inline-flex;
+    position: relative;
+    width: auto;
+    margin: 0 4px 0 44px;
+    bottom: initial;
+    z-index: $z-000;
+    background-color: transparent;
+    transform: none;
+    transition: initial;
+
+    &:last-child {
+      margin: 0 0 0 4px;
+      padding: 0;
+    }
+
+    &:first-child {
+      margin: 0 4px 0 0;
+      padding: 0;
+    }
+  }
+}

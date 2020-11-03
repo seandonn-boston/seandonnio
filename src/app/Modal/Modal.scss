@@ -1,0 +1,16 @@
+@import "global/styles/config";
+
+.Modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 800px;
+  // -80px calc ensures escape X always has space
+  max-width: calc(90% - 80px);
+  max-height: calc(90% - 80px);
+  z-index: $z-400;
+  &--resume {
+    height: 600px;
+  }
+}
