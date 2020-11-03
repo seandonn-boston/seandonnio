@@ -8,6 +8,7 @@ import Veil from "./Veil/Veil";
 import AboutPage from "../features/AboutPage/AboutPage";
 import ContactPage from "../features/ContactPage/ContactPage";
 import PortfolioPage from "../features/PortfolioPage/PortfolioPage";
+import HomePage from "../features/HomePage/HomePage";
 
 import { selectVeilIsOpen } from "./Veil/veilSlice";
 import { selectModalIsOpen } from "./Modal/modalSlice";
@@ -40,6 +41,9 @@ export default function App() {
           </Route>
           <Route path="/about">
             <AboutPage />
+          </Route>
+          <Route path="/">
+            <HomePage />
           </Route>
         </Switch>
       </section>
