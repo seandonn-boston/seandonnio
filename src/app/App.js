@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter, Switch, Route } from "react-router-dom";
+import { HashRouter, Switch, Route } from "react-router-dom";
 import { useSelector } from "react-redux";
 import Navigation from "./Navigation/Navigation";
 import Modal from "./Modal/Modal";
@@ -24,7 +24,7 @@ export default function App() {
   const isModalOpen = useSelector(selectModalIsOpen);
 
   return (
-    <BrowserRouter basename="/">
+    <HashRouter basename="/">
       <Navigation />
       {isModalOpen && <Modal />}
       {isVeilOpen && <Veil />}
@@ -44,6 +44,6 @@ export default function App() {
           </Route>
         </Switch>
       </section>
-    </BrowserRouter>
+    </HashRouter>
   );
 }
