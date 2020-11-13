@@ -1,5 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+import { veilClosed } from "../Veil/veilSlice";
+
 export const modalSlice = createSlice({
   name: "modal",
   initialState: {
@@ -16,6 +18,13 @@ export const modalSlice = createSlice({
       state.content = { type: "", file: null };
     },
   },
+  extraReducers: (builder) =>
+    builder.addCase(veilClosed, (state) => {
+      if (state.isOpen) {
+        state.isOpen = false;
+        state.content = { type: "", file: null };
+      }
+    }),
 });
 
 export const { modalOpened, modalClosed } = modalSlice.actions;

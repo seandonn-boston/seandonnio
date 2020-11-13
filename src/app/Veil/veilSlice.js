@@ -1,30 +1,16 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-import { navigationItemsClosed } from "../Navigation/NavigationItems/navigationItemsSlice";
 import {
   burgerToggled,
   burgerActivated,
   burgerDeactivated,
 } from "../../global/ui/Burger/burgerSlice";
-import { modalClosed } from "../Modal/modalSlice";
 
-export const veilClicked = () => (dispatch, getState) => {
-  const {
-    navigationItems: { isOpen: navigationItemsIsOpen },
-    burger: { isActive: burgerIsActive },
-    modal: { isOpen: modalIsOpen },
-  } = getState();
-
-  dispatch(veilClosed());
-  navigationItemsIsOpen && dispatch(navigationItemsClosed());
-  burgerIsActive && dispatch(burgerDeactivated());
-  modalIsOpen && dispatch(modalClosed());
-};
-
+// Slice
 export const veilSlice = createSlice({
   name: "veil",
   initialState: {
-    isOpen: false,
+    status: false,
   },
   reducers: {
     veilOpened(state) {
@@ -45,8 +31,21 @@ export const veilSlice = createSlice({
   },
 });
 
-export const { veilOpened, veilClosed } = veilSlice.actions;
-
+// Selectors
 export const selectVeilIsOpen = (state) => state.veil.isOpen;
 
+// Thunks
+export const veilClicked = () => (dispatch, getState) => {
+  const {
+    burger: { isActive: burgerIsActive },
+  } = getState();
+  // Necessary to avoid circular dependency between veilSlice and burgerSlice
+  dispatch(veilClosed());
+  burgerIsActive && dispatch(burgerDeactivated());
+};
+
+// Actions
+export const { veilOpened, veilClosed } = veilSlice.actions;
+
+// Reducer
 export default veilSlice.reducer;

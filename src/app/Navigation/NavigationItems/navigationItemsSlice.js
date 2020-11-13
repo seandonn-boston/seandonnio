@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 import { burgerToggled } from "../../../global/ui/Burger/burgerSlice";
+import { veilClosed } from "../../Veil/veilSlice";
 
 export const navigationItemsSlice = createSlice({
   name: "navigationItems",
@@ -16,9 +17,15 @@ export const navigationItemsSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(burgerToggled, (state) => {
-      state.isOpen = !state.isOpen;
-    });
+    builder
+      .addCase(burgerToggled, (state) => {
+        state.isOpen = !state.isOpen;
+      })
+      .addCase(veilClosed, (state) => {
+        if (state.isOpen) {
+          state.isOpen = false;
+        }
+      });
   },
 });
 
