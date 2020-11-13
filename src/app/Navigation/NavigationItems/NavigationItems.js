@@ -17,7 +17,6 @@ export default function NavigationItems() {
 
   const isClientMobile = useSelector(selectIsMobile);
 
-  // TODO: Abstract array in preparation for hydration via backend
   const routesArray = [
     { to: "/about", name: "About" },
     { to: "/portfolio", name: "Portfolio" },
@@ -29,7 +28,7 @@ export default function NavigationItems() {
       <NavigationItem
         key={name}
         to={to}
-        onNavigationItemClick={() => {
+        handleOnClick={() => {
           dispatch(navigationItemsClosed());
         }}
       >
@@ -42,14 +41,12 @@ export default function NavigationItems() {
     <nav className={navigationItems}>
       {dynamicNavigationItems}
       {isClientMobile && (
-        // TODO Abstract constants, reference elsewhere
         <Button
           typeAttribute="button"
-          onButtonClick={() => {
+          handleOnClick={() => {
             dispatch(modalOpened({ type: "pdf", file: ResumePdf }));
           }}
         >
-          {/* <Button typeAttribute="button" buttonClickActionType="openResumeModal"> */}
           Resume
         </Button>
       )}

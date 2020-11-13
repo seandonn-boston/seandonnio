@@ -37,6 +37,7 @@ const navigationItemsCSSTransitionClassNames = {
 
 export default function Navigation() {
   const dispatch = useDispatch();
+
   const isClientMobile = useSelector(selectIsMobile);
   const isNavigationItemsOpen = useSelector(selectNavigationItemsIsOpen);
 
@@ -65,7 +66,7 @@ export default function Navigation() {
           <div className={navigationRightAlign}>
             <Button
               typeAttribute="button"
-              onButtonClick={() => {
+              handleOnClick={() => {
                 dispatch(modalOpened({ type: "pdf", file: ResumePdf }));
               }}
             >

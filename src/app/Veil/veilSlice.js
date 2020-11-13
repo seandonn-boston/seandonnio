@@ -1,4 +1,3 @@
-// Import
 import { createSlice } from "@reduxjs/toolkit";
 
 import {
@@ -8,7 +7,6 @@ import {
 import { navigationItemsClosed } from "../Navigation/NavigationItems/navigationItemsSlice";
 import { modalOpened, modalClosed } from "../Modal/modalSlice";
 
-// Slice
 export const veilSlice = createSlice({
   name: "veil",
   initialState: {
@@ -39,13 +37,11 @@ export const veilSlice = createSlice({
   },
 });
 
-// Actions
 export const { veilOpened, veilClosed } = veilSlice.actions;
 
-// Selectors
 export const selectVeilIsOpen = (state) => state.veil.isOpen;
 
-// Thunks
+// Synchronous thunk `veilClicked` is necessary to avoid circular dependency errors
 export const veilClicked = () => (dispatch, getState) => {
   const {
     modal: { isOpen: isModalOpen },
@@ -58,5 +54,4 @@ export const veilClicked = () => (dispatch, getState) => {
   burgerIsActive && dispatch(burgerDeactivated());
 };
 
-// Reducer
 export default veilSlice.reducer;

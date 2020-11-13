@@ -6,14 +6,14 @@ import { button, buttonContent } from "./Button.scss";
 export default function Button({
   typeAttribute,
   children: content,
-  onButtonClick,
+  handleOnClick,
 }) {
   return (
     <button
       className={button}
       name={content}
       type={typeAttribute}
-      onClick={() => onButtonClick()}
+      onClick={() => handleOnClick()}
     >
       <span className={buttonContent}>{content}</span>
     </button>
@@ -23,10 +23,10 @@ export default function Button({
 Button.propTypes = {
   children: PropTypes.string.isRequired,
   typeAttribute: PropTypes.oneOf(["button", "reset", "submit"]),
-  onButtonClick: PropTypes.func,
+  handleOnClick: PropTypes.func,
 };
 
 Button.defaultProps = {
   typeAttribute: "button",
-  onButtonClick: () => {},
+  handleOnClick: () => {},
 };

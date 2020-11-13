@@ -1,4 +1,3 @@
-// Import
 import { createSlice } from "@reduxjs/toolkit";
 
 import {
@@ -7,7 +6,6 @@ import {
 } from "../../../app/Navigation/NavigationItems/navigationItemsSlice";
 import { modalOpened } from "../../../app/Modal/modalSlice";
 
-// Slice
 export const burgerSlice = createSlice({
   name: "burger",
   initialState: {
@@ -15,10 +13,10 @@ export const burgerSlice = createSlice({
   },
   reducers: {
     burgerActivated(state) {
-      state.isActive = true;
+      !state.isActive && (state.isActive = true);
     },
     burgerDeactivated(state) {
-      state.isActive = false;
+      state.isActive && (state.isActive = false);
     },
   },
   extraReducers: (builder) => {
@@ -32,23 +30,20 @@ export const burgerSlice = createSlice({
   },
 });
 
-// Actions
 export const { burgerActivated, burgerDeactivated } = burgerSlice.actions;
 
-// Selectors
 export const selectBurgerIsActive = (state) => state.burger.isActive;
 
-// Thunks
+// Synchronous thunk `burgerClicked` is necessary to avoid circular dependency errors
 export const burgerClicked = () => (dispatch, getState) => {
   const {
     navigationItems: { isOpen: isNavigationItemsOpen },
     burger: { isActive: isBurgerActive },
   } = getState();
+  isBurgerActive ? dispatch(burgerDeactivated()) : dispatch(burgerActivated());
   isNavigationItemsOpen
     ? dispatch(navigationItemsClosed())
     : dispatch(navigationItemsOpened());
-  isBurgerActive ? dispatch(burgerDeactivated()) : dispatch(burgerActivated());
 };
 
-// Reducer
 export default burgerSlice.reducer;

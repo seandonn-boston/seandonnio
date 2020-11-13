@@ -6,7 +6,7 @@ import { navigationItem, navigationItemActive } from "./NavigationItem.scss";
 export default function NavigationItem({
   to,
   children: content,
-  onNavigationItemClick: handleOnClick,
+  handleOnClick,
 }) {
   return (
     <NavLink

@@ -5,7 +5,7 @@ import Line from "./Line/Line";
 
 import { x } from "./X.scss";
 
-export default function X({ handleOnClick = () => {} }) {
+export default function X({ handleOnClick }) {
   return (
     <div className={x} onClick={() => handleOnClick()}>
       <Line />
@@ -16,4 +16,8 @@ export default function X({ handleOnClick = () => {} }) {
 
 X.propTypes = {
   handleOnClick: PropTypes.func,
+};
+
+X.defaultProps = {
+  handleOnClick: () => {}
 };

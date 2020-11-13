@@ -17,12 +17,10 @@ export default function Modal() {
     selectModalContent
   );
 
-  // TODO: abstract constants "pdf", reference elsewhere
   const modalClasses = cx(modal, { [modalResume]: modalContentType === "pdf" });
 
   let content;
   switch (modalContentType) {
-    // TODO: abstract constants, reference elsewhere
     case "pdf":
       content = <Pdf pdfFile={modalContentFile} />;
       break;
