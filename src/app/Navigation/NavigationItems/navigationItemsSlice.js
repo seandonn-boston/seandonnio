@@ -1,8 +1,9 @@
+// Import
 import { createSlice } from "@reduxjs/toolkit";
 
-import { burgerToggled } from "../../../global/ui/Burger/burgerSlice";
-import { veilClosed } from "../../Veil/veilSlice";
+import { modalOpened } from "../../Modal/modalSlice";
 
+// Slice
 export const navigationItemsSlice = createSlice({
   name: "navigationItems",
   initialState: {
@@ -10,31 +11,28 @@ export const navigationItemsSlice = createSlice({
   },
   reducers: {
     navigationItemsOpened(state) {
-      state.isOpen = true;
+      !state.isOpen && (state.isOpen = true);
     },
     navigationItemsClosed(state) {
-      state.isOpen = false;
+      state.isOpen && (state.isOpen = false);
     },
   },
   extraReducers: (builder) => {
-    builder
-      .addCase(burgerToggled, (state) => {
-        state.isOpen = !state.isOpen;
-      })
-      .addCase(veilClosed, (state) => {
-        if (state.isOpen) {
-          state.isOpen = false;
-        }
-      });
+    builder.addCase(modalOpened, (state) => {
+      state.isOpen && (state.isOpen = false);
+    });
   },
 });
 
+// Actions
 export const {
   navigationItemsOpened,
   navigationItemsClosed,
 } = navigationItemsSlice.actions;
 
+// Selectors
 export const selectNavigationItemsIsOpen = (state) =>
   state.navigationItems.isOpen;
 
+// Reducer
 export default navigationItemsSlice.reducer;

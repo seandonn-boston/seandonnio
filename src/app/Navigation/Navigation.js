@@ -1,5 +1,5 @@
 import React from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { CSSTransition } from "react-transition-group";
 
 import NavigationItems from "./NavigationItems/NavigationItems";
@@ -9,6 +9,9 @@ import Button from "../../global/ui/Button/Button";
 
 import { selectNavigationItemsIsOpen } from "./NavigationItems/navigationItemsSlice";
 import { selectIsMobile } from "../../global/slices/clientSlice";
+import { modalOpened } from "../Modal/modalSlice";
+
+import ResumePdf from "../../global/assets/pdf/sean_donnellan_resume.pdf";
 
 import {
   navigation,
@@ -33,6 +36,7 @@ const navigationItemsCSSTransitionClassNames = {
 };
 
 export default function Navigation() {
+  const dispatch = useDispatch();
   const isClientMobile = useSelector(selectIsMobile);
   const isNavigationItemsOpen = useSelector(selectNavigationItemsIsOpen);
 
@@ -60,9 +64,10 @@ export default function Navigation() {
           <NavigationItems />
           <div className={navigationRightAlign}>
             <Button
-              // TODO: abstract these strings into constants, reference elsewhere
               typeAttribute="button"
-              buttonClickActionType="openResumeModal"
+              onButtonClick={() => {
+                dispatch(modalOpened({ type: "pdf", file: ResumePdf }));
+              }}
             >
               Resume
             </Button>

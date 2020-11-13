@@ -1,21 +1,23 @@
 import React from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import cx from "classnames";
 
 import Pdf from "../../global/ui/Pdf/Pdf";
 import Error from "../../global/ui/Error/Error";
 import X from "../../global/ui/X/X";
 
-import { selectModalContent } from "./modalSlice";
+import { selectModalContent, modalClosed } from "./modalSlice";
 
 import { modal, modalResume } from "./Modal.scss";
 
 export default function Modal() {
+  const dispatch = useDispatch();
+
   const { type: modalContentType, file: modalContentFile } = useSelector(
     selectModalContent
   );
 
-  // TODO: abstract constants, reference elsewhere
+  // TODO: abstract constants "pdf", reference elsewhere
   const modalClasses = cx(modal, { [modalResume]: modalContentType === "pdf" });
 
   let content;
@@ -34,7 +36,7 @@ export default function Modal() {
 
   return (
     <div className={modalClasses}>
-      <X />
+      <X handleOnClick={() => dispatch(modalClosed())} />
       {content}
     </div>
   );

@@ -1,19 +1,19 @@
 import React from "react";
-import { useDispatch } from "react-redux";
+import PropTypes from "prop-types";
 
 import Line from "./Line/Line";
 
-import { xClicked } from "./xSlice";
-
 import { x } from "./X.scss";
 
-export default function X() {
-  const dispatch = useDispatch();
-
+export default function X({ handleOnClick = () => {} }) {
   return (
-    <div className={x} onClick={() => dispatch(xClicked())}>
+    <div className={x} onClick={() => handleOnClick()}>
       <Line />
       <Line reversed />
     </div>
   );
 }
+
+X.propTypes = {
+  handleOnClick: PropTypes.func,
+};

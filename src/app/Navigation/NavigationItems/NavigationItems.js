@@ -1,14 +1,20 @@
 import React from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 
 import NavigationItem from "./NavigationItem/NavigationItem";
 import Button from "../../../global/ui/Button/Button";
 
 import { selectIsMobile } from "../../../global/slices/clientSlice";
+import { navigationItemsClosed } from "./navigationItemsSlice";
+import { modalOpened } from "../../Modal/modalSlice";
+
+import ResumePdf from "../../../global/assets/pdf/sean_donnellan_resume.pdf";
 
 import { navigationItems } from "./NavigationItems.scss";
 
 export default function NavigationItems() {
+  const dispatch = useDispatch();
+
   const isClientMobile = useSelector(selectIsMobile);
 
   // TODO: Abstract array in preparation for hydration via backend
@@ -20,7 +26,13 @@ export default function NavigationItems() {
 
   let dynamicNavigationItems = routesArray.map(({ to, name }) => {
     return (
-      <NavigationItem key={name} to={to}>
+      <NavigationItem
+        key={name}
+        to={to}
+        onNavigationItemClick={() => {
+          dispatch(navigationItemsClosed());
+        }}
+      >
         {name}
       </NavigationItem>
     );
@@ -30,8 +42,14 @@ export default function NavigationItems() {
     <nav className={navigationItems}>
       {dynamicNavigationItems}
       {isClientMobile && (
-        // TODO Abstract contants, reference elsewhere
-        <Button typeAttribute="button" buttonClickActionType="openResumeModal">
+        // TODO Abstract constants, reference elsewhere
+        <Button
+          typeAttribute="button"
+          onButtonClick={() => {
+            dispatch(modalOpened({ type: "pdf", file: ResumePdf }));
+          }}
+        >
+          {/* <Button typeAttribute="button" buttonClickActionType="openResumeModal"> */}
           Resume
         </Button>
       )}
