@@ -41,6 +41,8 @@ export default function Navigation() {
   const isClientMobile = useSelector(selectIsMobile);
   const isNavigationItemsOpen = useSelector(selectNavigationItemsIsOpen);
 
+  const modalPayload = { type: "pdf", file: ResumePdf }; // TODO: Extract to const file
+
   return (
     <section className={navigation}>
       {isClientMobile ? (
@@ -67,7 +69,7 @@ export default function Navigation() {
             <Button
               typeAttribute="button"
               handleOnClick={() => {
-                dispatch(modalOpened({ type: "pdf", file: ResumePdf }));
+                dispatch(modalOpened(modalPayload));
               }}
             >
               Resume

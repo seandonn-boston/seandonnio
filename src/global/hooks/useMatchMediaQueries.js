@@ -1,22 +1,24 @@
 import { useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 
-import { setIsMobile } from "../slices/clientSlice";
+import { selectIsClient, setIsMobile } from "../slices/clientSlice";
 
 import { bpMpx } from "../styles/config/_breakpoints.scss";
 
+// useMatchMediaQueries initializes window.matchMedia event listener via useEffect, thus tethering mobile conditionals in JS directly to their CSS media queries and their breakpoints. BONUS: you can export scss breakpoint variables and import them in JS
 export default function useMatchMediaQueries() {
   const dispatch = useDispatch();
+
+  const isClient = useSelector(selectIsClient);
+
   const handleOnChange = () => dispatch(setIsMobile());
 
-  // Listener for JS to match the css media queries on resize events and initial page load without the need to debounce duplicate calls
-  const mediaQuery = window.matchMedia(`(min-width: ${bpMpx})`);
-
+  // Verify a browser environemt is running the website, otherwise cancel the event listeners
   useEffect(() => {
-    // Verify a browser environemt is running the website, otherwise cancel the event listeners                     
-    if (typeof window !== "object") {
+    if (!isClient) {
       return;
     }
+    const mediaQuery = window.matchMedia(`(min-width: ${bpMpx})`); // Listener for JS to match the css media queries on resize events and initial page load without the need to debounce duplicate calls
     mediaQuery.addEventListener("change", handleOnChange);
     return () => mediaQuery.removeEventListener("change", handleOnChange);
   });

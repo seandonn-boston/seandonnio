@@ -41,7 +41,7 @@ export const { veilOpened, veilClosed } = veilSlice.actions;
 
 export const selectVeilIsOpen = (state) => state.veil.isOpen;
 
-// Synchronous thunk `veilClicked` is necessary to avoid circular dependency errors
+// Synchronous thunk `veilClicked` necessary to avoid circular dependency errors
 export const veilClicked = () => (dispatch, getState) => {
   const {
     modal: { isOpen: isModalOpen },

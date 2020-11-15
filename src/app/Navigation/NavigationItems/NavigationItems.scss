@@ -10,7 +10,7 @@
   z-index: $z-200;
   background-color: $white;
   transition: transform $to-l-ms linear;
-  // begin react-transition-group special class declarations
+  // BEGIN: react-transition-group specific class declarations
   &-enter {
     transform: translateY(0);
 
@@ -30,7 +30,7 @@
       transform: translateY(0);
     }
   }
-  // end react-transition-group classes
+  // END: react-transition-group specific class declarations
 
   &:first-child {
     margin: 0 0 4px;

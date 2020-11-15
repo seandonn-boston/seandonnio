@@ -5,7 +5,6 @@ import NavigationItem from "./NavigationItem/NavigationItem";
 import Button from "../../../global/ui/Button/Button";
 
 import { selectIsMobile } from "../../../global/slices/clientSlice";
-import { navigationItemsClosed } from "./navigationItemsSlice";
 import { modalOpened } from "../../Modal/modalSlice";
 
 import ResumePdf from "../../../global/assets/pdf/sean_donnellan_resume.pdf";
@@ -21,17 +20,13 @@ export default function NavigationItems() {
     { to: "/about", name: "About" },
     { to: "/portfolio", name: "Portfolio" },
     { to: "/contact", name: "Contact" },
-  ];
+  ]; // TODO: Extract to const file
+
+  const modalPayload = { type: "pdf", file: ResumePdf }; // TODO: Extract to const file
 
   let dynamicNavigationItems = routesArray.map(({ to, name }) => {
     return (
-      <NavigationItem
-        key={name}
-        to={to}
-        handleOnClick={() => {
-          dispatch(navigationItemsClosed());
-        }}
-      >
+      <NavigationItem key={name} to={to}>
         {name}
       </NavigationItem>
     );
@@ -44,7 +39,7 @@ export default function NavigationItems() {
         <Button
           typeAttribute="button"
           handleOnClick={() => {
-            dispatch(modalOpened({ type: "pdf", file: ResumePdf }));
+            dispatch(modalOpened(modalPayload));
           }}
         >
           Resume
