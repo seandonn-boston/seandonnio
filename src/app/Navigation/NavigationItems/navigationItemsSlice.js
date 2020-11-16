@@ -1,7 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-import { modalOpened } from "../../Modal/modalSlice";
-
 export const navigationItemsSlice = createSlice({
   name: "navigationItems",
   initialState: {
@@ -14,11 +12,6 @@ export const navigationItemsSlice = createSlice({
     navigationItemsClosed(state) {
       state.isOpen && (state.isOpen = false);
     },
-  },
-  extraReducers: (builder) => {
-    builder.addCase(modalOpened, (state) => {
-      state.isOpen && (state.isOpen = false);
-    });
   },
 });
 

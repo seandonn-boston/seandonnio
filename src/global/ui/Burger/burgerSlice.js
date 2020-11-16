@@ -4,7 +4,6 @@ import {
   navigationItemsClosed,
   navigationItemsOpened,
 } from "../../../app/Navigation/NavigationItems/navigationItemsSlice";
-import { modalOpened } from "../../../app/Modal/modalSlice";
 
 export const burgerSlice = createSlice({
   name: "burger",
@@ -20,13 +19,9 @@ export const burgerSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder
-      .addCase(navigationItemsClosed, (state) => {
-        state.isActive && (state.isActive = false);
-      })
-      .addCase(modalOpened, (state) => {
-        state.isActive && (state.isActive = false);
-      });
+    builder.addCase(navigationItemsClosed, (state) => {
+      state.isActive && (state.isActive = false);
+    });
   },
 });
 

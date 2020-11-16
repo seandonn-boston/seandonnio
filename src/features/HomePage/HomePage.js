@@ -1,5 +1,7 @@
 import React from "react";
 
+import Link from "../../global/ui/Link/Link";
+
 import { home } from "./HomePage.scss";
 
 import ResumePdf from "../../global/assets/pdf/sean_donnellan_resume.pdf";
@@ -13,18 +15,17 @@ export default function HomePage() {
       <p>
         As you can see, this website is under construction still, however I am
         actively looking for work as a Front End Software Engineer in Boston and
-        I encourage hiring managers to {/* TODO create a Link component */}
-        <a href={ResumePdf} target="_blank" rel="noopener noreferrer">
+        I encourage hiring managers to{" "}
+        <Link href={ResumePdf} target="_blank">
           take a look at my resume
-        </a>{" "}
+        </Link>{" "}
         and other software engineers to{" "}
-        <a
+        <Link
           href="https://github.com/seandonn-boston/seandonnio"
           target="_blank"
-          rel="noopener noreferrer"
         >
           peak under the hood in my github account
-        </a>
+        </Link>
         . I'm actively learning and including many modern frameworks and
         libraries and I will continue advancing my skillset and apply them to
         this website. Check back soon for the latest deployments.
