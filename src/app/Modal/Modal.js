@@ -3,12 +3,12 @@ import { useSelector, useDispatch } from "react-redux";
 import cx from "classnames";
 
 import Pdf from "../../global/ui/Pdf/Pdf";
-import Error from "../../global/ui/Error/Error";
+import ErrorMsg from "../../global/ui/ErrorMsg/ErrorMsg";
 import X from "../../global/ui/X/X";
 
 import { selectModalContent, modalClosed } from "./modalSlice";
 
-import { modal, modalResume } from "./Modal.scss";
+import { modal, modalPdf } from "./Modal.scss";
 
 export default function Modal() {
   const dispatch = useDispatch();
@@ -17,7 +17,7 @@ export default function Modal() {
     selectModalContent
   );
 
-  const modalClasses = cx(modal, { [modalResume]: modalContentType === "pdf" });
+  const modalClasses = cx(modal, { [modalPdf]: modalContentType === "pdf" });
 
   let content;
   switch (modalContentType) {
@@ -26,9 +26,9 @@ export default function Modal() {
       break;
     default:
       content = (
-        <Error>
+        <ErrorMsg>
           <p>There was an error loading the modal content</p>
-        </Error>
+        </ErrorMsg>
       );
   }
 
