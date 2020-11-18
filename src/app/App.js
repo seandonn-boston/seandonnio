@@ -14,7 +14,7 @@ import useMatchMediaQueries from "../global/hooks/useMatchMediaQueries";
 import { app } from "./App.scss";
 
 export default function App() {
-  // IMPORTANT: useMatchMediaQueries can, should, and must only be called here once in the entire codebase. useMatchMediaQueries cannot be abstracted further at this time for it must be called within the react render function, and this is the highest point in the render function stack
+  // IMPORTANT: useMatchMediaQueries can, should, and must only be called here once in the entire codebase. useMatchMediaQueries uses useEffect and must be called within the react render function
   useMatchMediaQueries();
 
   const isVeilOpen = useSelector(selectVeilIsOpen);
