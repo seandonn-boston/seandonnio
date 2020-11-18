@@ -24,7 +24,7 @@ export default function NavigationItems() {
   // TODO: Extract to const file
   const modalPayload = { type: "pdf", file: ResumePdf };
 
-  let dynamicNavigationItems = routesArray.map(({ to, name }) => {
+  const dynamicNavigationItems = routesArray.map(({ to, name }) => {
     return (
       <NavigationItem key={name} to={to}>
         {name}

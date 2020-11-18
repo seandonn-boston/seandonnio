@@ -9,13 +9,13 @@ export const clientSlice = createSlice({
     isMobile: typeof window === "object" && window.innerWidth < bpM,
   },
   reducers: {
-    setIsMobile: (state) => {
+    isMobileChanged: (state) => {
       state.isClient && (state.isMobile = window.innerWidth < bpM);
     },
   },
 });
 
-export const { setIsMobile } = clientSlice.actions;
+export const { isMobileChanged } = clientSlice.actions;
 
 export const selectIsClient = (state) => state.client.isClient;
 export const selectIsMobile = (state) => state.client.isMobile;

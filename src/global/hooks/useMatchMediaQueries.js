@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 
-import { selectIsClient, setIsMobile } from "../slices/clientSlice";
+import { selectIsClient, isMobileChanged } from "../slices/clientSlice";
 
 import { bpMpx } from "../styles/config/_breakpoints.scss";
 
@@ -11,7 +11,7 @@ export default function useMatchMediaQueries() {
 
   const isClient = useSelector(selectIsClient);
 
-  const handleOnChange = () => dispatch(setIsMobile());
+  const handleOnChange = () => dispatch(isMobileChanged());
 
   // Verify a browser environemt is running the website, otherwise cancel the event listeners
   useEffect(() => {

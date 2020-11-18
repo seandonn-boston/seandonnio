@@ -5,6 +5,7 @@ import cx from "classnames";
 import Patty from "./Patty/Patty";
 
 import { selectBurgerIsActive, burgerClicked } from "./burgerSlice";
+
 import { burger, burgerActive } from "./Burger.scss";
 
 export default function Burger() {
