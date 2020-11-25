@@ -1,9 +1,9 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-import ErrorMsg from "../ErrorMsg/ErrorMsg";
+import { ErrorMsg } from "../ErrorMsg/ErrorMsg";
 
-export default function Pdf({ pdfFile }) {
+export const Pdf = ({ pdfFile }) => {
   return (
     // TODO: review, will these strings ever change? Should the const be extracted? width and height may need to be props
     <object data={pdfFile} type="application/pdf" width="100%" height="100%">
@@ -18,7 +18,7 @@ export default function Pdf({ pdfFile }) {
       </ErrorMsg>
     </object>
   );
-}
+};
 
 Pdf.propTypes = {
   pdfFile: PropTypes.string.isRequired,

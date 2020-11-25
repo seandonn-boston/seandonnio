@@ -7,7 +7,7 @@ import { selectNavigationItemsIsOpen } from "../Navigation/NavigationItems/navig
 
 import { veil, veilBehindNavigationItems } from "./Veil.scss";
 
-export default function Veil() {
+export const Veil = () => {
   const isNavigationItemsOpen = useSelector(selectNavigationItemsIsOpen);
 
   const dispatch = useDispatch();
@@ -19,4 +19,4 @@ export default function Veil() {
   return (
     <div className={veilClasses} onClick={() => dispatch(veilClicked())} />
   );
-}
+};

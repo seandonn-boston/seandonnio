@@ -3,11 +3,7 @@ import PropTypes from "prop-types";
 
 import { button, buttonContent } from "./Button.scss";
 
-export default function Button({
-  typeAttribute,
-  children: content,
-  handleOnClick,
-}) {
+export const Button = ({ typeAttribute, children: content, handleOnClick }) => {
   return (
     <button
       className={button}
@@ -18,7 +14,7 @@ export default function Button({
       <span className={buttonContent}>{content}</span>
     </button>
   );
-}
+};
 
 Button.propTypes = {
   children: PropTypes.string.isRequired,

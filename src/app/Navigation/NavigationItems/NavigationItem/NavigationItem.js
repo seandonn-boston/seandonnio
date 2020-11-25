@@ -6,7 +6,7 @@ import { navigationItemsClosed } from "../navigationItemsSlice";
 
 import { navigationItem, navigationItemActive } from "./NavigationItem.scss";
 
-export default function NavigationItem({ to, children: content }) {
+export const NavigationItem = ({ to, children: content }) => {
   const dispatch = useDispatch();
   return (
     <NavLink
@@ -18,4 +18,4 @@ export default function NavigationItem({ to, children: content }) {
       {content}
     </NavLink>
   );
-}
+};

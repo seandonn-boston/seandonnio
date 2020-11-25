@@ -1,8 +1,8 @@
 import React, { useContext } from "react";
 
-import NavigationItem from "./NavigationItem/NavigationItem";
-import Link from "../../../global/ui/Link/Link";
-import Button from "../../../global/ui/Button/Button";
+import { NavigationItem } from "./NavigationItem/NavigationItem";
+import { Link } from "../../../global/ui/Link/Link";
+import { Button } from "../../../global/ui/Button/Button";
 
 import ResumePdf from "../../../global/assets/pdf/sean_donnellan_resume.pdf";
 
@@ -10,7 +10,7 @@ import { navigationItems } from "./NavigationItems.scss";
 
 import { MobileContext } from "../../../global/context/mobileContext";
 
-export default function NavigationItems() {
+export const NavigationItems = () => {
   // TODO: Extract to const file
   const routesArray = [
     { to: "/about", name: "About" },
@@ -38,4 +38,4 @@ export default function NavigationItems() {
       )}
     </nav>
   );
-}
+};

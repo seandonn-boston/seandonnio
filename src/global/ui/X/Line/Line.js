@@ -4,13 +4,13 @@ import cx from "classnames";
 
 import { line, lineReversed } from "./Line.scss";
 
-export default function Line({ reversed }) {
+export const Line = ({ reversed }) => {
   const xLineClasses = cx(line, {
     [lineReversed]: reversed,
   });
 
   return <div className={xLineClasses} />;
-}
+};
 
 Line.propTypes = {
   reversed: PropTypes.bool,

@@ -2,10 +2,10 @@ import React, { useContext } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { CSSTransition } from "react-transition-group";
 
-import NavigationItems from "./NavigationItems/NavigationItems";
-import Logo from "../Logo/Logo";
-import Burger from "../../global/ui/Burger/Burger";
-import Button from "../../global/ui/Button/Button";
+import { NavigationItems } from "./NavigationItems/NavigationItems";
+import { Logo } from "../Logo/Logo";
+import { Burger } from "../../global/ui/Burger/Burger";
+import { Button } from "../../global/ui/Button/Button";
 
 import { MobileContext } from "../../global/context/mobileContext";
 
@@ -36,7 +36,7 @@ const navigationItemsCSSTransitionClassNames = {
   exit: navigationItemsExit,
 };
 
-export default function Navigation() {
+export const Navigation = () => {
   const dispatch = useDispatch();
 
   const isNavigationItemsOpen = useSelector(selectNavigationItemsIsOpen);
@@ -81,4 +81,4 @@ export default function Navigation() {
       )}
     </section>
   );
-}
+};

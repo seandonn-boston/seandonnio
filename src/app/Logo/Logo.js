@@ -6,7 +6,7 @@ import { navigationItemsClosed } from "../Navigation/NavigationItems/navigationI
 
 import { logo } from "./Logo.scss";
 
-const Logo = () => {
+export const Logo = () => {
   const dispatch = useDispatch();
 
   return (
@@ -17,5 +17,3 @@ const Logo = () => {
     />
   );
 };
-
-export default Logo;

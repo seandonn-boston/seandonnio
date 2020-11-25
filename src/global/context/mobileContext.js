@@ -2,9 +2,9 @@ import React, { createContext, useState, useEffect } from "react";
 
 import { bpM, bpMpx } from "../styles/config/_breakpoints.scss";
 
-const MobileContext = createContext();
+export const MobileContext = createContext();
 
-const MobileContextProvider = ({ children }) => {
+export const MobileContextProvider = ({ children }) => {
   // isClient flag to ensure user is viewing website on a browser
   const isClient = typeof window === "object";
 
@@ -29,5 +29,3 @@ const MobileContextProvider = ({ children }) => {
     </MobileContext.Provider>
   );
 };
-
-export { MobileContextProvider, MobileContext };

@@ -1,12 +1,12 @@
 import React from "react";
 
-import Link from "../../global/ui/Link/Link";
+import { Link } from "../../global/ui/Link/Link";
 
 import { home } from "./HomePage.scss";
 
 import ResumePdf from "../../global/assets/pdf/sean_donnellan_resume.pdf";
 
-export default function HomePage() {
+export const HomePage = () => {
   return (
     <div className={home}>
       <h2>
@@ -32,4 +32,4 @@ export default function HomePage() {
       </p>
     </div>
   );
-}
+};

@@ -2,15 +2,15 @@ import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import cx from "classnames";
 
-import Pdf from "../../global/ui/Pdf/Pdf";
-import ErrorMsg from "../../global/ui/ErrorMsg/ErrorMsg";
-import X from "../../global/ui/X/X";
+import { Pdf } from "../../global/ui/Pdf/Pdf";
+import { ErrorMsg } from "../../global/ui/ErrorMsg/ErrorMsg";
+import { X } from "../../global/ui/X/X";
 
 import { selectModalContent, modalClosed } from "./modalSlice";
 
 import { modal, modalPdf } from "./Modal.scss";
 
-export default function Modal() {
+export const Modal = () => {
   const dispatch = useDispatch();
 
   const { type: modalContentType, file: modalContentFile } = useSelector(
@@ -38,4 +38,4 @@ export default function Modal() {
       {content}
     </div>
   );
-}
+};

@@ -7,7 +7,7 @@ import { selectBurgerIsActive } from "../burgerSlice";
 
 import { patty, pattyBottom, pattyTop, pattyActive } from "./Patty.scss";
 
-export default function Patty({ reversed }) {
+export const Patty = ({ reversed }) => {
   const burgerIsActive = useSelector(selectBurgerIsActive);
 
   const pattyClasses = cx(patty, {
@@ -17,7 +17,7 @@ export default function Patty({ reversed }) {
   });
 
   return <div className={pattyClasses} />;
-}
+};
 
 Patty.propTypes = {
   reversed: PropTypes.bool,
