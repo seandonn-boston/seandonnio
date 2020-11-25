@@ -1,28 +1,22 @@
 import React from "react";
-import { useSelector } from "react-redux";
 
 import NavigationItem from "./NavigationItem/NavigationItem";
 import Link from "../../../global/ui/Link/Link";
 import Button from "../../../global/ui/Button/Button";
 
-import { selectIsMobile } from "../../../global/slices/clientSlice";
-
 import ResumePdf from "../../../global/assets/pdf/sean_donnellan_resume.pdf";
 
 import { navigationItems } from "./NavigationItems.scss";
 
-export default function NavigationItems() {
-  const isClientMobile = useSelector(selectIsMobile);
+import { MobileContextConsumer } from "../../../global/context/mobile-context";
 
+export default function NavigationItems() {
   // TODO: Extract to const file
   const routesArray = [
     { to: "/about", name: "About" },
     { to: "/portfolio", name: "Portfolio" },
     { to: "/contact", name: "Contact" },
   ];
-
-  // TODO: Extract to const file
-  const modalPayload = { type: "pdf", file: ResumePdf };
 
   const dynamicNavigationItems = routesArray.map(({ to, name }) => {
     return (
@@ -33,13 +27,17 @@ export default function NavigationItems() {
   });
 
   return (
-    <nav className={navigationItems}>
-      {dynamicNavigationItems}
-      {isClientMobile && (
-        <Link href={ResumePdf} target="_blank">
-          <Button>Resume</Button>
-        </Link>
+    <MobileContextConsumer>
+      {({ isMobile }) => (
+        <nav className={navigationItems}>
+          {dynamicNavigationItems}
+          {isMobile && (
+            <Link href={ResumePdf} target="_blank">
+              <Button>Resume</Button>
+            </Link>
+          )}
+        </nav>
       )}
-    </nav>
+    </MobileContextConsumer>
   );
 }

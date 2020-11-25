@@ -8,7 +8,6 @@ import Burger from "../../global/ui/Burger/Burger";
 import Button from "../../global/ui/Button/Button";
 
 import { selectNavigationItemsIsOpen } from "./NavigationItems/navigationItemsSlice";
-import { selectIsMobile } from "../../global/slices/clientSlice";
 import { modalOpened } from "../Modal/modalSlice";
 
 import ResumePdf from "../../global/assets/pdf/sean_donnellan_resume.pdf";
@@ -27,6 +26,8 @@ import {
 } from "./NavigationItems/NavigationItems.scss";
 import { toL } from "../../global/styles/config/_timeouts.scss";
 
+import { MobileContextConsumer } from "../../global/context/mobile-context";
+
 const navigationItemsCSSTransitionClassNames = {
   enter: navigationItemsEnter,
   enterActive: navigationItemsEnterActive,
@@ -38,45 +39,47 @@ const navigationItemsCSSTransitionClassNames = {
 export default function Navigation() {
   const dispatch = useDispatch();
 
-  const isClientMobile = useSelector(selectIsMobile);
   const isNavigationItemsOpen = useSelector(selectNavigationItemsIsOpen);
 
   const modalPayload = { type: "pdf", file: ResumePdf }; // TODO: Extract to const file
-
   return (
-    <section className={navigation}>
-      {isClientMobile ? (
-        <>
-          <div className={navigationInnerWrapper}>
-            <Burger />
-            <Logo />
-          </div>
-          <CSSTransition
-            in={isNavigationItemsOpen}
-            timeout={Number(toL)}
-            classNames={navigationItemsCSSTransitionClassNames}
-            mountOnEnter
-            unmountOnExit
-          >
-            <NavigationItems />
-          </CSSTransition>
-        </>
-      ) : (
-        <div className={navigationInnerWrapper}>
-          <Logo />
-          <NavigationItems />
-          <div className={navigationRightAlign}>
-            <Button
-              typeAttribute="button"
-              handleOnClick={() => {
-                dispatch(modalOpened(modalPayload));
-              }}
-            >
-              Resume
-            </Button>
-          </div>
-        </div>
+    <MobileContextConsumer>
+      {({ isMobile }) => (
+        <section className={navigation}>
+          {isMobile ? (
+            <>
+              <div className={navigationInnerWrapper}>
+                <Burger />
+                <Logo />
+              </div>
+              <CSSTransition
+                in={isNavigationItemsOpen}
+                timeout={Number(toL)}
+                classNames={navigationItemsCSSTransitionClassNames}
+                mountOnEnter
+                unmountOnExit
+              >
+                <NavigationItems />
+              </CSSTransition>
+            </>
+          ) : (
+            <div className={navigationInnerWrapper}>
+              <Logo />
+              <NavigationItems />
+              <div className={navigationRightAlign}>
+                <Button
+                  typeAttribute="button"
+                  handleOnClick={() => {
+                    dispatch(modalOpened(modalPayload));
+                  }}
+                >
+                  Resume
+                </Button>
+              </div>
+            </div>
+          )}
+        </section>
       )}
-    </section>
+    </MobileContextConsumer>
   );
 }
