@@ -7,6 +7,8 @@ import Logo from "../Logo/Logo";
 import Burger from "../../global/ui/Burger/Burger";
 import Button from "../../global/ui/Button/Button";
 
+import { MobileContextConsumer } from "../../global/context/mobile-context";
+
 import { selectNavigationItemsIsOpen } from "./NavigationItems/navigationItemsSlice";
 import { modalOpened } from "../Modal/modalSlice";
 
@@ -25,8 +27,6 @@ import {
   navigationItemsExit,
 } from "./NavigationItems/NavigationItems.scss";
 import { toL } from "../../global/styles/config/_timeouts.scss";
-
-import { MobileContextConsumer } from "../../global/context/mobile-context";
 
 const navigationItemsCSSTransitionClassNames = {
   enter: navigationItemsEnter,

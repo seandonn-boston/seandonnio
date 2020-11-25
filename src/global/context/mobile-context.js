@@ -5,7 +5,9 @@ import { bpM, bpMpx } from "../styles/config/_breakpoints.scss";
 const { Provider, Consumer: MobileContextConsumer } = createContext();
 
 const MobileContextProvider = ({ children }) => {
+  // isClient flag to ensure user is viewing website on a browser
   const isClient = typeof window === "object";
+
   const [isMobile, setIsMobile] = useState(isClient && window.innerWidth < bpM);
 
   const handleOnChange = () => setIsMobile(window.innerWidth < bpM);

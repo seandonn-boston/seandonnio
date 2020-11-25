@@ -5,9 +5,9 @@ import store from "./app/store";
 
 import App from "./app/App";
 
-import "./index.global.scss";
-
 import { MobileContextProvider } from "./global/context/mobile-context";
+
+import "./index.global.scss";
 
 ReactDOM.render(
   <Provider store={store}>
