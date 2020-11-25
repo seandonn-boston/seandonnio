@@ -7,7 +7,7 @@ import Logo from "../Logo/Logo";
 import Burger from "../../global/ui/Burger/Burger";
 import Button from "../../global/ui/Button/Button";
 
-import { MobileContextConsumer } from "../../global/context/mobile-context";
+import { MobileContextConsumer } from "../../global/context/mobileContext";
 
 import { selectNavigationItemsIsOpen } from "./NavigationItems/navigationItemsSlice";
 import { modalOpened } from "../Modal/modalSlice";

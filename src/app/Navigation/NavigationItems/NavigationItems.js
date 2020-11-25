@@ -8,7 +8,7 @@ import ResumePdf from "../../../global/assets/pdf/sean_donnellan_resume.pdf";
 
 import { navigationItems } from "./NavigationItems.scss";
 
-import { MobileContextConsumer } from "../../../global/context/mobile-context";
+import { MobileContextConsumer } from "../../../global/context/mobileContext";
 
 export default function NavigationItems() {
   // TODO: Extract to const file
