@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 
 import NavigationItem from "./NavigationItem/NavigationItem";
 import Link from "../../../global/ui/Link/Link";
@@ -8,7 +8,7 @@ import ResumePdf from "../../../global/assets/pdf/sean_donnellan_resume.pdf";
 
 import { navigationItems } from "./NavigationItems.scss";
 
-import { MobileContextConsumer } from "../../../global/context/mobileContext";
+import { MobileContext } from "../../../global/context/mobileContext";
 
 export default function NavigationItems() {
   // TODO: Extract to const file
@@ -17,6 +17,8 @@ export default function NavigationItems() {
     { to: "/portfolio", name: "Portfolio" },
     { to: "/contact", name: "Contact" },
   ];
+
+  const { isMobile } = useContext(MobileContext);
 
   const dynamicNavigationItems = routesArray.map(({ to, name }) => {
     return (
@@ -27,17 +29,13 @@ export default function NavigationItems() {
   });
 
   return (
-    <MobileContextConsumer>
-      {({ isMobile }) => (
-        <nav className={navigationItems}>
-          {dynamicNavigationItems}
-          {isMobile && (
-            <Link href={ResumePdf} target="_blank">
-              <Button>Resume</Button>
-            </Link>
-          )}
-        </nav>
+    <nav className={navigationItems}>
+      {dynamicNavigationItems}
+      {isMobile && (
+        <Link href={ResumePdf} target="_blank">
+          <Button>Resume</Button>
+        </Link>
       )}
-    </MobileContextConsumer>
+    </nav>
   );
 }

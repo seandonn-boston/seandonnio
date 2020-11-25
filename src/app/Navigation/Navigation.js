@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { CSSTransition } from "react-transition-group";
 
@@ -7,7 +7,7 @@ import Logo from "../Logo/Logo";
 import Burger from "../../global/ui/Burger/Burger";
 import Button from "../../global/ui/Button/Button";
 
-import { MobileContextConsumer } from "../../global/context/mobileContext";
+import { MobileContext } from "../../global/context/mobileContext";
 
 import { selectNavigationItemsIsOpen } from "./NavigationItems/navigationItemsSlice";
 import { modalOpened } from "../Modal/modalSlice";
@@ -42,44 +42,43 @@ export default function Navigation() {
   const isNavigationItemsOpen = useSelector(selectNavigationItemsIsOpen);
 
   const modalPayload = { type: "pdf", file: ResumePdf }; // TODO: Extract to const file
+
+  const { isMobile } = useContext(MobileContext);
+
   return (
-    <MobileContextConsumer>
-      {({ isMobile }) => (
-        <section className={navigation}>
-          {isMobile ? (
-            <>
-              <div className={navigationInnerWrapper}>
-                <Burger />
-                <Logo />
-              </div>
-              <CSSTransition
-                in={isNavigationItemsOpen}
-                timeout={Number(toL)}
-                classNames={navigationItemsCSSTransitionClassNames}
-                mountOnEnter
-                unmountOnExit
-              >
-                <NavigationItems />
-              </CSSTransition>
-            </>
-          ) : (
-            <div className={navigationInnerWrapper}>
-              <Logo />
-              <NavigationItems />
-              <div className={navigationRightAlign}>
-                <Button
-                  typeAttribute="button"
-                  handleOnClick={() => {
-                    dispatch(modalOpened(modalPayload));
-                  }}
-                >
-                  Resume
-                </Button>
-              </div>
-            </div>
-          )}
-        </section>
+    <section className={navigation}>
+      {isMobile ? (
+        <>
+          <div className={navigationInnerWrapper}>
+            <Burger />
+            <Logo />
+          </div>
+          <CSSTransition
+            in={isNavigationItemsOpen}
+            timeout={Number(toL)}
+            classNames={navigationItemsCSSTransitionClassNames}
+            mountOnEnter
+            unmountOnExit
+          >
+            <NavigationItems />
+          </CSSTransition>
+        </>
+      ) : (
+        <div className={navigationInnerWrapper}>
+          <Logo />
+          <NavigationItems />
+          <div className={navigationRightAlign}>
+            <Button
+              typeAttribute="button"
+              handleOnClick={() => {
+                dispatch(modalOpened(modalPayload));
+              }}
+            >
+              Resume
+            </Button>
+          </div>
+        </div>
       )}
-    </MobileContextConsumer>
+    </section>
   );
 }

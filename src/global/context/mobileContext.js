@@ -2,7 +2,7 @@ import React, { createContext, useState, useEffect } from "react";
 
 import { bpM, bpMpx } from "../styles/config/_breakpoints.scss";
 
-const { Provider, Consumer: MobileContextConsumer } = createContext();
+const MobileContext = createContext();
 
 const MobileContextProvider = ({ children }) => {
   // isClient flag to ensure user is viewing website on a browser
@@ -23,7 +23,11 @@ const MobileContextProvider = ({ children }) => {
     return () => mediaQuery.removeEventListener("change", handleOnChange);
   });
 
-  return <Provider value={{ isMobile: isMobile }}>{children}</Provider>;
+  return (
+    <MobileContext.Provider value={{ isMobile: isMobile }}>
+      {children}
+    </MobileContext.Provider>
+  );
 };
 
-export { MobileContextProvider, MobileContextConsumer };
+export { MobileContextProvider, MobileContext };

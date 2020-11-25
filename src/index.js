@@ -5,7 +5,7 @@ import store from "./app/store";
 
 import App from "./app/App";
 
-import { MobileContextProvider } from "./global/context/mobile-context";
+import { MobileContextProvider } from "./global/context/mobileContext";
 
 import "./index.global.scss";
 
