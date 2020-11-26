@@ -42,7 +42,7 @@ export const { veilOpened, veilClosed } = veilSlice.actions;
 export const selectVeilIsOpen = (state) => state.veil.isOpen;
 
 // Synchronous thunk `veilClicked` necessary to avoid circular dependency errors
-export const veilClicked = () => (dispatch, getState) => {
+export const handleVeilClicked = () => (dispatch, getState) => {
   const {
     modal: { isOpen: isModalOpen },
     navigationItems: { isOpen: isNavigationItemsOpen },

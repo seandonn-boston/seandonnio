@@ -30,7 +30,7 @@ export const { burgerActivated, burgerDeactivated } = burgerSlice.actions;
 export const selectBurgerIsActive = (state) => state.burger.isActive;
 
 // Synchronous thunk `burgerClicked` is necessary to avoid circular dependency errors
-export const burgerClicked = () => (dispatch, getState) => {
+export const handleBurgerClicked = () => (dispatch, getState) => {
   const {
     navigationItems: { isOpen: isNavigationItemsOpen },
     burger: { isActive: isBurgerActive },

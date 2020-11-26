@@ -4,7 +4,7 @@ import cx from "classnames";
 
 import { Patty } from "./Patty/Patty";
 
-import { selectBurgerIsActive, burgerClicked } from "./burgerSlice";
+import { selectBurgerIsActive, handleBurgerClicked } from "./burgerSlice";
 
 import { burger, burgerActive } from "./Burger.scss";
 
@@ -16,7 +16,10 @@ export const Burger = () => {
   const burgerClasses = cx(burger, { [burgerActive]: burgerIsActive });
 
   return (
-    <div className={burgerClasses} onClick={() => dispatch(burgerClicked())}>
+    <div
+      className={burgerClasses}
+      onClick={() => dispatch(handleBurgerClicked())}
+    >
       <Patty />
       <Patty reversed />
     </div>
