@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { CSSTransition } from "react-transition-group";
 
 import { NavigationItems } from "./NavigationItems/NavigationItems";
-import { Logo } from "../Logo/Logo";
+import { Logo } from "../../global/ui/Logo/Logo";
 import { Burger } from "../../global/ui/Burger/Burger";
 import { Button } from "../../global/ui/Button/Button";
 
