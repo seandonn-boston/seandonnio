@@ -1,0 +1,1 @@
+{"version":3,"sources":["features/PortfolioPage/PortfolioPage.js"],"names":["PortfolioPage"],"mappings":"yGAAA,mEAEe,SAASA,IACtB,OAAO","file":"static/js/5.b0a81bea.chunk.js","sourcesContent":["import React from \"react\";\n\nexport default function PortfolioPage() {\n  return <p>Portfolio</p>;\n}\n"],"sourceRoot":""}
