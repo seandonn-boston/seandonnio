@@ -3,13 +3,11 @@ import PropTypes from "prop-types";
 
 import { link } from "./Link.scss";
 
-export const Link = ({ href, target, children }) => {
-  return (
-    <a className={link} href={href} target={target} rel="noopener noreferrer">
-      {children}
-    </a>
-  );
-};
+export const Link = ({ href, target, children }) => (
+  <a className={link} href={href} target={target} rel="noopener noreferrer">
+    {children}
+  </a>
+);
 
 Link.propTypes = {
   href: PropTypes.string.isRequired,

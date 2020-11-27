@@ -6,18 +6,17 @@ import { Patty } from "./Patty/Patty";
 
 import { burger, burgerActive } from "./Burger.scss";
 
-export const Burger = ({ onClickHandler, burgerIsActive }) => {
-  const burgerClasses = cx(burger, { [burgerActive]: burgerIsActive });
-
-  return (
-    <div className={burgerClasses} onClick={() => onClickHandler()}>
-      <Patty burgerIsActive={burgerIsActive} />
-      <Patty burgerIsActive={burgerIsActive} reversed />
-    </div>
-  );
-};
+export const Burger = ({ onClickHandler, isActive }) => (
+  <div
+    className={cx(burger, { [burgerActive]: isActive })}
+    onClick={() => onClickHandler()}
+  >
+    <Patty isActive={isActive} />
+    <Patty isActive={isActive} reversed />
+  </div>
+);
 
 Burger.propTypes = {
-  burgerIsActive: PropTypes.bool.isRequired,
+  isActive: PropTypes.bool.isRequired,
   onClickHandler: PropTypes.func.isRequired,
 };

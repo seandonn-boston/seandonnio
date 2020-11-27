@@ -3,18 +3,16 @@ import PropTypes from "prop-types";
 
 import { button, buttonContent } from "./Button.scss";
 
-export const Button = ({ typeAttribute, children: content, handleOnClick }) => {
-  return (
-    <button
-      className={button}
-      name={content}
-      type={typeAttribute}
-      onClick={() => handleOnClick()}
-    >
-      <span className={buttonContent}>{content}</span>
-    </button>
-  );
-};
+export const Button = ({ typeAttribute, children: content, handleOnClick }) => (
+  <button
+    className={button}
+    name={content}
+    type={typeAttribute}
+    onClick={() => handleOnClick()}
+  >
+    <span className={buttonContent}>{content}</span>
+  </button>
+);
 
 Button.propTypes = {
   children: PropTypes.string.isRequired,

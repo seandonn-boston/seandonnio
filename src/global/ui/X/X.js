@@ -5,14 +5,12 @@ import { Line } from "./Line/Line";
 
 import { x } from "./X.scss";
 
-export const X = ({ handleOnClick }) => {
-  return (
-    <div className={x} onClick={() => handleOnClick()}>
-      <Line />
-      <Line reversed />
-    </div>
-  );
-};
+export const X = ({ handleOnClick }) => (
+  <div className={x} onClick={() => handleOnClick()}>
+    <Line />
+    <Line reversed />
+  </div>
+);
 
 X.propTypes = {
   handleOnClick: PropTypes.func,

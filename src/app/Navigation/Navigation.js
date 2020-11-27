@@ -55,9 +55,13 @@ export const Navigation = () => {
           <div className={navigationInnerWrapper}>
             <Burger
               onClickHandler={() => dispatch(navigationItemsToggled())}
-              burgerIsActive={isNavigationItemsOpen}
+              isActive={isNavigationItemsOpen}
             />
-            <Logo />
+            <Logo
+              onClickHandler={() =>
+                isNavigationItemsOpen && dispatch(navigationItemsToggled())
+              }
+            />
           </div>
           <CSSTransition
             in={isNavigationItemsOpen}
@@ -71,7 +75,11 @@ export const Navigation = () => {
         </>
       ) : (
         <div className={navigationInnerWrapper}>
-          <Logo />
+          <Logo
+            onClickHandler={() =>
+              isNavigationItemsOpen && dispatch(navigationItemsToggled())
+            }
+          />
           <NavigationItems />
           <div className={navigationRightAlign}>
             <Button

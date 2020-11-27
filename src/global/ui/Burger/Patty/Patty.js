@@ -4,18 +4,18 @@ import cx from "classnames";
 
 import { patty, pattyBottom, pattyTop, pattyActive } from "./Patty.scss";
 
-export const Patty = ({ reversed, burgerIsActive }) => {
-  const pattyClasses = cx(patty, {
-    [pattyBottom]: reversed,
-    [pattyTop]: !reversed,
-    [pattyActive]: burgerIsActive,
-  });
-
-  return <div className={pattyClasses} />;
-};
+export const Patty = ({ reversed, isActive }) => (
+  <div
+    className={cx(patty, {
+      [pattyBottom]: reversed,
+      [pattyTop]: !reversed,
+      [pattyActive]: isActive,
+    })}
+  />
+);
 
 Patty.propTypes = {
-  burgerIsActive: PropTypes.bool.isRequired,
+  isActive: PropTypes.bool.isRequired,
   reversed: PropTypes.bool,
 };
 
