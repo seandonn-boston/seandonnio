@@ -1,57 +1,34 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-import {
-  burgerActivated,
-  burgerDeactivated,
-} from "../../global/ui/Burger/burgerSlice";
-import { navigationItemsClosed } from "../Navigation/NavigationItems/navigationItemsSlice";
-import { modalOpened, modalClosed } from "../Modal/modalSlice";
+import { navigationItemsToggled } from "../Navigation/NavigationItems/navigationItemsSlice";
+import { modalToggled } from "../Modal/modalSlice";
 
 export const veilSlice = createSlice({
   name: "veil",
   initialState: {
     isOpen: false,
   },
-  reducers: {
-    veilOpened(state) {
-      !state.isOpen && (state.isOpen = true);
-    },
-    veilClosed(state) {
-      state.isOpen && (state.isOpen = false);
-    },
-  },
+  reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(burgerActivated, (state) => {
+      .addCase(navigationItemsToggled, (state) => {
         state.isOpen = !state.isOpen;
       })
-      .addCase(navigationItemsClosed, (state) => {
-        state.isOpen && (state.isOpen = false);
-      })
-      .addCase(modalOpened, (state) => {
-        !state.isOpen && (state.isOpen = true);
-      })
-      .addCase(modalClosed, (state) => {
-        state.isOpen && (state.isOpen = false);
+      .addCase(modalToggled, (state) => {
+        state.isOpen = !state.isOpen;
       });
   },
 });
 
-export const { veilOpened, veilClosed } = veilSlice.actions;
-
 export const selectVeilIsOpen = (state) => state.veil.isOpen;
 
-// Synchronous thunk `veilClicked` necessary to avoid circular dependency errors
 export const handleVeilClicked = () => (dispatch, getState) => {
   const {
     modal: { isOpen: isModalOpen },
     navigationItems: { isOpen: isNavigationItemsOpen },
-    burger: { isActive: burgerIsActive },
   } = getState();
-  dispatch(veilClosed());
-  isModalOpen && dispatch(modalClosed());
-  isNavigationItemsOpen && dispatch(navigationItemsClosed());
-  burgerIsActive && dispatch(burgerDeactivated());
+  isModalOpen && dispatch(modalToggled());
+  isNavigationItemsOpen && dispatch(navigationItemsToggled());
 };
 
 export default veilSlice.reducer;

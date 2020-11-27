@@ -6,19 +6,13 @@ export const navigationItemsSlice = createSlice({
     isOpen: false,
   },
   reducers: {
-    navigationItemsOpened(state) {
-      !state.isOpen && (state.isOpen = true);
-    },
-    navigationItemsClosed(state) {
-      state.isOpen && (state.isOpen = false);
+    navigationItemsToggled(state) {
+      state.isOpen = !state.isOpen;
     },
   },
 });
 
-export const {
-  navigationItemsOpened,
-  navigationItemsClosed,
-} = navigationItemsSlice.actions;
+export const { navigationItemsToggled } = navigationItemsSlice.actions;
 
 export const selectNavigationItemsIsOpen = (state) =>
   state.navigationItems.isOpen;

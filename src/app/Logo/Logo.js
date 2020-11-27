@@ -1,19 +1,25 @@
 import React from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
-import { navigationItemsClosed } from "../Navigation/NavigationItems/navigationItemsSlice";
+import {
+  navigationItemsToggled,
+  selectNavigationItemsIsOpen,
+} from "../Navigation/NavigationItems/navigationItemsSlice";
 
 import { logo } from "./Logo.scss";
 
 export const Logo = () => {
   const dispatch = useDispatch();
 
+  const isNavigationItemsOpen = useSelector(selectNavigationItemsIsOpen);
   return (
     <Link
       to="/" // TODO: Extract to const file
       className={logo}
-      onClick={() => dispatch(navigationItemsClosed())}
+      onClick={() =>
+        isNavigationItemsOpen && dispatch(navigationItemsToggled())
+      }
     />
   );
 };

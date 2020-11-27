@@ -1,44 +1,20 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-import {
-  navigationItemsClosed,
-  navigationItemsOpened,
-} from "../../../app/Navigation/NavigationItems/navigationItemsSlice";
+import { navigationItemsToggled } from "../../../app/Navigation/NavigationItems/navigationItemsSlice";
 
 export const burgerSlice = createSlice({
   name: "burger",
   initialState: {
     isActive: false,
   },
-  reducers: {
-    burgerActivated(state) {
-      !state.isActive && (state.isActive = true);
-    },
-    burgerDeactivated(state) {
-      state.isActive && (state.isActive = false);
-    },
-  },
+  reducers: {},
   extraReducers: (builder) => {
-    builder.addCase(navigationItemsClosed, (state) => {
-      state.isActive && (state.isActive = false);
+    builder.addCase(navigationItemsToggled, (state) => {
+      state.isActive = !state.isActive;
     });
   },
 });
 
-export const { burgerActivated, burgerDeactivated } = burgerSlice.actions;
-
 export const selectBurgerIsActive = (state) => state.burger.isActive;
-
-// Synchronous thunk `burgerClicked` is necessary to avoid circular dependency errors
-export const handleBurgerClicked = () => (dispatch, getState) => {
-  const {
-    navigationItems: { isOpen: isNavigationItemsOpen },
-    burger: { isActive: isBurgerActive },
-  } = getState();
-  isBurgerActive ? dispatch(burgerDeactivated()) : dispatch(burgerActivated());
-  isNavigationItemsOpen
-    ? dispatch(navigationItemsClosed())
-    : dispatch(navigationItemsOpened());
-};
 
 export default burgerSlice.reducer;

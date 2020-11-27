@@ -10,7 +10,7 @@ import { Button } from "../../global/ui/Button/Button";
 import { MobileContext } from "../../global/context/mobileContext";
 
 import { selectNavigationItemsIsOpen } from "./NavigationItems/navigationItemsSlice";
-import { modalOpened } from "../Modal/modalSlice";
+import { modalToggled } from "../Modal/modalSlice";
 
 import ResumePdf from "../../global/assets/pdf/sean_donnellan_resume.pdf";
 
@@ -71,7 +71,7 @@ export const Navigation = () => {
             <Button
               typeAttribute="button"
               handleOnClick={() => {
-                dispatch(modalOpened(modalPayload));
+                dispatch(modalToggled(modalPayload));
               }}
             >
               Resume
