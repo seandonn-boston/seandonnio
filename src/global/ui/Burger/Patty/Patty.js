@@ -1,15 +1,10 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { useSelector } from "react-redux";
 import cx from "classnames";
-
-import { selectBurgerIsActive } from "../burgerSlice";
 
 import { patty, pattyBottom, pattyTop, pattyActive } from "./Patty.scss";
 
-export const Patty = ({ reversed }) => {
-  const burgerIsActive = useSelector(selectBurgerIsActive);
-
+export const Patty = ({ reversed, burgerIsActive }) => {
   const pattyClasses = cx(patty, {
     [pattyBottom]: reversed,
     [pattyTop]: !reversed,
@@ -20,6 +15,7 @@ export const Patty = ({ reversed }) => {
 };
 
 Patty.propTypes = {
+  burgerIsActive: PropTypes.bool.isRequired,
   reversed: PropTypes.bool,
 };
 

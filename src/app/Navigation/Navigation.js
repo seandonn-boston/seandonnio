@@ -9,7 +9,10 @@ import { Button } from "../../global/ui/Button/Button";
 
 import { MobileContext } from "../../global/context/mobileContext";
 
-import { selectNavigationItemsIsOpen } from "./NavigationItems/navigationItemsSlice";
+import {
+  selectNavigationItemsIsOpen,
+  navigationItemsToggled,
+} from "./NavigationItems/navigationItemsSlice";
 import { modalToggled } from "../Modal/modalSlice";
 
 import ResumePdf from "../../global/assets/pdf/sean_donnellan_resume.pdf";
@@ -50,7 +53,10 @@ export const Navigation = () => {
       {isMobile ? (
         <>
           <div className={navigationInnerWrapper}>
-            <Burger />
+            <Burger
+              onClickHandler={() => dispatch(navigationItemsToggled())}
+              burgerIsActive={isNavigationItemsOpen}
+            />
             <Logo />
           </div>
           <CSSTransition
