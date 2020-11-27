@@ -3,10 +3,10 @@
 .X {
   position: absolute;
   align-items: center;
-  top: -40px;
-  right: -40px;
-  width: 40px;
-  height: 40px;
+  top: -$spacer-10;
+  right: -$spacer-10;
+  width: $spacer-10;
+  height: $spacer-10;
   margin: auto 0;
   z-index: $z-100;
   cursor: pointer;

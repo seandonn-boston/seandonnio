@@ -33,11 +33,11 @@
   // END: react-transition-group specific class declarations
 
   &:first-child {
-    margin: 0 0 4px;
+    margin: 0 0 $spacer-1;
   }
 
   &:last-child {
-    margin: 4px 0 0;
+    margin: $spacer-1 0 0;
   }
 }
 
@@ -46,7 +46,7 @@
     display: inline-flex;
     position: relative;
     width: auto;
-    margin: 0 4px 0 44px;
+    margin: 0 $spacer-1 0 $spacer-11;
     bottom: initial;
     z-index: $z-000;
     background-color: transparent;
@@ -54,12 +54,12 @@
     transition: initial;
 
     &:last-child {
-      margin: 0 0 0 4px;
+      margin: 0 0 0 $spacer-1;
       padding: 0;
     }
 
     &:first-child {
-      margin: 0 4px 0 0;
+      margin: 0 $spacer-1 0 0;
       padding: 0;
     }
   }

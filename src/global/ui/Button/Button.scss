@@ -3,9 +3,9 @@
 .Button {
   display: block;
   color: $black;
-  padding: 12px 20px;
-  margin: 4px auto;
-  border-radius: 4px;
+  padding: $spacer-3 $spacer-5;
+  margin: $spacer-1 auto;
+  border-radius: $spacer-1;
   color: $black;
   background-color: $theme-secondary;
   text-align: center;
@@ -18,8 +18,8 @@
     display: flex;
     position: relative;
     margin: auto;
-    padding: 4px 20px;
-    height: 32px;
+    padding: $spacer-1 $spacer-5;
+    height: $spacer-8;
 
     &-content {
       display: inline-flex;

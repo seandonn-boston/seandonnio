@@ -6,8 +6,8 @@
   text-decoration: none;
   width: 100%;
   display: block;
-  padding: 12px 0;
-  margin: 4px 0;
+  padding: $spacer-3 0;
+  margin: $spacer-1 0;
   text-align: center;
 
   &-active {
@@ -21,6 +21,6 @@
 
 @media only screen and (min-width: $bp-m-px) {
   .NavigationItem {
-    padding: 12px 16px;
+    padding: $spacer-3 $spacer-4;
   }
 }
