@@ -23,9 +23,9 @@ export const ClientContextProvider = ({ children }) => {
       return;
     }
     // Listener for JS to match the css media queries on resize events and initial page load without the need to debounce duplicate calls
-    const mediaQueryM = window.matchMedia(`(min-width: ${bpMpx})`);
-    const mediaQueryL = window.matchMedia(`(min-width: ${bpLpx})`);
-
+    const mediaQueryM = window.matchMedia(`(max-width: ${bpMpx})`);
+    const mediaQueryL = window.matchMedia(`(max-width: ${bpLpx})`);
+    // TODO: This needs to be optimized to only one eventlistener runs at a time, and handleOnChange should probably be separated as well into some sort of switch/case statement
     mediaQueryM.addEventListener("change", handleOnChange);
     mediaQueryL.addEventListener("change", handleOnChange);
     window.addEventListener("orientationchange", handleOnChange);
