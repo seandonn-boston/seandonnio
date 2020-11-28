@@ -6,8 +6,9 @@ import { NavigationItems } from "./NavigationItems/NavigationItems";
 import { Logo } from "../../global/ui/Logo/Logo";
 import { Burger } from "../../global/ui/Burger/Burger";
 import { Button } from "../../global/ui/Button/Button";
+import { Link } from "../../global/ui/Link/Link";
 
-import { MobileContext } from "../../global/context/mobileContext";
+import { ClientContext } from "../../global/context/clientContext";
 
 import {
   selectNavigationItemsIsOpen,
@@ -46,7 +47,29 @@ export const Navigation = () => {
 
   const modalPayload = { type: "pdf", file: ResumePdf }; // TODO: Extract to const file
 
-  const { isMobile } = useContext(MobileContext);
+  const { isMobile, isTablet } = useContext(ClientContext);
+
+  const NavLinkLogo = (
+    <Logo
+      onClickHandler={() =>
+        isNavigationItemsOpen && dispatch(navigationItemsToggled())
+      }
+    />
+  );
+
+  const NavButtonResume = isTablet ? (
+    <Link href={ResumePdf} target="_blank">
+      <Button>Resume</Button>
+    </Link>
+  ) : (
+    <Button
+      handleOnClick={() => {
+        dispatch(modalToggled(modalPayload));
+      }}
+    >
+      Resume
+    </Button>
+  );
 
   return (
     <section className={navigation}>
@@ -57,11 +80,7 @@ export const Navigation = () => {
               onClickHandler={() => dispatch(navigationItemsToggled())}
               isActive={isNavigationItemsOpen}
             />
-            <Logo
-              onClickHandler={() =>
-                isNavigationItemsOpen && dispatch(navigationItemsToggled())
-              }
-            />
+            {NavLinkLogo}
           </div>
           <CSSTransition
             in={isNavigationItemsOpen}
@@ -75,22 +94,9 @@ export const Navigation = () => {
         </>
       ) : (
         <div className={navigationInnerWrapper}>
-          <Logo
-            onClickHandler={() =>
-              isNavigationItemsOpen && dispatch(navigationItemsToggled())
-            }
-          />
+          {NavLinkLogo}
           <NavigationItems />
-          <div className={navigationRightAlign}>
-            <Button
-              typeAttribute="button"
-              handleOnClick={() => {
-                dispatch(modalToggled(modalPayload));
-              }}
-            >
-              Resume
-            </Button>
-          </div>
+          <div className={navigationRightAlign}>{NavButtonResume}</div>
         </div>
       )}
     </section>

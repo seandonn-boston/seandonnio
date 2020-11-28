@@ -8,7 +8,7 @@ import ResumePdf from "../../../global/assets/pdf/sean_donnellan_resume.pdf";
 
 import { navigationItems } from "./NavigationItems.scss";
 
-import { MobileContext } from "../../../global/context/mobileContext";
+import { ClientContext } from "../../../global/context/clientContext";
 
 export const NavigationItems = () => {
   // TODO: Extract to const file
@@ -18,7 +18,7 @@ export const NavigationItems = () => {
     { to: "/contact", name: "Contact" },
   ];
 
-  const { isMobile } = useContext(MobileContext);
+  const { isMobile } = useContext(ClientContext);
 
   const dynamicNavigationItems = routesArray.map(({ to, name }) => {
     return (

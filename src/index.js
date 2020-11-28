@@ -5,15 +5,15 @@ import store from "./app/store";
 
 import { App } from "./app/App";
 
-import { MobileContextProvider } from "./global/context/mobileContext";
+import { ClientContextProvider } from "./global/context/clientContext";
 
 import "./index.global.scss";
 
 ReactDOM.render(
   <Provider store={store}>
-    <MobileContextProvider>
+    <ClientContextProvider>
       <App />
-    </MobileContextProvider>
+    </ClientContextProvider>
   </Provider>,
   document.getElementById("root")
 );
