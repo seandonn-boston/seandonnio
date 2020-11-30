@@ -15,9 +15,9 @@ export const veilSlice = createSlice({
         state.isOpen = !state.isOpen;
       })
       .addCase(modalStateUpdated, (state, { payload }) => {
-        if (payload) {
+        if (payload.type) {
           state.isOpen = true;
-        } else {
+        } else if (payload === "close" || "conditionalClose") {
           state.isOpen = false;
         }
       });
@@ -30,7 +30,7 @@ export const handleVeilClicked = () => (dispatch, getState) => {
   const {
     navigationItems: { isOpen: isNavigationItemsOpen },
   } = getState();
-  dispatch(modalStateUpdated());
+  dispatch(modalStateUpdated("close"));
   isNavigationItemsOpen && dispatch(navigationItemsToggled());
 };
 

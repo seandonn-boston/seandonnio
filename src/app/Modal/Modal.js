@@ -38,7 +38,7 @@ export const Modal = () => {
 
   return (
     <div className={modalClasses}>
-      <X handleOnClick={() => dispatch(modalStateUpdated())} />
+      <X handleOnClick={() => dispatch(modalStateUpdated("close"))} />
       {content}
     </div>
   );

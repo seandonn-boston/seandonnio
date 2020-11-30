@@ -35,7 +35,7 @@ export const App = () => {
   }, [isMobile, dispatch]);
 
   useEffect(() => {
-    isTablet && dispatch(modalStateUpdated());
+    isTablet && dispatch(modalStateUpdated("conditionalClose"));
   }, [isTablet, dispatch]);
 
   // TODO: create loading fallback component
