@@ -3,10 +3,11 @@ import { useSelector, useDispatch } from "react-redux";
 import cx from "classnames";
 
 import { Pdf } from "../../global/ui/Pdf/Pdf";
+import { Image } from "../../global/ui/Image/Image";
 import { ErrorMsg } from "../../global/ui/ErrorMsg/ErrorMsg";
 import { X } from "../../global/ui/X/X";
 
-import { selectModalContent, modalToggled } from "./modalSlice";
+import { selectModalContent, modalStateUpdated } from "./modalSlice";
 
 import { modal, modalPdf } from "./Modal.scss";
 
@@ -24,6 +25,9 @@ export const Modal = () => {
     case "pdf":
       content = <Pdf pdfFile={modalContentFile} />;
       break;
+    case "img":
+      content = <Image width={800} height={600} handleOnClick={() => {}} />;
+      break;
     default:
       content = (
         <ErrorMsg>
@@ -34,7 +38,7 @@ export const Modal = () => {
 
   return (
     <div className={modalClasses}>
-      <X handleOnClick={() => dispatch(modalToggled())} />
+      <X handleOnClick={() => dispatch(modalStateUpdated())} />
       {content}
     </div>
   );

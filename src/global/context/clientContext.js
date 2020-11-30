@@ -31,9 +31,7 @@ export const ClientContextProvider = ({ children }) => {
 
   const [value, setValue] = useState(getValue);
 
-  const handleEvent = useCallback(() => {
-    setValue(getValue());
-  }, [getValue]);
+  const handleEvent = useCallback(() => setValue(getValue()), [getValue]);
 
   useEffect(() => {
     if (!isClient) {

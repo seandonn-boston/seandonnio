@@ -14,7 +14,7 @@ import {
   selectNavigationItemsIsOpen,
   navigationItemsToggled,
 } from "./NavigationItems/navigationItemsSlice";
-import { modalToggled } from "../Modal/modalSlice";
+import { modalStateUpdated } from "../Modal/modalSlice";
 
 import ResumePdf from "../../global/assets/pdf/sean_donnellan_resume.pdf";
 
@@ -64,7 +64,7 @@ export const Navigation = () => {
   ) : (
     <Button
       handleOnClick={() => {
-        dispatch(modalToggled(modalPayload));
+        dispatch(modalStateUpdated(modalPayload));
       }}
     >
       Resume
