@@ -5,6 +5,7 @@ import TestImage from "../../assets/img/test_image.jpg";
 
 export const Image = ({ width, height, handleOnClick }) => (
   <img
+    alt="valley, mountains"
     src={TestImage}
     width={width}
     height={height}

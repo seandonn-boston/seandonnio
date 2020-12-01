@@ -41,7 +41,7 @@ export const ClientContextProvider = ({ children }) => {
     mediaQueryLists.forEach((mql) =>
       mql.addEventListener("change", handleEvent)
     );
-    // Changing the orientation does not always trigger the matchMedia listeners, so an additional orientation listener is required
+    // Additional orientation listener is required incase breakpoint is tripped but mql change listener is not triggered
     window.addEventListener("orientationchange", handleEvent);
     return () => {
       mediaQueryLists.forEach((mql) =>
@@ -53,7 +53,11 @@ export const ClientContextProvider = ({ children }) => {
 
   return (
     <ClientContext.Provider
-      value={{ isMobile: value === "isMobile", isTablet: value === "isTablet" }}
+      value={{
+        isMobile: value === "isMobile",
+        isTablet: value === "isTablet",
+        isDesktop: value === "isDesktop",
+      }}
     >
       {children}
     </ClientContext.Provider>
