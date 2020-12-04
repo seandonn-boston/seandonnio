@@ -54,7 +54,7 @@ export const Navigation = () => {
   const NavLinkLogo = (
     <RouterLink
       className={navigationLogo}
-      to="/" // TODO: Extract to const file
+      to="/"
       onClick={() =>
         isNavigationItemsOpen && dispatch(navigationItemsToggled())
       }

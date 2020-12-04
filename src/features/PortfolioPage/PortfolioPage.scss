@@ -1,8 +1,16 @@
 @import "../../global/styles/config.scss";
 
 .PortfolioPage {
-  &-cards {
+  &-container {
+    display: flex;
+    flex-flow: row wrap;
+    align-items: center;
   }
   &-card {
+    display: inline-block;
+    width: 100%;
+    height: 100%;
+    max-width: 300px;
+    max-height: 300px;
   }
 }

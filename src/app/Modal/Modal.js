@@ -18,7 +18,9 @@ export const Modal = () => {
     selectModalContent
   );
 
-  const modalClasses = cx(modal, { [modalPdf]: modalContentType === "pdf" });
+  const modalClasses = cx(modal, {
+    [modalPdf]: modalContentType === "pdf",
+  });
 
   let content;
   switch (modalContentType) {
@@ -31,6 +33,8 @@ export const Modal = () => {
           src={modalContentFile}
           alt="Modal Image"
           handleOnClick={() => {}}
+          width="100%"
+          height="100%"
         />
       );
       break;
