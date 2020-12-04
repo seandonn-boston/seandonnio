@@ -1,35 +1,32 @@
 import React from "react";
+import { Link as RouterLink } from "react-router-dom";
 
 import { Link } from "../../global/ui/Link/Link";
 
-import { home } from "./HomePage.scss";
-
-import ResumePdf from "../../global/assets/pdf/sean_donnellan_resume.pdf";
-
 export const HomePage = () => {
   return (
-    <div className={home}>
-      <h2>
-        Hello, my name is Sean Donnellan, welcome to my portfolio website!
-      </h2>
+    <>
+      <h1>Hello</h1>
       <p>
-        As you can see, this website is under construction still, however I am
-        actively looking for work as a Front End Software Engineer in Boston and
-        I encourage hiring managers to{" "}
-        <Link href={ResumePdf} target="_blank">
-          take a look at my resume
-        </Link>{" "}
-        and other software engineers to{" "}
+        My name is Sean Donnellan, welcome to my portfolio website. I am
+        currently searching for my next front end software engineering role in
+        the Boston, MA area. Please take a moment to examine my{" "}
+        <RouterLink to="/portfolio">portfolio</RouterLink>, read more{" "}
+        <RouterLink to="/about">about me</RouterLink>, and I invite you to{" "}
+        <RouterLink to={"/contact"}>contact me</RouterLink> if you are
+        interested in speaking about employment opportunities.
+      </p>
+      <p>
+        This website was built with React, Redux, SASS, and more. Feel free to
+        visit my{" "}
         <Link
           href="https://github.com/seandonn-boston/seandonnio"
-          target="_blank"
+          target={"_blank"}
         >
-          peak under the hood in my github account
-        </Link>
-        . I'm actively learning and including many modern frameworks and
-        libraries and I will continue advancing my skillset and apply them to
-        this website. Check back soon for the latest deployments.
+          Github repo
+        </Link>{" "}
+        to take a look under the hood at the code powering this website.
       </p>
-    </div>
+    </>
   );
 };

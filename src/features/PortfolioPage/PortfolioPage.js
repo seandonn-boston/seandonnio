@@ -5,21 +5,34 @@ import { modalStateUpdated } from "../../app/Modal/modalSlice";
 
 import { Image } from "../../global/ui/Image/Image";
 
-import TestImage from "../../global/assets/img/test_image.jpg";
+import YouthGroupLogo from "../../global/assets/img/youth_group_logo.png";
+
+import { portfolioPageCards, portfolioPageCard } from "./PortfolioPage.scss";
 
 export default function PortfolioPage() {
   const dispatch = useDispatch();
 
-  const modalPayload = { type: "img", file: TestImage }; // TODO: Extract to const file
+  const images = [
+  ];
+
+  let uniqueIdCounter = 1;
+  const portfolioImages = images.map((image) => (
+    <div key={`image-${++uniqueIdCounter}`} className={portfolioPageCard}>
+      <Image
+        alt={image.alt}
+        src={image.src}
+        handleOnClick={() =>
+          dispatch(modalStateUpdated({ type: "img", file: image.src }))
+        }
+      />
+      <p>{image.alt}</p>
+    </div>
+  ));
 
   return (
-    <div>
-      <p> Portfolio</p>
-      <Image
-        width={425.6}
-        height={283.2}
-        handleOnClick={() => dispatch(modalStateUpdated(modalPayload))}
-      />
-    </div>
+    <>
+      <h1>Portfolio</h1>
+      <div className={portfolioPageCards}>{portfolioImages}</div>
+    </>
   );
 }

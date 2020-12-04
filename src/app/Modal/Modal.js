@@ -26,7 +26,13 @@ export const Modal = () => {
       content = <Pdf pdfFile={modalContentFile} />;
       break;
     case "img":
-      content = <Image width={800} height={600} handleOnClick={() => {}} />;
+      content = (
+        <Image
+          src={modalContentFile}
+          alt="Modal Image"
+          handleOnClick={() => {}}
+        />
+      );
       break;
     default:
       content = (

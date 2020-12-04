@@ -28,9 +28,10 @@ export const selectVeilIsOpen = (state) => state.veil.isOpen;
 
 export const handleVeilClicked = () => (dispatch, getState) => {
   const {
+    modal: { isOpen: isModalOpen },
     navigationItems: { isOpen: isNavigationItemsOpen },
   } = getState();
-  dispatch(modalStateUpdated());
+  isModalOpen && dispatch(modalStateUpdated());
   isNavigationItemsOpen && dispatch(navigationItemsToggled());
 };
 

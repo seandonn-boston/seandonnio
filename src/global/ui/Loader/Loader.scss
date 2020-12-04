@@ -5,17 +5,15 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  &-icon {
-    height: 50px;
-    width: 50px;
-    margin: auto;
-    display: block;
-    border-width: 8px;
-    border-style: solid;
-    border-radius: 50%;
-    border-color: transparent $black;
-    animation: Loader 2s cubic-bezier(0.5, 1, 0.5, 0) infinite;
-  }
+  height: 50px;
+  width: 50px;
+  margin: auto;
+  display: block;
+  border-width: 8px;
+  border-style: solid;
+  border-radius: 50%;
+  border-color: transparent $black;
+  animation: Loader 2s cubic-bezier(0.5, 1, 0.5, 0) infinite;
 }
 
 @keyframes Loader {
@@ -29,10 +27,8 @@
 
 @media only screen and (min-width: $bp-m-px) {
   .Loader {
-    &-icon {
-      height: 65px;
-      width: 65px;
-      border-width: 12px;
-    }
+    height: 65px;
+    width: 65px;
+    border-width: 12px;
   }
 }

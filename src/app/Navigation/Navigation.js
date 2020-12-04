@@ -1,6 +1,7 @@
 import React, { useContext } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { CSSTransition } from "react-transition-group";
+import { Link as RouterLink } from "react-router-dom";
 
 import { NavigationItems } from "./NavigationItems/NavigationItems";
 import { Logo } from "../../global/ui/Logo/Logo";
@@ -22,6 +23,7 @@ import {
   navigation,
   navigationInnerWrapper,
   navigationRightAlign,
+  navigationLogo,
 } from "./Navigation.scss";
 import {
   navigationItemsEnter,
@@ -50,11 +52,15 @@ export const Navigation = () => {
   const { isMobile, isTablet } = useContext(ClientContext);
 
   const NavLinkLogo = (
-    <Logo
-      onClickHandler={() =>
+    <RouterLink
+      className={navigationLogo}
+      to="/" // TODO: Extract to const file
+      onClick={() =>
         isNavigationItemsOpen && dispatch(navigationItemsToggled())
       }
-    />
+    >
+      <Logo width="50px" height="50px" />
+    </RouterLink>
   );
 
   const NavButtonResume = isTablet ? (
