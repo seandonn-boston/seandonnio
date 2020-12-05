@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 import { navigationItemsToggled } from "../Navigation/NavigationItems/navigationItemsSlice";
-import { modalToggled } from "../Modal/modalSlice";
+import { modalStateUpdated } from "../Modal/modalSlice";
 
 export const veilSlice = createSlice({
   name: "veil",
@@ -14,8 +14,12 @@ export const veilSlice = createSlice({
       .addCase(navigationItemsToggled, (state) => {
         state.isOpen = !state.isOpen;
       })
-      .addCase(modalToggled, (state) => {
-        state.isOpen = !state.isOpen;
+      .addCase(modalStateUpdated, (state, { payload }) => {
+        if (payload) {
+          state.isOpen = !state.isOpen;
+        } else {
+          state.isOpen = false;
+        }
       });
   },
 });
@@ -27,7 +31,7 @@ export const handleVeilClicked = () => (dispatch, getState) => {
     modal: { isOpen: isModalOpen },
     navigationItems: { isOpen: isNavigationItemsOpen },
   } = getState();
-  isModalOpen && dispatch(modalToggled());
+  isModalOpen && dispatch(modalStateUpdated());
   isNavigationItemsOpen && dispatch(navigationItemsToggled());
 };
 

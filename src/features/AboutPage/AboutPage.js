@@ -1,5 +1,11 @@
 import React from "react";
 
 export default function AboutPage() {
-  return <p>About</p>;
+  return (
+    <>
+      <h1>About</h1>
+      <h2>Sean Donnellan</h2>
+      <p>Software Engineer</p>
+    </>
+  );
 }

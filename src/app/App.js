@@ -5,6 +5,7 @@ import { useSelector } from "react-redux";
 import { Navigation } from "./Navigation/Navigation";
 import { Modal } from "./Modal/Modal";
 import { Veil } from "./Veil/Veil";
+import { Loader } from "../global/ui/Loader/Loader";
 import { HomePage } from "../features/HomePage/HomePage";
 
 import { selectVeilIsOpen } from "./Veil/veilSlice";
@@ -22,16 +23,13 @@ export const App = () => {
   const isVeilOpen = useSelector(selectVeilIsOpen);
   const isModalOpen = useSelector(selectModalIsOpen);
 
-  // TODO: create loading fallback component
-  const Loading = <div>Loading...</div>;
-
   return (
     <HashRouter basename="/">
       <Navigation />
       {isModalOpen && <Modal />}
       {isVeilOpen && <Veil />}
       <section className={app}>
-        <Suspense fallback={Loading}>
+        <Suspense fallback={<Loader />}>
           <Switch>
             <Route path="/portfolio" component={PortfolioPage} />
             <Route path="/contact" component={ContactPage} />

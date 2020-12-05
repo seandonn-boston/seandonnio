@@ -1,6 +1,7 @@
 import React, { useContext } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { CSSTransition } from "react-transition-group";
+import { Link as RouterLink } from "react-router-dom";
 
 import { NavigationItems } from "./NavigationItems/NavigationItems";
 import { Logo } from "../../global/ui/Logo/Logo";
@@ -14,7 +15,7 @@ import {
   selectNavigationItemsIsOpen,
   navigationItemsToggled,
 } from "./NavigationItems/navigationItemsSlice";
-import { modalToggled } from "../Modal/modalSlice";
+import { modalStateUpdated } from "../Modal/modalSlice";
 
 import ResumePdf from "../../global/assets/pdf/sean_donnellan_resume.pdf";
 
@@ -22,6 +23,7 @@ import {
   navigation,
   navigationInnerWrapper,
   navigationRightAlign,
+  navigationLogo,
 } from "./Navigation.scss";
 import {
   navigationItemsEnter,
@@ -50,11 +52,15 @@ export const Navigation = () => {
   const { isMobile, isTablet } = useContext(ClientContext);
 
   const NavLinkLogo = (
-    <Logo
-      onClickHandler={() =>
+    <RouterLink
+      className={navigationLogo}
+      to="/"
+      onClick={() =>
         isNavigationItemsOpen && dispatch(navigationItemsToggled())
       }
-    />
+    >
+      <Logo width="50px" height="50px" />
+    </RouterLink>
   );
 
   const NavButtonResume = isTablet ? (
@@ -64,7 +70,7 @@ export const Navigation = () => {
   ) : (
     <Button
       handleOnClick={() => {
-        dispatch(modalToggled(modalPayload));
+        dispatch(modalStateUpdated(modalPayload));
       }}
     >
       Resume
