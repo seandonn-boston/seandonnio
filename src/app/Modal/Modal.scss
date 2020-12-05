@@ -1,4 +1,4 @@
-@import "global/styles/config";
+@import "../../global/styles/config.scss";
 
 .Modal {
   position: fixed;
@@ -8,10 +8,15 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  pointer-events: none;
+  background-color: $white;
+  padding: $spacer-10;
   // NOTE: calcs ensure 90/10 rule, while preserving 80px for X button
   max-width: calc(90% - 80px);
   max-height: calc(90% - 80px);
   &-pdf {
+    padding: 0;
+    pointer-events: auto;
     width: 800px;
     height: 600px;
   }

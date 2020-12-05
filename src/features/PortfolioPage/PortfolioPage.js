@@ -5,11 +5,12 @@ import { modalStateUpdated } from "../../app/Modal/modalSlice";
 
 import { Image } from "../../global/ui/Image/Image";
 
+// TODO: Solve this
 import AdvTypePoster from "../../global/assets/img/adv_typography_poster.gif";
 import BlueMythAlbum from "../../global/assets/img/blue_myth_album_front.png";
 import BoardPoster from "../../global/assets/img/boards_a.png";
 import BoeingAnnualReport from "../../global/assets/img/boeing_annual_report.jpg";
-import BurgerBuilder from "../../global/assets/img/burger_builder.png";
+// import BurgerBuilder from "../../global/assets/img/burger_builder.png";
 import DaftPunkMagazineSpread from "../../global/assets/img/daft_punk_magazine_spread.png";
 import DarkMatterAlbum from "../../global/assets/img/dark_matter_album_front.png";
 import ElectronicAlbumCover from "../../global/assets/img/electronic_album_front.png";
@@ -40,7 +41,7 @@ export default function PortfolioPage() {
     { src: BlueMythAlbum, alt: "" },
     { src: BoardPoster, alt: "" },
     { src: BoeingAnnualReport, alt: "" },
-    { src: BurgerBuilder, alt: "" },
+    // { src: BurgerBuilder, alt: "" },
     { src: DaftPunkMagazineSpread, alt: "" },
     { src: DarkMatterAlbum, alt: "" },
     { src: ElectronicAlbumCover, alt: "" },
