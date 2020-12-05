@@ -1,0 +1,2 @@
+(this.webpackJsonpseandonnio=this.webpackJsonpseandonnio||[]).push([[5],{82:function(n,e,t){"use strict";t.r(e),t.d(e,"default",(function(){return o}));var a=t(0),l=t.n(a);function o(){return l.a.createElement(l.a.Fragment,null,l.a.createElement("h1",null,"Contact"),l.a.createElement("h2",null,"Email"),l.a.createElement("p",null,"sean@seandonn.io"),l.a.createElement("h2",null,"Phone"))}}}]);
+//# sourceMappingURL=5.ca4e1dd3.chunk.js.map

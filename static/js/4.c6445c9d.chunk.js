@@ -1,0 +1,2 @@
+(this.webpackJsonpseandonnio=this.webpackJsonpseandonnio||[]).push([[4],{83:function(n,e,t){"use strict";t.r(e),t.d(e,"default",(function(){return r}));var a=t(0),l=t.n(a);function r(){return l.a.createElement(l.a.Fragment,null,l.a.createElement("h1",null,"About"),l.a.createElement("h2",null,"Sean Donnellan"),l.a.createElement("p",null,"Software Engineer"))}}}]);
+//# sourceMappingURL=4.c6445c9d.chunk.js.map

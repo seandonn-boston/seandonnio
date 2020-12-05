@@ -1,2 +1,0 @@
-(this.webpackJsonpseandonnio=this.webpackJsonpseandonnio||[]).push([[4],{59:function(n,t,e){"use strict";e.r(t),e.d(t,"default",(function(){return s}));var o=e(0),a=e.n(o);function s(){return a.a.createElement("p",null,"Contact")}}}]);
-//# sourceMappingURL=4.6ebccb05.chunk.js.map
