@@ -1,110 +1,188 @@
 import React, { useReducer } from "react";
 
-import {
-  contact,
-  contactForm,
-  contactFormFieldset,
-  contactFormLabel,
-  contactFormInput,
-  contactFormTextarea,
-  contactFormSubmit,
-} from "./ContactPage.scss";
+import { Form } from "../../global/ui/Form/Form";
+import { Fieldset } from "../../global/ui/Form/Fieldset/Fieldset";
+import { Legend } from "../../global/ui/Form/Fieldset/Legend/Legend";
+import { Input } from "../../global/ui/Form/Input/Input";
+import { Label } from "../../global/ui/Form/Label/Label";
+import { Textarea } from "../../global/ui/Form/Textarea/Textarea";
 
 const FIRST_NAME = "firstName";
 const LAST_NAME = "lastName";
 const EMAIL = "email";
+const PHONE = "phone";
+const EMPLOYER = "employer";
 const MESSAGE = "message";
+const IS_CUSTOM_MESSAGE = "isCustomMessage";
 const SUBJECT = "subject";
 const RECIPIENT = "sean@seandonn.io";
 
-export default function ContactPage() {
-  const [userInput, setUserInput] = useReducer(
-    (state, newState) => ({ ...state, ...newState }),
-    {
-      [FIRST_NAME]: "",
-      [LAST_NAME]: "",
-      [EMAIL]: "",
-      [SUBJECT]: "",
-      [MESSAGE]: "",
-    }
-  );
+const initialState = {
+  [FIRST_NAME]: "",
+  [LAST_NAME]: "",
+  [EMAIL]: "",
+  [PHONE]: "",
+  [EMPLOYER]: "",
+  [SUBJECT]: "",
+  [MESSAGE]: {
+    [IS_CUSTOM_MESSAGE]: false,
+    [MESSAGE]: `Dear Sean,\n\nMy employer is looking to recruit a talented Front End Software Engineer skilled in React, CSS, and more. I think you would be a great fit for this opportunity and I would love to speak with you about our open position.\n\nThank you,`,
+  },
+};
 
-  const handleChange = (evt) => {
-    const { name, value } = evt.target;
-    setUserInput({ [name]: value });
+const reducer = (state, payload) => {
+  switch (Object.keys(payload)[0]) {
+    case "reset":
+      return { ...payload.reset };
+    case MESSAGE:
+      return {
+        ...state,
+        [MESSAGE]: { ...payload, [IS_CUSTOM_MESSAGE]: true },
+      };
+    case SUBJECT:
+      return { ...state, ...payload };
+    case FIRST_NAME:
+    case LAST_NAME:
+    case PHONE:
+    case EMAIL:
+    case EMPLOYER:
+      return {
+        ...state,
+        ...payload,
+        [MESSAGE]: state[MESSAGE][IS_CUSTOM_MESSAGE]
+          ? { ...state[MESSAGE] }
+          : {
+              ...state[MESSAGE],
+              [MESSAGE]: `Dear Sean,\n\nMy employer ${
+                (payload[EMPLOYER] ? payload[EMPLOYER] : state[EMPLOYER]) +
+                (payload[EMPLOYER] || state[EMPLOYER] ? " " : "")
+              }is looking to recruit a talented Front End Software Engineer skilled in React, CSS, and more. I think you would be a great fit for this opportunity and I would love to speak with you about our open position.${
+                (payload[PHONE] || state[PHONE]) &&
+                ` Feel free to call me at ${
+                  payload[PHONE] ? payload[PHONE] : state[PHONE]
+                }.`
+              }\n\nThank you,${
+                payload[FIRST_NAME] ||
+                state[FIRST_NAME] ||
+                payload[LAST_NAME] ||
+                state[LAST_NAME]
+                  ? "\n"
+                  : ""
+              }${
+                payload[FIRST_NAME] ? payload[FIRST_NAME] : state[FIRST_NAME]
+              }${
+                (payload[FIRST_NAME] && state[LAST_NAME]) ||
+                (state[FIRST_NAME] && payload[LAST_NAME]) ||
+                (state[FIRST_NAME] && state[LAST_NAME])
+                  ? " "
+                  : ""
+              }${payload[LAST_NAME] ? payload[LAST_NAME] : state[LAST_NAME]}${
+                (payload[EMAIL] || state[EMAIL] ? "\n" : "") +
+                (payload[EMAIL] ? payload[EMAIL] : state[EMAIL])
+              }`,
+            },
+      };
+    default:
+      return { ...state };
+  }
+};
+
+export default function ContactPage() {
+  const [state, dispatch] = useReducer(reducer, initialState);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    dispatch({ [name]: value });
+  };
+
+  const handleReset = (e) => {
+    e.preventDefault();
+    dispatch({ reset: initialState });
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const string = `mailto:${RECIPIENT}&subject=${encodeURI(
-      userInput[SUBJECT]
-    )}&body=${encodeURI(userInput[MESSAGE])}`;
-
-    window.open(string);
+    const subject = encodeURI(state[SUBJECT]);
+    const body = encodeURI(state[MESSAGE][MESSAGE]);
+    window.open(`mailto:${RECIPIENT}?subject=${subject}&body=${body}`);
   };
 
-  // TODO: DRY this up
   return (
-    <div className={contact}>
+    <>
       <h1>Contact</h1>
-      <form className={contactForm} onSubmit={handleSubmit}>
-        <fieldset className={contactFormFieldset} id="userData">
-          <label className={contactFormLabel} htmlFor={FIRST_NAME}>
-            First Name:
-          </label>
-          <input
-            className={contactFormInput}
+      <Form handleSubmit={handleSubmit}>
+        <Fieldset>
+          <Legend title="Contact Info" />
+          <Label htmlFor={FIRST_NAME} title="First Name" />
+          <Input
             type="text"
             name={FIRST_NAME}
-            value={userInput[{ FIRST_NAME }]}
-            onChange={handleChange}
+            value={state[`${FIRST_NAME}`]}
+            handleChange={handleChange}
+            placeholder="First Name"
           />
-          <label className={contactFormLabel} htmlFor={LAST_NAME}>
-            Last Name:
-          </label>
-          <input
-            className={contactFormInput}
+          <Label htmlFor={LAST_NAME} title="Last Name" />
+          <Input
             type="text"
             name={LAST_NAME}
-            value={userInput[{ LAST_NAME }]}
-            onChange={handleChange}
+            value={state[`${LAST_NAME}`]}
+            handleChange={handleChange}
+            placeholder="Last Name"
           />
-          <label className={contactFormLabel} htmlFor={EMAIL}>
-            Email:
-          </label>
-          <input
-            className={contactFormInput}
+          <Label htmlFor={EMAIL} title="Email" />
+          <Input
             type="email"
             name={EMAIL}
-            value={userInput[{ EMAIL }]}
-            onChange={handleChange}
+            value={state[`${EMAIL}`]}
+            handleChange={handleChange}
+            placeholder="email"
           />
-        </fieldset>
-        <fieldset className={contactFormFieldset} id="userMessage">
-          <label className={contactFormLabel} htmlFor={SUBJECT}>
-            Subject:
-          </label>
-          <input
-            className={contactFormInput}
+          <Label htmlFor={PHONE} title="Phone" />
+          <Input
+            type="tel"
+            name={PHONE}
+            value={state[`${PHONE}`]}
+            handleChange={handleChange}
+            placeholder="Phone"
+          />
+          <Label htmlFor={EMPLOYER} title="Employer" />
+          <Input
+            type="text"
+            name={EMPLOYER}
+            value={state[`${EMPLOYER}`]}
+            handleChange={handleChange}
+            placeholder="Employer"
+          />
+        </Fieldset>
+        <Fieldset id="userMessage">
+          <Legend title="Message" />
+          <Label htmlFor={SUBJECT} title="Subject" />
+          <Input
             type="text"
             name={SUBJECT}
-            value={userInput[{ SUBJECT }]}
-            onChange={handleChange}
+            value={state[`${SUBJECT}`]}
+            handleChange={handleChange}
+            placeholder="Subject"
           />
-          <label className={contactFormLabel} htmlFor={MESSAGE}>
-            What would you like the message to say?
-          </label>
-          <textarea
-            className={contactFormTextarea}
+          <Label htmlFor={MESSAGE} title="Message" />
+          <Textarea
             type="text"
             name={MESSAGE}
-            value={userInput[{ MESSAGE }]}
-            onChange={handleChange}
+            handleChange={handleChange}
+            value={state[`${MESSAGE}`][`${MESSAGE}`]}
             placeholder="Hello Sean..."
+            rows={9}
+            cols={10}
           />
-        </fieldset>
-        <input className={contactFormSubmit} type="submit" value="Send" />
-      </form>
-    </div>
+        </Fieldset>
+        <Input
+          type="reset"
+          name="Reset"
+          value="Reset"
+          handleClick={handleReset}
+        />
+        <Input type="submit" name="Send" value="Send" />
+      </Form>
+    </>
   );
 }

@@ -1,6 +1,13 @@
+html {
+  box-sizing: border-box;
+}
+
 *,
 *::after,
 *::before {
-  box-sizing: border-box;
-  border: none;
+  box-sizing: inherit;
+}
+
+body {
+  margin: 0;
 }

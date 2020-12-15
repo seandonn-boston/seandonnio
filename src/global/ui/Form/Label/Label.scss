@@ -1,0 +1,22 @@
+@import "../../../styles/config.scss";
+@import "../../../styles/mixins/_visuallyHidden.scss";
+
+.Label {
+  grid-column: 1 / 2;
+  float: left;
+  text-align: right;
+  padding: 3px 3px 3px 0;
+}
+
+// Accessibly hide labels on small screens
+@media only screen and (max-width: $bp-m-px) {
+  .Label {
+    @include visuallyHidden;
+  }
+}
+
+@media only screen and (min-width: $bp-m-px) {
+  .Label {
+    min-width: 120px;
+  }
+}

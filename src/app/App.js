@@ -23,21 +23,6 @@ export const App = () => {
   const isVeilOpen = useSelector(selectVeilIsOpen);
   const isModalOpen = useSelector(selectModalIsOpen);
 
-  // const fetchSeanDonnBos = () => {
-  //   fetch("https://api.github.com/users/seandonn-boston")
-  //     .then((res) => res.json())
-  //     .then((data) => console.log(data))
-  //     .catch((err) => console.log(err));
-  // };
-
-  // useEffect(() => {
-  //   fetchSeanDonnBos();
-  //   const interval = setInterval(() => {
-  //     fetchSeanDonnBos();
-  //   }, 120000);
-  //   return () => clearInterval(interval);
-  // }, []);
-
   return (
     <HashRouter basename="/">
       <Navigation />
