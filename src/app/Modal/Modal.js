@@ -31,7 +31,7 @@ export const Modal = () => {
       content = (
         <Image
           src={modalContentFile}
-          alt="Modal Image"
+          alt="Modal Imag\"
           handleOnClick={() => {}}
           width="100%"
           height="100%"

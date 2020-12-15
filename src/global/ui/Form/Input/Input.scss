@@ -1,0 +1,19 @@
+@import "../../../styles/config.scss";
+
+.Input {
+  grid-column: 3 / 1;
+  display: block;
+  border-width: 2px;
+  padding: 1px;
+  &[type="submit"],
+  &[type="reset"] {
+    display: inline-block;
+    cursor: pointer;
+  }
+}
+
+@media only screen and (min-width: $bp-m-px) {
+  .Input {
+    grid-column: 2 / 3;
+  }
+}
