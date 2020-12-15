@@ -1,43 +1,47 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "335efd19019fe349465dfcb066d83fed",
+    "revision": "40f16fd4021f1dbf9778aeeba04f4324",
     "url": "/index.html"
   },
   {
-    "revision": "fa228316f9b237bcae8b",
-    "url": "/static/css/3.32f7cf9a.chunk.css"
+    "revision": "3f8b3177a31be25256b8",
+    "url": "/static/css/3.28b6d291.chunk.css"
   },
   {
-    "revision": "630a60bb18709429402a",
-    "url": "/static/css/main.472c3695.chunk.css"
+    "revision": "4dc8b41a631ce90f9b4d",
+    "url": "/static/css/4.28de753f.chunk.css"
   },
   {
-    "revision": "055d0c3f67f311fdfb6c",
-    "url": "/static/js/2.769ee2eb.chunk.js"
+    "revision": "a724f5fd4e2003f601cd",
+    "url": "/static/css/main.6a506c67.chunk.css"
+  },
+  {
+    "revision": "e7dc45a1c9ed05bf0bba",
+    "url": "/static/js/2.b4501212.chunk.js"
   },
   {
     "revision": "29eb69a08ea4198f7b46e1db8a3d5045",
-    "url": "/static/js/2.769ee2eb.chunk.js.LICENSE.txt"
+    "url": "/static/js/2.b4501212.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "fa228316f9b237bcae8b",
-    "url": "/static/js/3.0800feb0.chunk.js"
+    "revision": "3f8b3177a31be25256b8",
+    "url": "/static/js/3.f8571193.chunk.js"
   },
   {
-    "revision": "060dee01f8f938e04650",
-    "url": "/static/js/4.c6445c9d.chunk.js"
+    "revision": "4dc8b41a631ce90f9b4d",
+    "url": "/static/js/4.f3a50883.chunk.js"
   },
   {
-    "revision": "247cb70cafacedcd8624",
-    "url": "/static/js/5.ca4e1dd3.chunk.js"
+    "revision": "63ad3300f2e2cb9d23c7",
+    "url": "/static/js/5.dbc987fb.chunk.js"
   },
   {
-    "revision": "630a60bb18709429402a",
-    "url": "/static/js/main.7f0dd1e1.chunk.js"
+    "revision": "a724f5fd4e2003f601cd",
+    "url": "/static/js/main.eb42c83f.chunk.js"
   },
   {
-    "revision": "2ad78700f6cf994d545e",
-    "url": "/static/js/runtime-main.b9a21393.js"
+    "revision": "baa07c7aa2905ab4c715",
+    "url": "/static/js/runtime-main.baa2a22f.js"
   },
   {
     "revision": "f3f3a4c8792b73105ac4f0d814c0e093",
@@ -100,12 +104,44 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/static/media/new_modern_magazine_table_of_contents.04736dd5.png"
   },
   {
+    "revision": "0edb76284a7a0f8db4665b560ee2b48f",
+    "url": "/static/media/open-sans-v18-latin-700.0edb7628.woff2"
+  },
+  {
+    "revision": "1f85e92d8ff443980bc0f83ad7b23b60",
+    "url": "/static/media/open-sans-v18-latin-700.1f85e92d.woff"
+  },
+  {
+    "revision": "33543c5cc5d88f5695dd08c87d280dfd",
+    "url": "/static/media/open-sans-v18-latin-regular.33543c5c.woff2"
+  },
+  {
+    "revision": "de0869e324680c99efa1250515b4b41c",
+    "url": "/static/media/open-sans-v18-latin-regular.de0869e3.woff"
+  },
+  {
     "revision": "70fea1204fa26a55c7c1d6e570348300",
     "url": "/static/media/our_moving_world.70fea120.jpg"
   },
   {
     "revision": "da7e0c5c07c3e9c3e19fa4280a3a328c",
     "url": "/static/media/raven_gig_poster.da7e0c5c.jpg"
+  },
+  {
+    "revision": "2735a3a69b509faf3577afd25bdf552e",
+    "url": "/static/media/roboto-v20-latin-700.2735a3a6.woff2"
+  },
+  {
+    "revision": "adcde98f1d584de52060ad7b16373da3",
+    "url": "/static/media/roboto-v20-latin-700.adcde98f.woff"
+  },
+  {
+    "revision": "479970ffb74f2117317f9d24d9e317fe",
+    "url": "/static/media/roboto-v20-latin-regular.479970ff.woff2"
+  },
+  {
+    "revision": "60fa3c0614b8fb2f394fa29944c21540",
+    "url": "/static/media/roboto-v20-latin-regular.60fa3c06.woff"
   },
   {
     "revision": "8a2b95f07b18b194717f27a6ecd74fc8",
