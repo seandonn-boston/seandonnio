@@ -1,14 +1,25 @@
-/* roboto-100 - latin */
-// @font-face {
-//   font-family: "Roboto";
-//   font-style: normal;
-//   font-weight: 100;
-//   src: local(""),
-//     url("../assets/fonts/roboto-v20-latin-100.woff2") format("woff2")
-//       /* Chrome 26+, Opera 23+, Firefox 39+ */,
-//     url("../assets/fonts/roboto-v20-latin-100.woff") format("woff")
-//       /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */;
-// }
+/* open-sans-regular - latin */
+@font-face {
+  font-family: "Open Sans";
+  font-style: normal;
+  font-weight: 400;
+  src: local(""),
+    url("../assets/fonts/open-sans-v18-latin-regular.woff2") format("woff2")
+      /* Chrome 26+, Opera 23+, Firefox 39+ */,
+    url("../assets/fonts/open-sans-v18-latin-regular.woff") format("woff")
+      /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */;
+}
+/* open-sans-700 - latin */
+@font-face {
+  font-family: "Open Sans";
+  font-style: normal;
+  font-weight: 700;
+  src: local(""),
+    url("../assets/fonts/open-sans-v18-latin-700.woff2") format("woff2")
+      /* Chrome 26+, Opera 23+, Firefox 39+ */,
+    url("../assets/fonts/open-sans-v18-latin-700.woff") format("woff")
+      /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */;
+}
 /* roboto-regular - latin */
 @font-face {
   font-family: "Roboto";
@@ -31,26 +42,15 @@
     url("../assets/fonts/roboto-v20-latin-700.woff") format("woff")
       /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */;
 }
-/* open-sans-regular - latin */
+/* roboto-mono-regular - latin */
 @font-face {
-  font-family: "Open Sans";
+  font-family: "Roboto Mono";
   font-style: normal;
   font-weight: 400;
   src: local(""),
-    url("../assets/fonts/open-sans-v18-latin-regular.woff2") format("woff2")
+    url("../assets/fonts/roboto-mono-v12-latin-regular.woff2") format("woff2")
       /* Chrome 26+, Opera 23+, Firefox 39+ */,
-    url("../assets/fonts/open-sans-v18-latin-regular.woff") format("woff")
-      /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */;
-}
-/* open-sans-700 - latin */
-@font-face {
-  font-family: "Open Sans";
-  font-style: normal;
-  font-weight: 700;
-  src: local(""),
-    url("../assets/fonts/open-sans-v18-latin-700.woff2") format("woff2")
-      /* Chrome 26+, Opera 23+, Firefox 39+ */,
-    url("../assets/fonts/open-sans-v18-latin-700.woff") format("woff")
+    url("../assets/fonts/roboto-mono-v12-latin-regular.woff") format("woff")
       /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */;
 }
 
@@ -74,9 +74,15 @@ h6 {
   font-family: "Roboto", sans-serif;
 }
 
+textarea {
+  font-family: "Roboto Mono";
+}
+
 p,
-label,
+form,
 input,
+button,
+select,
 textarea {
   font-size: 1em;
 }

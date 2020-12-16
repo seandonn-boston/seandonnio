@@ -1,12 +1,13 @@
 import React from "react";
 import { Link as RouterLink } from "react-router-dom";
 
+import { Header } from "../../global/ui/Header/Header";
 import { Link } from "../../global/ui/Link/Link";
 
 export const HomePage = () => {
   return (
     <>
-      <h1>Hello</h1>
+      <Header title="Hello" />
       <p>
         My name is Sean Donnellan, welcome to my portfolio website. I am
         currently searching for my next front end software engineering role in

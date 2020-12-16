@@ -1,5 +1,6 @@
 import React, { useReducer } from "react";
 
+import { Header } from "../../global/ui/Header/Header";
 import { Form } from "../../global/ui/Form/Form";
 import { Fieldset } from "../../global/ui/Form/Fieldset/Fieldset";
 import { Legend } from "../../global/ui/Form/Fieldset/Legend/Legend";
@@ -109,7 +110,7 @@ export default function ContactPage() {
 
   return (
     <>
-      <h1>Contact</h1>
+      <Header title="Contact" />
       <Form handleSubmit={handleSubmit}>
         <Fieldset>
           <Legend title="Contact Info" />
