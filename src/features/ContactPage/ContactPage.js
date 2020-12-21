@@ -13,9 +13,9 @@ const LAST_NAME = "lastName";
 const EMAIL = "email";
 const PHONE = "phone";
 const EMPLOYER = "employer";
+const SUBJECT = "subject";
 const MESSAGE = "message";
 const IS_CUSTOM_MESSAGE = "isCustomMessage";
-const SUBJECT = "subject";
 const RECIPIENT = "sean@seandonn.io";
 
 const initialState = {
@@ -24,7 +24,7 @@ const initialState = {
   [EMAIL]: "",
   [PHONE]: "",
   [EMPLOYER]: "",
-  [SUBJECT]: "",
+  [SUBJECT]: "I'd like to talk to you about an exciting job opportunity",
   [MESSAGE]: {
     [IS_CUSTOM_MESSAGE]: false,
     [MESSAGE]: `Dear Sean,\n\nMy employer is looking to recruit a talented Front End Software Engineer skilled in React, CSS, and more. I think you would be a great fit for this opportunity and I would love to speak with you about our open position.\n\nThank you,`,
@@ -136,7 +136,7 @@ export default function ContactPage() {
             name={EMAIL}
             value={state[`${EMAIL}`]}
             handleChange={handleChange}
-            placeholder="email"
+            placeholder="Email"
           />
           <Label htmlFor={PHONE} title="Phone" />
           <Input

@@ -1,5 +1,9 @@
 import React from "react";
 
+import { form } from "./Form.scss";
+
 export const Form = ({ handleSubmit, children }) => (
-  <form onSubmit={handleSubmit}>{children}</form>
+  <form className={form} onSubmit={handleSubmit}>
+    {children}
+  </form>
 );

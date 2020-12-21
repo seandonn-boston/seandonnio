@@ -6,17 +6,13 @@
   float: left;
   text-align: right;
   padding: 3px 3px 3px 0;
+  margin-left: auto;
 }
 
 // Accessibly hide labels on small screens
-@media only screen and (max-width: $bp-m-px) {
+// TODO: Fix up the bp config, make it much more expansive in terms of these edge cases. i.e. 768 vs 767
+@media only screen and (max-width: 767px) {
   .Label {
     @include visuallyHidden;
-  }
-}
-
-@media only screen and (min-width: $bp-m-px) {
-  .Label {
-    min-width: 120px;
   }
 }
