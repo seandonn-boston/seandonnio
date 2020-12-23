@@ -1,9 +1,56 @@
 @import "../../global/styles/config.scss";
+@import "../../global/styles/mixins/_visuallyHidden.scss";
 
+// It would be pretty cool to provide the user a toggle between css columns, flexbox, and css grid. Yup, this could be very cool, show a small animation on every transition
 .PortfolioPage {
-  &-container {
+  &-layout {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-    grid-gap: 1rem;
+    grid: auto / repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1em;
+    place-content: start;
+    place-items: stretch;
+  }
+  &-figure {
+    height: 100%;
+    position: relative;
+    place-self: stretch end;
+    margin: auto;
+    display: flex;
+  }
+  // Accessibly hide figcaption unless parent is hovered
+  &-figcaption {
+    @include visuallyHidden;
+    :hover > & {
+      @include visuallyHiddenReset;
+      display: flex;
+      flex-direction: column;
+      position: absolute;
+      justify-content: center;
+      align-items: center;
+      height: 100%;
+      width: 100%;
+      padding: 0 12px;
+      background-color: rgba(0, 0, 0, 0.5);
+      color: white;
+      text-align: center;
+      cursor: pointer;
+      overflow: hidden;
+    }
+    &-header {
+      margin: auto 0;
+    }
+    &-description {
+      margin: auto 0;
+    }
+    &-tags {
+      list-style: none;
+      margin: auto 0;
+      padding: 0;
+      &-tag {
+        display: inline-block;
+        margin: 0;
+        padding: 0;
+      }
+    }
   }
 }

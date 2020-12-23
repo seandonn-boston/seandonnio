@@ -7,7 +7,7 @@ export default function AboutPage() {
     <>
       <Header title="About" />
       <h2>Sean Donnellan</h2>
-      <p>Software Engineer</p>
+      <p>Hello visitor</p>
     </>
   );
 }

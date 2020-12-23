@@ -3,13 +3,6 @@ import React from "react";
 
 import { image } from "./Image.scss";
 
-export const Image = ({ handleOnClick, alt, src, width, height }) => (
-  <img
-    className={image}
-    alt={alt}
-    src={src}
-    onClick={() => handleOnClick()}
-    width={width}
-    height={height}
-  />
+export const Image = ({ alt, src, width, height }) => (
+  <img className={image} alt={alt} src={src} width={width} height={height} />
 );

@@ -30,8 +30,13 @@ import TwilightPrincessPoster from "../../global/assets/img/twilight_princess_po
 import YouthGroupLogo from "../../global/assets/img/youth_group_logo.png";
 
 import {
-  portfolioPageContainer,
-  portfolioPageCard,
+  portfolioPageLayout,
+  portfolioPageFigure,
+  portfolioPageFigcaption,
+  portfolioPageFigcaptionHeader,
+  portfolioPageFigcaptionDescription,
+  portfolioPageFigcaptionTags,
+  portfolioPageFigcaptionTagsTag,
 } from "./PortfolioPage.scss";
 
 // Possible Sections - organize categories. Maybe add tags for them? This could be another great usecase for Redux
@@ -54,49 +59,193 @@ import {
 // Art;
 
 const images = [
-  { src: AdvTypePoster, alt: "" },
-  { src: BlueMythAlbum, alt: "" },
-  { src: BoardPoster, alt: "" },
-  { src: BoeingAnnualReport, alt: "" },
-  { src: DaftPunkMagazineSpread, alt: "" },
-  { src: DarkMatterAlbum, alt: "" },
-  { src: ElectronicAlbumCover, alt: "" },
-  { src: ExhibitionPoster, alt: "" },
-  { src: FlumeMagazineSpread, alt: "" },
-  { src: HolyGhostMagazineSpread, alt: "" },
-  { src: IgnitionPoster, alt: "" },
-  { src: InfographicPoster, alt: "" },
-  { src: LcdSoundsystemMagazineCover, alt: "" },
-  { src: NewModernMagazineCover, alt: "" },
-  { src: NewModernMagazineTableOfContents, alt: "" },
-  { src: OurMovingWorldPoster, alt: "" },
-  { src: RavenGigPoster, alt: "" },
-  { src: SlcUiConcept, alt: "" },
-  { src: TwilightPrincessPoster, alt: "" },
-  { src: YouthGroupLogo, alt: "" },
+  {
+    src: AdvTypePoster,
+    alt: "",
+    title:
+      "Ok let's try a very long title that might not fit on one line, what happens?",
+    description:
+      "Let's also get a nice long description, it might be the right thing or the wrong thing who knows but I know it'll work",
+    tags: [
+      "lets",
+      "try",
+      "a",
+      "bunch",
+      "of",
+      "different tags",
+      "and",
+      "see",
+      "what",
+      "happens",
+      "here",
+      "too",
+    ],
+  },
+  {
+    src: BlueMythAlbum,
+    alt: "",
+    title: "Title",
+    description: "Description",
+    tags: [1, 2, 3],
+  },
+  {
+    src: BoardPoster,
+    alt: "",
+    title: "Title",
+    description: "Description",
+    tags: [1, 2, 3],
+  },
+  {
+    src: BoeingAnnualReport,
+    alt: "",
+    title: "Title",
+    description: "Description",
+    tags: [1, 2, 3],
+  },
+  {
+    src: DaftPunkMagazineSpread,
+    alt: "",
+    title: "Title",
+    description: "Description",
+    tags: [1, 2, 3],
+  },
+  {
+    src: DarkMatterAlbum,
+    alt: "",
+    title: "Title",
+    description: "Description",
+    tags: [1, 2, 3],
+  },
+  {
+    src: ElectronicAlbumCover,
+    alt: "",
+    title: "Title",
+    description: "Description",
+    tags: [1, 2, 3],
+  },
+  {
+    src: ExhibitionPoster,
+    alt: "",
+    title: "Title",
+    description: "Description",
+    tags: [1, 2, 3],
+  },
+  {
+    src: FlumeMagazineSpread,
+    alt: "",
+    title: "Title",
+    description: "Description",
+    tags: [1, 2, 3],
+  },
+  {
+    src: HolyGhostMagazineSpread,
+    alt: "",
+    title: "Title",
+    description: "Description",
+    tags: [1, 2, 3],
+  },
+  {
+    src: IgnitionPoster,
+    alt: "",
+    title: "Title",
+    description: "Description",
+    tags: [1, 2, 3],
+  },
+  {
+    src: InfographicPoster,
+    alt: "",
+    title: "Title",
+    description: "Description",
+    tags: [1, 2, 3],
+  },
+  {
+    src: LcdSoundsystemMagazineCover,
+    alt: "",
+    title: "Title",
+    description: "Description",
+    tags: [1, 2, 3],
+  },
+  {
+    src: NewModernMagazineCover,
+    alt: "",
+    title: "Title",
+    description: "Description",
+    tags: [1, 2, 3],
+  },
+  {
+    src: NewModernMagazineTableOfContents,
+    alt: "",
+    title: "Title",
+    description: "Description",
+    tags: [1, 2, 3],
+  },
+  {
+    src: OurMovingWorldPoster,
+    alt: "",
+    title: "Title",
+    description: "Description",
+    tags: [1, 2, 3],
+  },
+  {
+    src: RavenGigPoster,
+    alt: "",
+    title: "Title",
+    description: "Description",
+    tags: [1, 2, 3],
+  },
+  {
+    src: SlcUiConcept,
+    alt: "",
+    title: "Title",
+    description: "Description",
+    tags: [1, 2, 3],
+  },
+  {
+    src: TwilightPrincessPoster,
+    alt: "",
+    title: "Title",
+    description: "Description",
+    tags: [1, 2, 3],
+  },
+  {
+    src: YouthGroupLogo,
+    alt: "",
+    title: "Title",
+    description: "Description",
+    tags: [1, 2, 3],
+  },
 ];
 
 export default function PortfolioPage() {
   const dispatch = useDispatch();
 
-  const portfolioImages = images.map((image, i) => (
-    <div key={i} className={portfolioPageCard}>
-      <Image
-        alt={image.alt}
-        src={image.src}
-        handleOnClick={() =>
-          dispatch(modalStateUpdated({ type: "img", file: image.src }))
-        }
-        width="100%"
-        height="100%"
-      />
-    </div>
-  ));
+  const portfolioImages = images.map(
+    ({ src, alt, title, description, tags }, i) => (
+      <figure
+        key={i}
+        className={portfolioPageFigure}
+        onClick={() => dispatch(modalStateUpdated({ type: "img", file: src }))}
+      >
+        <Image alt={alt} src={src} width="100%" />
+        <figcaption className={portfolioPageFigcaption}>
+          <h3 className={portfolioPageFigcaptionHeader}>{title}</h3>
+          <p className={portfolioPageFigcaptionDescription}>{description}</p>
+          <ul className={portfolioPageFigcaptionTags}>
+            {tags.map((tag, i) => (
+              <li key={i} className={portfolioPageFigcaptionTagsTag}>
+                {tag}
+              </li>
+            ))}
+          </ul>
+        </figcaption>
+      </figure>
+    )
+  );
 
   return (
     <>
       <Header title="Portfolio" />
-      <div className={portfolioPageContainer}>{portfolioImages}</div>
+      <div className={portfolioPageLayout}>{portfolioImages}</div>
     </>
   );
 }

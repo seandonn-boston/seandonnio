@@ -9,3 +9,14 @@
   position: absolute;
   width: 1px;
 }
+
+@mixin visuallyHiddenReset {
+  border: none;
+  clip: auto;
+  height: auto;
+  margin: 0;
+  overflow: visible;
+  padding: 0;
+  position: static;
+  width: auto;
+}
