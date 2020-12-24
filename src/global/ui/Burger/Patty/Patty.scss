@@ -1,4 +1,4 @@
-@import "../../../styles/config";
+@use "../../../styles/config.scss";
 
 .Patty {
   display: block;
@@ -8,9 +8,9 @@
   margin: 0 auto;
   width: 18px;
   height: 1px;
-  background: $white;
+  background: config.$white;
   transform: rotate(0);
-  transition: all $to-s-ms;
+  transition: all config.$to-s-ms;
   content: "";
 
   &--top {

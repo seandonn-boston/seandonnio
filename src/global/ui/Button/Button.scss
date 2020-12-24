@@ -1,25 +1,25 @@
-@import "../../styles/config";
+@use "../../styles/config.scss";
 
 .Button {
   display: block;
-  color: $black;
-  padding: $spacer-3 $spacer-5;
-  margin: $spacer-1 auto;
-  border-radius: $spacer-1;
-  color: $black;
-  background-color: $theme-secondary;
+  color: config.$black;
+  padding: config.$spacer-3 config.$spacer-5;
+  margin: config.$spacer-1 auto;
+  border-radius: config.$spacer-1;
+  color: config.$black;
+  background-color: config.$theme-secondary;
   text-align: center;
   text-decoration: none;
   cursor: pointer;
 }
 
-@media only screen and (min-width: $bp-m-px) {
+@media only screen and (min-width: config.$bp-m-px) {
   .Button {
     display: flex;
     position: relative;
     margin: auto;
-    padding: $spacer-1 $spacer-5;
-    height: $spacer-8;
+    padding: config.$spacer-1 config.$spacer-5;
+    height: config.$spacer-8;
 
     &-content {
       display: inline-flex;

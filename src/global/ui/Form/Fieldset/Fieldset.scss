@@ -1,9 +1,9 @@
-@import "../../../styles/config.scss";
+@use "../../../styles/config.scss";
 
 .Fieldset {
   position: relative;
   display: grid;
   grid-template-columns: 200px 1fr;
-  grid-gap: $spacer-2 $spacer-3;
+  grid-gap: config.$spacer-2 config.$spacer-3;
   align-items: start;
 }

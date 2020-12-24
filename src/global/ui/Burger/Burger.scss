@@ -1,4 +1,4 @@
-@import "../../styles/config";
+@use "../../styles/config.scss";
 
 .Burger {
   position: absolute;
@@ -9,7 +9,7 @@
   height: 50px;
   margin: auto 0 auto 0;
   cursor: pointer;
-  transition: all $to-s-ms;
+  transition: all config.$to-s-ms;
   transform-origin: center;
 
   &-active {

@@ -1,4 +1,4 @@
-@import "../../../global/styles/config.scss";
+@use "../../../global/styles/config.scss";
 
 .NavigationItems {
   display: block;
@@ -7,9 +7,9 @@
   margin: 0;
   padding: 0;
   bottom: 0;
-  z-index: $z-200;
-  background-color: $white;
-  transition: transform $to-l-ms linear;
+  z-index: config.$z-200;
+  background-color: config.$white;
+  transition: transform config.$to-l-ms linear;
   // BEGIN: react-transition-group specific class declarations
   &-enter {
     transform: translateY(0);
@@ -33,33 +33,33 @@
   // END: react-transition-group specific class declarations
 
   &:first-child {
-    margin: 0 0 $spacer-1;
+    margin: 0 0 config.$spacer-1;
   }
 
   &:last-child {
-    margin: $spacer-1 0 0;
+    margin: config.$spacer-1 0 0;
   }
 }
 
-@media only screen and (min-width: $bp-m-px) {
+@media only screen and (min-width: config.$bp-m-px) {
   .NavigationItems {
     display: inline-flex;
     position: relative;
     width: auto;
-    margin: 0 $spacer-1 0 $spacer-11;
+    margin: 0 config.$spacer-1 0 config.$spacer-11;
     bottom: initial;
-    z-index: $z-000;
+    z-index: config.$z-000;
     background-color: transparent;
     transform: none;
     transition: initial;
 
     &:last-child {
-      margin: 0 0 0 $spacer-1;
+      margin: 0 0 0 config.$spacer-1;
       padding: 0;
     }
 
     &:first-child {
-      margin: 0 $spacer-1 0 0;
+      margin: 0 config.$spacer-1 0 0;
       padding: 0;
     }
   }

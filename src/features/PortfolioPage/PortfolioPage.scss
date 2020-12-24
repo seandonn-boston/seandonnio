@@ -1,5 +1,8 @@
-@import "../../global/styles/config.scss";
-@import "../../global/styles/mixins/_visuallyHidden.scss";
+@use "sass:math";
+@use "../../global/styles/config.scss";
+@use "../../global/styles/mixins/_visuallyHidden.scss";
+
+$test: math.sqrt(25);
 
 // It would be pretty cool to provide the user a toggle between css columns, flexbox, and css grid. Yup, this could be very cool, show a small animation on every transition
 .PortfolioPage {
@@ -19,9 +22,9 @@
   }
   // Accessibly hide figcaption unless parent is hovered
   &-figcaption {
-    @include visuallyHidden;
+    @include visuallyHidden.visuallyHidden;
     :hover > & {
-      @include visuallyHiddenReset;
+      @include visuallyHidden.visuallyHiddenReset;
       display: flex;
       flex-direction: column;
       position: absolute;
@@ -50,6 +53,7 @@
         display: inline-block;
         margin: 0;
         padding: 0;
+        height: $test + 0px;
       }
     }
   }

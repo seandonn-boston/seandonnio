@@ -1,4 +1,4 @@
-@import "global/styles/config";
+@use "../../global/styles/config.scss";
 
 .Veil {
   display: block;
@@ -8,10 +8,10 @@
   bottom: 0;
   left: 0;
   right: 0;
-  background-color: $black;
+  background-color: config.$black;
   opacity: 0.5;
-  z-index: $z-300;
+  z-index: config.$z-300;
   &--behindNavigationItems {
-    z-index: $z-100;
+    z-index: config.$z-100;
   }
 }

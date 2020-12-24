@@ -1,8 +1,8 @@
-@import "global/styles/config";
+@use "../../styles/config.scss";
 
 .ErrorMsg {
   text-align: center;
-  background-color: $white;
+  background-color: config.$white;
   width: auto;
-  padding: $spacer-5;
+  padding: config.$spacer-5;
 }

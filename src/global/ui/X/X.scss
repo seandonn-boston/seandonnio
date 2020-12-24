@@ -1,15 +1,15 @@
-@import "../../styles/config";
+@use "../../styles/config.scss";
 
 .X {
   position: absolute;
   align-items: center;
-  top: -$spacer-10;
-  right: -$spacer-10;
-  width: $spacer-10;
-  height: $spacer-10;
+  top: -(config.$spacer-10);
+  right: -(config.$spacer-10);
+  width: config.$spacer-10;
+  height: config.$spacer-10;
   margin: auto 0;
-  z-index: $z-100;
+  z-index: config.$z-100;
   cursor: pointer;
-  transition: all $to-s-ms;
+  transition: all config.$to-s-ms;
   transform-origin: center;
 }

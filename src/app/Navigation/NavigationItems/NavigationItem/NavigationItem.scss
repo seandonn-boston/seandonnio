@@ -1,13 +1,13 @@
-@import "../../../global/styles/config.scss";
+@use "../../../../global/styles/config.scss";
 
 .NavigationItem {
   display: block;
-  color: $black;
+  color: config.$black;
   text-decoration: none;
   width: 100%;
   display: block;
-  padding: $spacer-3 0;
-  margin: $spacer-1 0;
+  padding: config.$spacer-3 0;
+  margin: config.$spacer-1 0;
   text-align: center;
 
   &-active {
@@ -15,12 +15,12 @@
   }
 
   &:hover {
-    background-color: $theme-secondary;
+    background-color: config.$theme-secondary;
   }
 }
 
-@media only screen and (min-width: $bp-m-px) {
+@media only screen and (min-width: config.$bp-m-px) {
   .NavigationItem {
-    padding: $spacer-3 $spacer-4;
+    padding: config.$spacer-3 config.$spacer-4;
   }
 }

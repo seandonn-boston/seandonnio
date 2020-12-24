@@ -1,6 +1,6 @@
-@import "../../../../styles/config.scss";
+@use "../../../../styles/config.scss";
 
 .Legend {
-  margin-bottom: $spacer-4;
+  margin-bottom: config.$spacer-4;
   padding: 3px 0 3px 3px;
 }

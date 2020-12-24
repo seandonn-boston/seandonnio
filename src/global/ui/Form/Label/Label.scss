@@ -1,5 +1,5 @@
-@import "../../../styles/config.scss";
-@import "../../../styles/mixins/_visuallyHidden.scss";
+@use "../../../styles/config.scss";
+@use "../../../styles/mixins/_visuallyHidden.scss";
 
 .Label {
   grid-column: 1 / 2;
@@ -13,6 +13,6 @@
 // TODO: Fix up the bp config, make it much more expansive in terms of these edge cases. i.e. 768 vs 767
 @media only screen and (max-width: 767px) {
   .Label {
-    @include visuallyHidden;
+    @include visuallyHidden.visuallyHidden;
   }
 }

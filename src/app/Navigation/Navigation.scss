@@ -1,4 +1,4 @@
-@import "../global/styles/config";
+@use "../../global/styles/config.scss";
 
 .Navigation {
   position: relative;
@@ -7,14 +7,14 @@
 
   &-innerWrapper {
     display: flex;
-    background-color: $theme-primary;
+    background-color: config.$theme-primary;
     position: relative;
-    z-index: $z-300;
+    z-index: config.$z-300;
   }
 
   &--rightAlign {
     display: inline-flex;
-    margin: 0 $spacer-4 0 auto;
+    margin: 0 config.$spacer-4 0 auto;
   }
 
   &-logo {
@@ -23,9 +23,9 @@
   }
 }
 
-@media only screen and (min-width: $bp-m-px) {
+@media only screen and (min-width: config.$bp-m-px) {
   .Navigation {
-    background-color: $theme-primary;
+    background-color: config.$theme-primary;
 
     &-innerWrapper {
       max-width: 90%;

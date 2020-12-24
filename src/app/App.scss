@@ -1,4 +1,4 @@
-@import "../global/styles/config.scss";
+@use "../global/styles/config.scss";
 
 .App {
   display: block;
@@ -6,5 +6,5 @@
   width: 90%;
   max-width: 1024px;
   margin: auto;
-  z-index: $z-000;
+  z-index: config.$z-000;
 }
