@@ -1,4 +1,5 @@
 @use "sass:meta";
+@use "global/styles/_reset.scss";
+@use "global/styles/_typography.scss";
+
 @import-normalize; /* bring in PostCSS normalize.css styles for adding CSS reset - should be first css import of entire project*/
-@include meta.load-css("global/styles/_reset.scss");
-@include meta.load-css("global/styles/_typography.scss");
