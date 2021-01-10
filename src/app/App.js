@@ -28,7 +28,7 @@ export const App = () => {
       <Navigation />
       {isModalOpen && <Modal />}
       {isVeilOpen && <Veil />}
-      <section className={app}>
+      <main className={app}>
         <Suspense fallback={<Loader />}>
           <Switch>
             <Route path="/portfolio" component={PortfolioPage} />
@@ -37,7 +37,7 @@ export const App = () => {
             <Route path="/" component={HomePage} />
           </Switch>
         </Suspense>
-      </section>
+      </main>
     </HashRouter>
   );
 };
