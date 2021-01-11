@@ -67,6 +67,10 @@ import {
 // Posters;
 // Art;
 
+const ENTER_KEY = 13;
+const ARROW_UP_KEY = 38;
+const ARROW_DOWN_KEY = 40;
+
 const listOfImages = [
   {
     src: AdvTypePoster,
@@ -239,7 +243,7 @@ const getListOfUniqueTags = () => {
 export default function PortfolioPage() {
   const dispatch = useDispatch();
   const searchBarSearchInputRef = useRef(null);
-
+  const searchBarDropdownItemRef = useRef(null);
   const [searchBarSearchInputValue, setSearchBarSearchInputValue] = useState(
     ""
   );
@@ -360,6 +364,132 @@ export default function PortfolioPage() {
   };
 
   useEffect(() => {
+    if (document.activeElement !== searchBarSearchInputRef.current) {
+      setSearchBarDropdownIsOpen(false);
+    }
+    const acceptableKeys = [ENTER_KEY, ARROW_UP_KEY, ARROW_DOWN_KEY];
+    const lengthOfRemainingVisibleItemsInSearchBarDropdown = searchBarDropdownItems.filter(
+      ({ isSelected, isFiltered }) => {
+        return isSelected === false && isFiltered === false;
+      }
+    ).length;
+
+    const onKeyDownHandler = (e) => {
+      if (
+        acceptableKeys.includes(e.which) &&
+        lengthOfRemainingVisibleItemsInSearchBarDropdown === 0
+      ) {
+        return;
+      }
+      const indexOfActiveItemInSearchBarDropdownItems = searchBarDropdownItems.findIndex(
+        ({ isActive }) => isActive
+      );
+      const newState = [...searchBarDropdownItems];
+      let indexOfNextActiveInSearchBarDropdownItems = -1;
+      switch (e.which) {
+        case ENTER_KEY:
+          const selectionOfActiveItem =
+            searchBarDropdownItemRef.current.dataset.value;
+          if (!searchBarSelectedTags.includes(searchBarDropdownItemRef)) {
+            setSearchBarSelectedTags((prev) => [
+              ...prev,
+              selectionOfActiveItem,
+            ]);
+          }
+          newState[indexOfActiveItemInSearchBarDropdownItems].isSelected = true;
+          newState[indexOfActiveItemInSearchBarDropdownItems].isActive = false;
+          for (
+            let i = indexOfActiveItemInSearchBarDropdownItems + 1;
+            i < searchBarDropdownItems.length &&
+            indexOfNextActiveInSearchBarDropdownItems === -1;
+            i++
+          ) {
+            if (
+              !searchBarDropdownItems[i].isFiltered &&
+              !searchBarDropdownItems[i].isSelected
+            ) {
+              indexOfNextActiveInSearchBarDropdownItems = i;
+            }
+          }
+          if (!(indexOfNextActiveInSearchBarDropdownItems > -1)) {
+            for (
+              let i = indexOfActiveItemInSearchBarDropdownItems - 1;
+              i >= 0 && indexOfNextActiveInSearchBarDropdownItems === -1;
+              i--
+            ) {
+              if (
+                !searchBarDropdownItems[i].isFiltered &&
+                !searchBarDropdownItems[i].isSelected
+              ) {
+                indexOfNextActiveInSearchBarDropdownItems = i;
+              }
+            }
+          }
+          if (indexOfNextActiveInSearchBarDropdownItems > -1) {
+            newState[indexOfNextActiveInSearchBarDropdownItems].isActive = true;
+          }
+          setSearchBarDropdownItems(newState);
+          break;
+        case ARROW_UP_KEY:
+          newState[indexOfActiveItemInSearchBarDropdownItems].isActive = false;
+          for (
+            let i = indexOfActiveItemInSearchBarDropdownItems - 1;
+            indexOfNextActiveInSearchBarDropdownItems === -1;
+            i--
+          ) {
+            if (i < 0) {
+              i = searchBarDropdownItems.length - 1;
+            }
+            if (
+              !searchBarDropdownItems[i].isFiltered &&
+              !searchBarDropdownItems[i].isSelected
+            ) {
+              indexOfNextActiveInSearchBarDropdownItems = i;
+            }
+          }
+          if (indexOfNextActiveInSearchBarDropdownItems > -1) {
+            newState[indexOfNextActiveInSearchBarDropdownItems].isActive = true;
+          }
+          setSearchBarDropdownItems(newState);
+          break;
+        case ARROW_DOWN_KEY:
+          newState[indexOfActiveItemInSearchBarDropdownItems].isActive = false;
+          for (
+            let i = indexOfActiveItemInSearchBarDropdownItems + 1;
+            indexOfNextActiveInSearchBarDropdownItems === -1;
+            i++
+          ) {
+            if (i >= searchBarDropdownItems.length) {
+              i = 0;
+            }
+            if (
+              !searchBarDropdownItems[i].isFiltered &&
+              !searchBarDropdownItems[i].isSelected
+            ) {
+              indexOfNextActiveInSearchBarDropdownItems = i;
+            }
+          }
+          if (indexOfNextActiveInSearchBarDropdownItems > -1) {
+            newState[indexOfNextActiveInSearchBarDropdownItems].isActive = true;
+          }
+          setSearchBarDropdownItems(newState);
+          break;
+        default:
+          break;
+      }
+    };
+
+    document.addEventListener("keydown", onKeyDownHandler);
+    return () => {
+      document.removeEventListener("keydown", onKeyDownHandler);
+    };
+  }, [
+    setSearchBarDropdownIsOpen,
+    searchBarDropdownItems,
+    searchBarSelectedTags,
+  ]);
+
+  useEffect(() => {
     setSearchBarDropdownItems(
       getListOfUniqueTags().map((tag, i) => {
         return {
@@ -390,9 +520,9 @@ export default function PortfolioPage() {
         <input
           placeholder="Search..."
           type="search"
+          ref={searchBarSearchInputRef}
           value={searchBarSearchInputValue}
           className={portfolioPageSearchBarSearchInput}
-          ref={searchBarSearchInputRef}
           onChange={handleSearchBarSearchInputChange}
         />
         {searchBarDropdownIsOpen && (
@@ -411,6 +541,7 @@ export default function PortfolioPage() {
                     [portfolioPageSearchBarDropdownItemActive]: isActive,
                   })}
                   data-value={tag}
+                  ref={isActive ? searchBarDropdownItemRef : null}
                   onClick={onSearchBarDropdownItemClick}
                 >
                   {tag}
