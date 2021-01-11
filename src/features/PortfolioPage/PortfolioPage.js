@@ -37,6 +37,7 @@ import {
   portfolioPageSearchBarDropdown,
   portfolioPageSearchBarDropdownVisible,
   portfolioPageSearchBarDropdownItem,
+  portfolioPageSearchBarDropdownItemActive,
   portfolioPageSearchBarDropdownItemHidden,
   portfolioPageImages,
   portfolioPageFigure,
@@ -69,6 +70,7 @@ import {
 const listOfImages = [
   {
     src: AdvTypePoster,
+    isFiltered: false,
     alt: "",
     title: "Tomorrow Never Knows",
     description: "A visual guide to the anatomy of type - 2013",
@@ -83,6 +85,7 @@ const listOfImages = [
   },
   {
     src: BlueMythAlbum,
+    isFiltered: false,
     alt: "",
     title: "Blue Myth",
     description:
@@ -91,6 +94,7 @@ const listOfImages = [
   },
   {
     src: BoardPoster,
+    isFiltered: false,
     alt: "",
     title: "Boards",
     description:
@@ -99,6 +103,7 @@ const listOfImages = [
   },
   {
     src: BoeingAnnualReport,
+    isFiltered: false,
     alt: "",
     title: "Boeing 2013 Annual Report",
     description:
@@ -107,6 +112,7 @@ const listOfImages = [
   },
   {
     src: DarkMatterAlbum,
+    isFiltered: false,
     alt: "",
     title: "Dark Matter - Binary Sol",
     description:
@@ -115,6 +121,7 @@ const listOfImages = [
   },
   {
     src: ElectronicAlbumCover,
+    isFiltered: false,
     alt: "",
     title:
       "Electronic Compositions in Red, Diminished Blue, and Yellow Flat Major - earWorm",
@@ -124,6 +131,7 @@ const listOfImages = [
   },
   {
     src: ExhibitionPoster,
+    isFiltered: false,
     alt: "",
     title: "Senior Graphic Design Exhibition and Reception",
     description:
@@ -132,6 +140,7 @@ const listOfImages = [
   },
   {
     src: IgnitionPoster,
+    isFiltered: false,
     alt: "",
     title: "UNHEDMC Presents: Ignition",
     description:
@@ -140,6 +149,7 @@ const listOfImages = [
   },
   {
     src: InfographicPoster,
+    isFiltered: false,
     alt: "",
     title: "Wednesday",
     description:
@@ -155,6 +165,7 @@ const listOfImages = [
   },
   {
     src: NewModernMagazineCover,
+    isFiltered: false,
     alt: "",
     title: "New Modern Magazine",
     description:
@@ -169,6 +180,7 @@ const listOfImages = [
   },
   {
     src: OurMovingWorldPoster,
+    isFiltered: false,
     alt: "",
     title: "Our Moving World",
     description:
@@ -177,6 +189,7 @@ const listOfImages = [
   },
   {
     src: RavenGigPoster,
+    isFiltered: false,
     alt: "",
     title: "Rave: N",
     description:
@@ -185,6 +198,7 @@ const listOfImages = [
   },
   {
     src: SlcUiConcept,
+    isFiltered: false,
     alt: "",
     title: "Sakkonnet Lobster Company UI",
     description: "A UI design for Sakkonnet Lobster Company",
@@ -192,6 +206,7 @@ const listOfImages = [
   },
   {
     src: TwilightPrincessPoster,
+    isFiltered: false,
     alt: "",
     title: "Twilight Princess Portal",
     description:
@@ -200,6 +215,7 @@ const listOfImages = [
   },
   {
     src: YouthGroupLogo,
+    isFiltered: false,
     alt: "",
     title: "Youth_____Group",
     description:
@@ -210,13 +226,13 @@ const listOfImages = [
 
 const getListOfUniqueTags = () => {
   const tagsArr = [];
-  listOfImages.map(({ tags }) => {
-    tags.map((tag) => {
+  listOfImages.map(({ tags }) =>
+    tags.forEach((tag) => {
       if (!tagsArr.includes(tag)) {
         tagsArr.push(tag);
       }
-    });
-  });
+    })
+  );
   return tagsArr;
 };
 
@@ -232,53 +248,126 @@ export default function PortfolioPage() {
   const [searchBarDropdownItems, setSearchBarDropdownItems] = useState([]);
   const [images, setImages] = useState([]);
 
-  const searchBarDropdownClasses = cx(portfolioPageSearchBarDropdown, {
-    [portfolioPageSearchBarDropdownVisible]: searchBarDropdownIsOpen,
-  });
-
-  const onSearchBarDropdownItemClick = (e) => {
-    const selection = e.target.dataset.value;
-    const i = searchBarDropdownItems.findIndex(({ tag }) => tag === selection);
-    const newState = [...searchBarDropdownItems];
-    newState[i].isSelected = !newState[i].isSelected;
-    setSearchBarSelectedTags((state) => [...state, selection]);
-    setSearchBarDropdownItems(newState);
-  };
-
-  const onSearchBarSelectedTagClick = (e) => {
-    const selection = e.target.dataset.value;
-    const i = searchBarDropdownItems.findIndex(({ tag }) => tag === selection);
-    const indexOfSelectedTag = searchBarSelectedTags.indexOf(selection);
-    const newSelectedState = [...searchBarSelectedTags];
-    newSelectedState.splice(indexOfSelectedTag, 1);
-    const newDropdownState = [...searchBarDropdownItems];
-    newDropdownState[i].isSelected = !newDropdownState[i].isSelected;
-    setSearchBarSelectedTags(newSelectedState);
-    setSearchBarDropdownItems(newDropdownState);
-  };
-
   const onSearchBarClick = () => {
     searchBarSearchInputRef.current.focus();
     setSearchBarDropdownIsOpen(true);
   };
 
+  const onSearchBarDropdownItemClick = (e) => {
+    const selection = e.target.dataset.value;
+    if (!searchBarSelectedTags.includes(selection)) {
+      setSearchBarSelectedTags((state) => [...state, selection]);
+    }
+    const indexOfSelectionInSearchBarDropdownItems = searchBarDropdownItems.findIndex(
+      ({ tag }) => tag === selection
+    );
+    const indexOfLastActiveInSearchBarDropdownItems = searchBarDropdownItems.findIndex(
+      ({ isActive }) => isActive
+    );
+    const newState = [...searchBarDropdownItems];
+    newState[indexOfSelectionInSearchBarDropdownItems].isSelected = true;
+    if (indexOfLastActiveInSearchBarDropdownItems > -1) {
+      newState[indexOfLastActiveInSearchBarDropdownItems].isActive = false;
+    }
+    let indexOfNextActiveInSearchBarDropdownItems = -1;
+    for (
+      let i = indexOfSelectionInSearchBarDropdownItems + 1;
+      i < searchBarDropdownItems.length &&
+      indexOfNextActiveInSearchBarDropdownItems === -1;
+      i++
+    ) {
+      if (
+        !searchBarDropdownItems[i].isFiltered &&
+        !searchBarDropdownItems[i].isSelected
+      ) {
+        indexOfNextActiveInSearchBarDropdownItems = i;
+      }
+    }
+    if (!(indexOfNextActiveInSearchBarDropdownItems > -1)) {
+      for (
+        let i = indexOfSelectionInSearchBarDropdownItems - 1;
+        i >= 0 && indexOfNextActiveInSearchBarDropdownItems === -1;
+        i--
+      ) {
+        if (
+          !searchBarDropdownItems[i].isFiltered &&
+          !searchBarDropdownItems[i].isSelected
+        ) {
+          indexOfNextActiveInSearchBarDropdownItems = i;
+        }
+      }
+    }
+    if (indexOfNextActiveInSearchBarDropdownItems > -1) {
+      newState[indexOfNextActiveInSearchBarDropdownItems].isActive = true;
+    }
+    setSearchBarDropdownItems(newState);
+  };
+
+  const onSearchBarSelectedTagClick = (e) => {
+    const selection = e.target.dataset.value;
+    const indexOfSelectedTag = searchBarSelectedTags.indexOf(selection);
+    const newSelectedState = [...searchBarSelectedTags];
+    newSelectedState.splice(indexOfSelectedTag, 1);
+    setSearchBarSelectedTags(newSelectedState);
+    if (searchBarDropdownItems.some(({ tag }) => tag === selection)) {
+      const i = searchBarDropdownItems.findIndex(
+        ({ tag }) => tag === selection
+      );
+      const newDropdownState = [...searchBarDropdownItems];
+      newDropdownState[i].isSelected = false;
+      setSearchBarDropdownItems(newDropdownState);
+    }
+  };
+
   const handleSearchBarSearchInputChange = (e) => {
-    const value = e.target.value.toLowerCase();
+    const value = e.target.value;
     const filteredDropdownItems = searchBarDropdownItems.map((item) => {
-      if (!item.tag.toLowerCase().includes(value)) {
+      if (!item.tag.toLowerCase().includes(value.toLowerCase())) {
         return { ...item, isFiltered: true };
       } else {
         return { ...item, isFiltered: false };
       }
     });
+    const indexOfLastActiveInSearchBarDropdownItems = filteredDropdownItems.findIndex(
+      ({ isActive }) => isActive
+    );
+    if (indexOfLastActiveInSearchBarDropdownItems > -1) {
+      filteredDropdownItems[
+        indexOfLastActiveInSearchBarDropdownItems
+      ].isActive = false;
+    }
+    let indexOfNextActiveInSearchBarDropdownItems = -1;
+    for (
+      let i = 0;
+      i < filteredDropdownItems.length &&
+      indexOfNextActiveInSearchBarDropdownItems === -1;
+      i++
+    ) {
+      if (
+        !filteredDropdownItems[i].isFiltered &&
+        !filteredDropdownItems[i].isSelected
+      ) {
+        indexOfNextActiveInSearchBarDropdownItems = i;
+      }
+    }
+    if (indexOfNextActiveInSearchBarDropdownItems > -1) {
+      filteredDropdownItems[
+        indexOfNextActiveInSearchBarDropdownItems
+      ].isActive = true;
+    }
     setSearchBarDropdownItems(filteredDropdownItems);
     setSearchBarSearchInputValue(value);
   };
 
   useEffect(() => {
     setSearchBarDropdownItems(
-      getListOfUniqueTags().map((tag) => {
-        return { tag: tag, isSelected: false, isFiltered: false };
+      getListOfUniqueTags().map((tag, i) => {
+        return {
+          tag: tag,
+          isSelected: false,
+          isFiltered: false,
+          isActive: i === 0 ? true : false,
+        };
       })
     );
     setImages(listOfImages);
@@ -298,25 +387,28 @@ export default function PortfolioPage() {
             {tag}
           </span>
         ))}
-        <form>
-          <input
-            placeholder="Search..."
-            type="search"
-            value={searchBarSearchInputValue}
-            className={portfolioPageSearchBarSearchInput}
-            ref={searchBarSearchInputRef}
-            onChange={handleSearchBarSearchInputChange}
-          />
-        </form>
+        <input
+          placeholder="Search..."
+          type="search"
+          value={searchBarSearchInputValue}
+          className={portfolioPageSearchBarSearchInput}
+          ref={searchBarSearchInputRef}
+          onChange={handleSearchBarSearchInputChange}
+        />
         {searchBarDropdownIsOpen && (
-          <div className={searchBarDropdownClasses}>
+          <div
+            className={cx(portfolioPageSearchBarDropdown, {
+              [portfolioPageSearchBarDropdownVisible]: searchBarDropdownIsOpen,
+            })}
+          >
             {searchBarDropdownItems.map(
-              ({ tag, isSelected, isFiltered }, i) => (
+              ({ tag, isSelected, isFiltered, isActive }, i) => (
                 <div
                   key={i}
                   className={cx(portfolioPageSearchBarDropdownItem, {
                     [portfolioPageSearchBarDropdownItemHidden]:
                       isSelected || isFiltered,
+                    [portfolioPageSearchBarDropdownItemActive]: isActive,
                   })}
                   data-value={tag}
                   onClick={onSearchBarDropdownItemClick}
