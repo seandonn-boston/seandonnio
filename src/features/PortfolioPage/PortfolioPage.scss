@@ -53,6 +53,9 @@
     place-self: stretch end;
     margin: auto;
     display: flex;
+    &--hidden {
+      display: none;
+    }
   }
   // Accessibly hide figcaption unless parent is hovered
   &-figcaption {

@@ -1,12 +1,11 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useReducer, useRef, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import cx from "classnames";
 
 import { Header } from "../../global/ui/Header/Header";
+import { Image } from "../../global/ui/Image/Image";
 
 import { modalStateUpdated } from "../../app/Modal/modalSlice";
-
-import { Image } from "../../global/ui/Image/Image";
 
 // TODO: Solve this - lazy load them and consider a backend and AWS for image solutions. An image object would be best to serve
 import AdvTypePoster from "../../global/assets/img/adv_typography_poster.gif";
@@ -41,6 +40,7 @@ import {
   portfolioPageSearchBarDropdownItemHidden,
   portfolioPageImages,
   portfolioPageFigure,
+  portfolioPageFigureHidden,
   portfolioPageFigcaption,
   portfolioPageFigcaptionHeader,
   portfolioPageFigcaptionDescription,
@@ -48,30 +48,12 @@ import {
   portfolioPageFigcaptionTagsTag,
 } from "./PortfolioPage.scss";
 
-// Possible Sections - organize categories. Maybe add tags for them? This could be another great usecase for Redux
-// Dev;
-// Pixels;
-// Print;
-// Software Engineering;
-// Front End;
-// Back End;
-// Full Stack;
-// SPA;
-// List various tech used per project - Photoshop + Illustrator / React + SCSS??
-// File format?
-// Graphic Design;
-// UI;
-// Albums;
-// Logos;
-// Publications;
-// Posters;
-// Art;
-
 const ENTER_KEY = 13;
+const ESCAPE_KEY = 27;
 const ARROW_UP_KEY = 38;
 const ARROW_DOWN_KEY = 40;
 
-const listOfImages = [
+const initialImagesState = [
   {
     src: AdvTypePoster,
     isFiltered: false,
@@ -228,29 +210,35 @@ const listOfImages = [
   },
 ];
 
-const getListOfUniqueTags = () => {
-  const tagsArr = [];
-  listOfImages.map(({ tags }) =>
-    tags.forEach((tag) => {
-      if (!tagsArr.includes(tag)) {
-        tagsArr.push(tag);
-      }
-    })
-  );
-  return tagsArr;
-};
-
 export default function PortfolioPage() {
   const dispatch = useDispatch();
-  const searchBarSearchInputRef = useRef(null);
-  const searchBarDropdownItemRef = useRef(null);
+
+  const imagesReducer = (state) => {
+    if (searchBarSelectedTags.size === 0) {
+      return initialImagesState;
+    }
+    return state.map((item) => {
+      const isFiltered = !item.tags.some((tag) =>
+        searchBarSelectedTags.has(tag)
+      );
+      return { ...item, isFiltered };
+    });
+  };
+
   const [searchBarSearchInputValue, setSearchBarSearchInputValue] = useState(
     ""
   );
-  const [searchBarSelectedTags, setSearchBarSelectedTags] = useState([]);
+  const [searchBarSelectedTags, setSearchBarSelectedTags] = useState(new Set());
   const [searchBarDropdownIsOpen, setSearchBarDropdownIsOpen] = useState(false);
   const [searchBarDropdownItems, setSearchBarDropdownItems] = useState([]);
-  const [images, setImages] = useState([]);
+  const [images, dispatchImagesReducer] = useReducer(
+    imagesReducer,
+    initialImagesState
+  );
+
+  const searchBarSearchInputRef = useRef(null);
+  const searchBarDropdownRef = useRef(null);
+  const searchBarDropdownItemRef = useRef(null);
 
   const onSearchBarClick = () => {
     searchBarSearchInputRef.current.focus();
@@ -259,182 +247,230 @@ export default function PortfolioPage() {
 
   const onSearchBarDropdownItemClick = (e) => {
     const selection = e.target.dataset.value;
-    if (!searchBarSelectedTags.includes(selection)) {
-      setSearchBarSelectedTags((state) => [...state, selection]);
-    }
-    const indexOfSelectionInSearchBarDropdownItems = searchBarDropdownItems.findIndex(
-      ({ tag }) => tag === selection
-    );
-    const indexOfLastActiveInSearchBarDropdownItems = searchBarDropdownItems.findIndex(
-      ({ isActive }) => isActive
-    );
-    const newState = [...searchBarDropdownItems];
-    newState[indexOfSelectionInSearchBarDropdownItems].isSelected = true;
-    if (indexOfLastActiveInSearchBarDropdownItems > -1) {
-      newState[indexOfLastActiveInSearchBarDropdownItems].isActive = false;
-    }
-    let indexOfNextActiveInSearchBarDropdownItems = -1;
+    const newSelectedTagsSet = new Set(searchBarSelectedTags);
+    newSelectedTagsSet.add(selection);
+    setSearchBarSelectedTags(newSelectedTagsSet);
+
+    let indexOfSelectionInDropdownItems = -1;
+    let newDropdownItemsState = searchBarDropdownItems.map((item, i) => {
+      let newItem = { ...item };
+      if (newItem.tag === selection) {
+        indexOfSelectionInDropdownItems = i;
+        newItem = Object.assign({}, newItem, { isSelected: true });
+      }
+      if (newItem.isActive) {
+        newItem = Object.assign({}, newItem, { isActive: false });
+      }
+      return newItem;
+    });
+
+    let indexOfNextActiveItemInDropdown = -1;
     for (
-      let i = indexOfSelectionInSearchBarDropdownItems + 1;
+      let i = indexOfSelectionInDropdownItems + 1;
       i < searchBarDropdownItems.length &&
-      indexOfNextActiveInSearchBarDropdownItems === -1;
+      indexOfNextActiveItemInDropdown === -1;
       i++
     ) {
       if (
         !searchBarDropdownItems[i].isFiltered &&
         !searchBarDropdownItems[i].isSelected
       ) {
-        indexOfNextActiveInSearchBarDropdownItems = i;
+        indexOfNextActiveItemInDropdown = i;
       }
     }
-    if (!(indexOfNextActiveInSearchBarDropdownItems > -1)) {
+    if (indexOfNextActiveItemInDropdown <= -1) {
       for (
-        let i = indexOfSelectionInSearchBarDropdownItems - 1;
-        i >= 0 && indexOfNextActiveInSearchBarDropdownItems === -1;
+        let i = indexOfSelectionInDropdownItems - 1;
+        i >= 0 && indexOfNextActiveItemInDropdown === -1;
         i--
       ) {
         if (
           !searchBarDropdownItems[i].isFiltered &&
           !searchBarDropdownItems[i].isSelected
         ) {
-          indexOfNextActiveInSearchBarDropdownItems = i;
+          indexOfNextActiveItemInDropdown = i;
         }
       }
     }
-    if (indexOfNextActiveInSearchBarDropdownItems > -1) {
-      newState[indexOfNextActiveInSearchBarDropdownItems].isActive = true;
+    if (indexOfNextActiveItemInDropdown > -1) {
+      newDropdownItemsState = newDropdownItemsState.map((item, i) => {
+        let newItem = { ...item };
+        if (i === indexOfNextActiveItemInDropdown) {
+          newItem = Object.assign({}, newItem, { isActive: true });
+        }
+        return newItem;
+      });
     }
-    setSearchBarDropdownItems(newState);
+
+    setSearchBarDropdownItems(newDropdownItemsState);
   };
 
   const onSearchBarSelectedTagClick = (e) => {
     const selection = e.target.dataset.value;
-    const indexOfSelectedTag = searchBarSelectedTags.indexOf(selection);
-    const newSelectedState = [...searchBarSelectedTags];
-    newSelectedState.splice(indexOfSelectedTag, 1);
-    setSearchBarSelectedTags(newSelectedState);
-    if (searchBarDropdownItems.some(({ tag }) => tag === selection)) {
-      const i = searchBarDropdownItems.findIndex(
-        ({ tag }) => tag === selection
-      );
-      const newDropdownState = [...searchBarDropdownItems];
-      newDropdownState[i].isSelected = false;
-      setSearchBarDropdownItems(newDropdownState);
-    }
+    let newSelectedTagsSet = new Set(searchBarSelectedTags);
+    newSelectedTagsSet.delete(selection);
+    setSearchBarSelectedTags(newSelectedTagsSet);
+    let noActiveItems = !searchBarDropdownItems.some(
+      ({ isActive }) => isActive
+    );
+    let newDropdownItemsState = searchBarDropdownItems.map((item) => {
+      let newItem = { ...item };
+      if (newItem.tag === selection) {
+        newItem = Object.assign({}, newItem, { isSelected: false });
+        if (noActiveItems) {
+          newItem = Object.assign({}, newItem, { isActive: true });
+        }
+      }
+      return newItem;
+    });
+    setSearchBarDropdownItems(newDropdownItemsState);
   };
 
   const handleSearchBarSearchInputChange = (e) => {
     const value = e.target.value;
-    const filteredDropdownItems = searchBarDropdownItems.map((item) => {
-      if (!item.tag.toLowerCase().includes(value.toLowerCase())) {
-        return { ...item, isFiltered: true };
+    let filteredDropdownItems = searchBarDropdownItems.map((item) => {
+      let newItem = { ...item };
+      if (!newItem.tag.toLowerCase().includes(value.toLowerCase())) {
+        newItem = Object.assign({}, newItem, { isFiltered: true });
       } else {
-        return { ...item, isFiltered: false };
+        newItem = Object.assign({}, newItem, { isFiltered: false });
       }
+      if (newItem.isActive) {
+        newItem = Object.assign({}, newItem, { isActive: false });
+      }
+      return newItem;
     });
-    const indexOfLastActiveInSearchBarDropdownItems = filteredDropdownItems.findIndex(
-      ({ isActive }) => isActive
-    );
-    if (indexOfLastActiveInSearchBarDropdownItems > -1) {
-      filteredDropdownItems[
-        indexOfLastActiveInSearchBarDropdownItems
-      ].isActive = false;
-    }
-    let indexOfNextActiveInSearchBarDropdownItems = -1;
+    let indexOfNextActiveItemInDropdown = -1;
     for (
       let i = 0;
       i < filteredDropdownItems.length &&
-      indexOfNextActiveInSearchBarDropdownItems === -1;
+      indexOfNextActiveItemInDropdown === -1;
       i++
     ) {
       if (
         !filteredDropdownItems[i].isFiltered &&
         !filteredDropdownItems[i].isSelected
       ) {
-        indexOfNextActiveInSearchBarDropdownItems = i;
+        indexOfNextActiveItemInDropdown = i;
       }
     }
-    if (indexOfNextActiveInSearchBarDropdownItems > -1) {
-      filteredDropdownItems[
-        indexOfNextActiveInSearchBarDropdownItems
-      ].isActive = true;
+    if (indexOfNextActiveItemInDropdown > -1) {
+      filteredDropdownItems = filteredDropdownItems.map((item, i) => {
+        let newItem = { ...item };
+        if (i === indexOfNextActiveItemInDropdown) {
+          newItem = Object.assign({}, newItem, { isActive: true });
+        }
+        return newItem;
+      });
     }
     setSearchBarDropdownItems(filteredDropdownItems);
     setSearchBarSearchInputValue(value);
   };
 
+  // handle filtering images when the selected tags change
   useEffect(() => {
+    dispatchImagesReducer();
+  }, [searchBarSelectedTags]);
+
+  // handle certain keyboard events for dropdown
+  useEffect(() => {
+    // skip if search bar is not in focus
     if (document.activeElement !== searchBarSearchInputRef.current) {
-      setSearchBarDropdownIsOpen(false);
+      return;
     }
-    const acceptableKeys = [ENTER_KEY, ARROW_UP_KEY, ARROW_DOWN_KEY];
-    const lengthOfRemainingVisibleItemsInSearchBarDropdown = searchBarDropdownItems.filter(
-      ({ isSelected, isFiltered }) => {
-        return isSelected === false && isFiltered === false;
-      }
-    ).length;
 
     const onKeyDownHandler = (e) => {
+      const keysRequiringVisibleItemsInSearchBarDropdown = [
+        ENTER_KEY,
+        ARROW_UP_KEY,
+        ARROW_DOWN_KEY,
+      ];
+      const lengthOfRemainingVisibleItemsInSearchBarDropdown = searchBarDropdownItems.filter(
+        ({ isSelected, isFiltered }) => {
+          return isSelected === false && isFiltered === false;
+        }
+      ).length;
+      // skip if key pressed requires 1 item in dropdown while dropdown has 0 items
       if (
-        acceptableKeys.includes(e.which) &&
+        keysRequiringVisibleItemsInSearchBarDropdown.includes(e.which) &&
         lengthOfRemainingVisibleItemsInSearchBarDropdown === 0
       ) {
         return;
       }
-      const indexOfActiveItemInSearchBarDropdownItems = searchBarDropdownItems.findIndex(
-        ({ isActive }) => isActive
-      );
-      const newState = [...searchBarDropdownItems];
-      let indexOfNextActiveInSearchBarDropdownItems = -1;
+      let newDropdownItemsState = [...searchBarDropdownItems];
+      let indexOfActiveItemInSearchBarDropdownItems = -1;
+      let indexOfNextActiveItemInDropdown = -1;
       switch (e.which) {
         case ENTER_KEY:
           const selectionOfActiveItem =
             searchBarDropdownItemRef.current.dataset.value;
-          if (!searchBarSelectedTags.includes(searchBarDropdownItemRef)) {
-            setSearchBarSelectedTags((prev) => [
-              ...prev,
-              selectionOfActiveItem,
-            ]);
-          }
-          newState[indexOfActiveItemInSearchBarDropdownItems].isSelected = true;
-          newState[indexOfActiveItemInSearchBarDropdownItems].isActive = false;
+          const newSelectedTagsSet = new Set(searchBarSelectedTags);
+          newSelectedTagsSet.add(selectionOfActiveItem);
+          setSearchBarSelectedTags(newSelectedTagsSet);
+          newDropdownItemsState = newDropdownItemsState.map((item, i) => {
+            let newItem = { ...item };
+            if (newItem.isActive) {
+              indexOfActiveItemInSearchBarDropdownItems = i;
+              newItem = Object.assign({}, newItem, {
+                isSelected: true,
+                isActive: false,
+              });
+            }
+            return newItem;
+          });
           for (
             let i = indexOfActiveItemInSearchBarDropdownItems + 1;
             i < searchBarDropdownItems.length &&
-            indexOfNextActiveInSearchBarDropdownItems === -1;
+            indexOfNextActiveItemInDropdown === -1;
             i++
           ) {
             if (
               !searchBarDropdownItems[i].isFiltered &&
               !searchBarDropdownItems[i].isSelected
             ) {
-              indexOfNextActiveInSearchBarDropdownItems = i;
+              indexOfNextActiveItemInDropdown = i;
             }
           }
-          if (!(indexOfNextActiveInSearchBarDropdownItems > -1)) {
+          if (!(indexOfNextActiveItemInDropdown > -1)) {
             for (
               let i = indexOfActiveItemInSearchBarDropdownItems - 1;
-              i >= 0 && indexOfNextActiveInSearchBarDropdownItems === -1;
+              i >= 0 && indexOfNextActiveItemInDropdown === -1;
               i--
             ) {
               if (
                 !searchBarDropdownItems[i].isFiltered &&
                 !searchBarDropdownItems[i].isSelected
               ) {
-                indexOfNextActiveInSearchBarDropdownItems = i;
+                indexOfNextActiveItemInDropdown = i;
               }
             }
           }
-          if (indexOfNextActiveInSearchBarDropdownItems > -1) {
-            newState[indexOfNextActiveInSearchBarDropdownItems].isActive = true;
+          if (indexOfNextActiveItemInDropdown > -1) {
+            newDropdownItemsState = newDropdownItemsState.map((item, i) => {
+              let newItem = { ...item };
+              if (i === indexOfNextActiveItemInDropdown) {
+                newItem = Object.assign({}, newItem, { isActive: true });
+              }
+              return newItem;
+            });
           }
-          setSearchBarDropdownItems(newState);
+          setSearchBarDropdownItems(newDropdownItemsState);
+          break;
+        case ESCAPE_KEY:
+          setSearchBarDropdownIsOpen(false);
           break;
         case ARROW_UP_KEY:
-          newState[indexOfActiveItemInSearchBarDropdownItems].isActive = false;
+          newDropdownItemsState = newDropdownItemsState.map((item, i) => {
+            let newItem = { ...item };
+            if (newItem.isActive) {
+              indexOfActiveItemInSearchBarDropdownItems = i;
+              newItem = Object.assign({}, newItem, { isActive: false });
+            }
+            return newItem;
+          });
           for (
             let i = indexOfActiveItemInSearchBarDropdownItems - 1;
-            indexOfNextActiveInSearchBarDropdownItems === -1;
+            indexOfNextActiveItemInDropdown === -1;
             i--
           ) {
             if (i < 0) {
@@ -444,19 +480,32 @@ export default function PortfolioPage() {
               !searchBarDropdownItems[i].isFiltered &&
               !searchBarDropdownItems[i].isSelected
             ) {
-              indexOfNextActiveInSearchBarDropdownItems = i;
+              indexOfNextActiveItemInDropdown = i;
             }
           }
-          if (indexOfNextActiveInSearchBarDropdownItems > -1) {
-            newState[indexOfNextActiveInSearchBarDropdownItems].isActive = true;
+          if (indexOfNextActiveItemInDropdown > -1) {
+            newDropdownItemsState = newDropdownItemsState.map((item, i) => {
+              let newItem = { ...item };
+              if (i === indexOfNextActiveItemInDropdown) {
+                newItem = Object.assign({}, newItem, { isActive: true });
+              }
+              return newItem;
+            });
           }
-          setSearchBarDropdownItems(newState);
+          setSearchBarDropdownItems(newDropdownItemsState);
           break;
         case ARROW_DOWN_KEY:
-          newState[indexOfActiveItemInSearchBarDropdownItems].isActive = false;
+          newDropdownItemsState = newDropdownItemsState.map((item, i) => {
+            let newItem = { ...item };
+            if (newItem.isActive) {
+              indexOfActiveItemInSearchBarDropdownItems = i;
+              newItem = Object.assign({}, newItem, { isActive: false });
+            }
+            return newItem;
+          });
           for (
             let i = indexOfActiveItemInSearchBarDropdownItems + 1;
-            indexOfNextActiveInSearchBarDropdownItems === -1;
+            indexOfNextActiveItemInDropdown === -1;
             i++
           ) {
             if (i >= searchBarDropdownItems.length) {
@@ -466,15 +515,22 @@ export default function PortfolioPage() {
               !searchBarDropdownItems[i].isFiltered &&
               !searchBarDropdownItems[i].isSelected
             ) {
-              indexOfNextActiveInSearchBarDropdownItems = i;
+              indexOfNextActiveItemInDropdown = i;
             }
           }
-          if (indexOfNextActiveInSearchBarDropdownItems > -1) {
-            newState[indexOfNextActiveInSearchBarDropdownItems].isActive = true;
+          if (indexOfNextActiveItemInDropdown > -1) {
+            newDropdownItemsState = newDropdownItemsState.map((item, i) => {
+              let newItem = { ...item };
+              if (i === indexOfNextActiveItemInDropdown) {
+                newItem = Object.assign({}, newItem, { isActive: true });
+              }
+              return newItem;
+            });
           }
-          setSearchBarDropdownItems(newState);
+          setSearchBarDropdownItems(newDropdownItemsState);
           break;
         default:
+          console.log("default reached");
           break;
       }
     };
@@ -483,31 +539,45 @@ export default function PortfolioPage() {
     return () => {
       document.removeEventListener("keydown", onKeyDownHandler);
     };
-  }, [
-    setSearchBarDropdownIsOpen,
-    searchBarDropdownItems,
-    searchBarSelectedTags,
-  ]);
+  });
 
+  // handle closing the dropdown on click outside
   useEffect(() => {
-    setSearchBarDropdownItems(
-      getListOfUniqueTags().map((tag, i) => {
-        return {
-          tag: tag,
-          isSelected: false,
-          isFiltered: false,
-          isActive: i === 0 ? true : false,
-        };
-      })
+    if (!searchBarDropdownIsOpen) {
+      return;
+    }
+    const onClickOutsideHandler = (e) => {
+      if (searchBarDropdownRef.current.contains(e.target)) {
+        return;
+      }
+      setSearchBarDropdownIsOpen(false);
+    };
+    // NOTE mouseup rather than mousedown to seamlessly handle JSX onClick events
+    document.addEventListener("mouseup", onClickOutsideHandler);
+    return () => {
+      document.removeEventListener("mouseup", onClickOutsideHandler);
+    };
+  }, [searchBarDropdownIsOpen]);
+
+  // handle initializing data on page load
+  useEffect(() => {
+    const tagsSet = new Set(
+      [].concat(...initialImagesState.map(({ tags }) => tags))
     );
-    setImages(listOfImages);
-  }, [setSearchBarDropdownItems, setImages]);
+    const tagsArr = [...tagsSet].map((tag, i) => ({
+      tag: tag,
+      isSelected: false,
+      isFiltered: false,
+      isActive: i === 0 ? true : false,
+    }));
+    setSearchBarDropdownItems(tagsArr);
+  }, [setSearchBarDropdownItems]);
 
   return (
     <>
       <Header title="Portfolio" />
       <div className={portfolioPageSearchBar} onClick={onSearchBarClick}>
-        {searchBarSelectedTags.map((tag, i) => (
+        {[...searchBarSelectedTags].map((tag, i) => (
           <span
             key={i}
             className={portfolioPageSerachBarSelectedTag}
@@ -518,7 +588,7 @@ export default function PortfolioPage() {
           </span>
         ))}
         <input
-          placeholder="Search..."
+          placeholder="Tags"
           type="search"
           ref={searchBarSearchInputRef}
           value={searchBarSearchInputValue}
@@ -530,6 +600,7 @@ export default function PortfolioPage() {
             className={cx(portfolioPageSearchBarDropdown, {
               [portfolioPageSearchBarDropdownVisible]: searchBarDropdownIsOpen,
             })}
+            ref={searchBarDropdownRef}
           >
             {searchBarDropdownItems.map(
               ({ tag, isSelected, isFiltered, isActive }, i) => (
@@ -552,10 +623,12 @@ export default function PortfolioPage() {
         )}
       </div>
       <div className={portfolioPageImages}>
-        {images.map(({ src, alt, title, description, tags }, i) => (
+        {images.map(({ src, alt, title, description, tags, isFiltered }, i) => (
           <figure
             key={i}
-            className={portfolioPageFigure}
+            className={cx(portfolioPageFigure, {
+              [portfolioPageFigureHidden]: isFiltered,
+            })}
             onClick={() =>
               dispatch(modalStateUpdated({ type: "img", file: src }))
             }
