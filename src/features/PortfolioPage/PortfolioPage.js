@@ -588,11 +588,6 @@ export default function PortfolioPage() {
         isActive: i === 0 ? true : false,
       });
     });
-    //remove
-    const t = new Map(tagsMap);
-    let j = [...t.keys()].indexOf("Graphic Design");
-    console.log(j);
-    //remove
     setSearchBarDropdownItems(tagsMap);
   }, [setSearchBarDropdownItems]);
 
