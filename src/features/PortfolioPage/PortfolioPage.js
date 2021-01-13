@@ -236,7 +236,9 @@ export default function PortfolioPage() {
   );
   const [searchBarSelectedTags, setSearchBarSelectedTags] = useState(new Set());
   const [searchBarDropdownIsOpen, setSearchBarDropdownIsOpen] = useState(false);
-  const [searchBarDropdownItems, setSearchBarDropdownItems] = useState([]);
+  const [searchBarDropdownItems, setSearchBarDropdownItems] = useState(
+    new Map()
+  );
   const [images, dispatchImagesReducer] = useReducer(
     imagesReducer,
     initialImagesState
@@ -256,7 +258,7 @@ export default function PortfolioPage() {
       let indexOfNextActiveItemInDropdown = -1;
       for (
         let i = startingIndex + 1;
-        i < searchBarDropdownItems.length &&
+        i < searchBarDropdownItems.size &&
         indexOfNextActiveItemInDropdown === -1;
         i++
       ) {
@@ -292,33 +294,55 @@ export default function PortfolioPage() {
     newSelectedTagsSet.add(selection);
     setSearchBarSelectedTags(newSelectedTagsSet);
 
-    let indexOfSelectionInDropdownItems = -1;
-    let newDropdownItemsState = searchBarDropdownItems.map((item, i) => {
-      let newItem = { ...item };
-      if (newItem.tag === selection) {
-        indexOfSelectionInDropdownItems = i;
-        newItem = Object.assign({}, newItem, { isSelected: true });
-      }
-      if (newItem.isActive) {
-        newItem = Object.assign({}, newItem, { isActive: false });
-      }
-      return newItem;
-    });
-
-    let indexOfNextActiveDropdownItem = findIndexOfNextActiveDropdownItem(
-      indexOfSelectionInDropdownItems
+    let newDropdownItemsState = new Map(searchBarDropdownItems);
+    newDropdownItemsState.set(
+      selection,
+      Object.assign({}, newDropdownItemsState.get(selection), {
+        isSelected: true,
+      })
     );
-
-    if (indexOfNextActiveDropdownItem > -1) {
-      newDropdownItemsState = newDropdownItemsState.map((item, i) => {
-        let newItem = { ...item };
-        if (i === indexOfNextActiveDropdownItem) {
-          newItem = Object.assign({}, newItem, { isActive: true });
-        }
-        return newItem;
-      });
+    for (let [tag, { isActive }] of newDropdownItemsState) {
+      if (isActive) {
+        newDropdownItemsState.set(
+          tag,
+          Object.assign({}, newDropdownItemsState.get(tag), { isActive: false })
+        );
+      }
     }
-
+    // Can this be refactored down further??
+    const arrayOfValues = [...newDropdownItemsState.values()];
+    const arrayOfKeys = [...newDropdownItemsState.keys()];
+    const indexOfSelectionInDropdownItems = arrayOfKeys.indexOf(selection);
+    let nextActiveItemKey;
+    for (
+      let i = indexOfSelectionInDropdownItems + 1;
+      i < newDropdownItemsState.size && !nextActiveItemKey;
+      i++
+    ) {
+      if (!arrayOfValues[i].isFiltered && !arrayOfValues[i].isSelected) {
+        nextActiveItemKey = arrayOfKeys[i];
+      }
+    }
+    if (!nextActiveItemKey) {
+      for (
+        let i = indexOfSelectionInDropdownItems - 1;
+        i >= 0 && !nextActiveItemKey;
+        i--
+      ) {
+        if (!arrayOfValues[i].isFiltered && !arrayOfValues[i].isSelected) {
+          nextActiveItemKey = arrayOfKeys[i];
+        }
+      }
+    }
+    if (newDropdownItemsState.has(nextActiveItemKey)) {
+      newDropdownItemsState.set(
+        nextActiveItemKey,
+        Object.assign({}, newDropdownItemsState.get(nextActiveItemKey), {
+          isActive: true,
+        })
+      );
+    }
+    // END Can this be refactored down further??
     setSearchBarDropdownItems(newDropdownItemsState);
   };
 
@@ -556,13 +580,20 @@ export default function PortfolioPage() {
     const tagsSet = new Set(
       [].concat(...initialImagesState.map(({ tags }) => tags))
     );
-    const tagsArr = [...tagsSet].map((tag, i) => ({
-      tag: tag,
-      isSelected: false,
-      isFiltered: false,
-      isActive: i === 0 ? true : false,
-    }));
-    setSearchBarDropdownItems(tagsArr);
+    let tagsMap = new Map();
+    [...tagsSet].forEach((tag, i) => {
+      tagsMap.set(tag, {
+        isSelected: false,
+        isFiltered: false,
+        isActive: i === 0 ? true : false,
+      });
+    });
+    //remove
+    const t = new Map(tagsMap);
+    let j = [...t.keys()].indexOf("Graphic Design");
+    console.log(j);
+    //remove
+    setSearchBarDropdownItems(tagsMap);
   }, [setSearchBarDropdownItems]);
 
   return (
@@ -594,10 +625,10 @@ export default function PortfolioPage() {
             })}
             ref={searchBarDropdownRef}
           >
-            {searchBarDropdownItems.map(
-              ({ tag, isSelected, isFiltered, isActive }, i) => (
+            {[...searchBarDropdownItems].map(
+              ([tag, { isSelected, isFiltered, isActive }]) => (
                 <div
-                  key={i}
+                  key={tag}
                   className={cx(portfolioPageSearchBarDropdownItem, {
                     [portfolioPageSearchBarDropdownItemHidden]:
                       isSelected || isFiltered,
