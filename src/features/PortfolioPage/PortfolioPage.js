@@ -531,11 +531,7 @@ export default function PortfolioPage() {
     return () => {
       document.removeEventListener("keydown", onKeyDownHandler);
     };
-  }, [
-    findIndexOfNextActiveDropdownItem,
-    searchBarDropdownItems,
-    searchBarSelectedTags,
-  ]);
+  });
 
   // handle closing the dropdown on click outside
   useEffect(() => {
