@@ -1,4 +1,10 @@
-import React, { useState, useReducer, useRef, useEffect } from "react";
+import React, {
+  useState,
+  useReducer,
+  useCallback,
+  useRef,
+  useEffect,
+} from "react";
 import { useDispatch } from "react-redux";
 import cx from "classnames";
 
@@ -245,6 +251,41 @@ export default function PortfolioPage() {
     setSearchBarDropdownIsOpen(true);
   };
 
+  const findIndexOfNextActiveDropdownItem = useCallback(
+    (startingIndex) => {
+      let indexOfNextActiveItemInDropdown = -1;
+      for (
+        let i = startingIndex + 1;
+        i < searchBarDropdownItems.length &&
+        indexOfNextActiveItemInDropdown === -1;
+        i++
+      ) {
+        if (
+          !searchBarDropdownItems[i].isFiltered &&
+          !searchBarDropdownItems[i].isSelected
+        ) {
+          indexOfNextActiveItemInDropdown = i;
+        }
+      }
+      if (indexOfNextActiveItemInDropdown < 0) {
+        for (
+          let i = startingIndex - 1;
+          i >= 0 && indexOfNextActiveItemInDropdown === -1;
+          i--
+        ) {
+          if (
+            !searchBarDropdownItems[i].isFiltered &&
+            !searchBarDropdownItems[i].isSelected
+          ) {
+            indexOfNextActiveItemInDropdown = i;
+          }
+        }
+      }
+      return indexOfNextActiveItemInDropdown;
+    },
+    [searchBarDropdownItems]
+  );
+
   const onSearchBarDropdownItemClick = (e) => {
     const selection = e.target.dataset.value;
     const newSelectedTagsSet = new Set(searchBarSelectedTags);
@@ -264,38 +305,14 @@ export default function PortfolioPage() {
       return newItem;
     });
 
-    let indexOfNextActiveItemInDropdown = -1;
-    for (
-      let i = indexOfSelectionInDropdownItems + 1;
-      i < searchBarDropdownItems.length &&
-      indexOfNextActiveItemInDropdown === -1;
-      i++
-    ) {
-      if (
-        !searchBarDropdownItems[i].isFiltered &&
-        !searchBarDropdownItems[i].isSelected
-      ) {
-        indexOfNextActiveItemInDropdown = i;
-      }
-    }
-    if (indexOfNextActiveItemInDropdown <= -1) {
-      for (
-        let i = indexOfSelectionInDropdownItems - 1;
-        i >= 0 && indexOfNextActiveItemInDropdown === -1;
-        i--
-      ) {
-        if (
-          !searchBarDropdownItems[i].isFiltered &&
-          !searchBarDropdownItems[i].isSelected
-        ) {
-          indexOfNextActiveItemInDropdown = i;
-        }
-      }
-    }
-    if (indexOfNextActiveItemInDropdown > -1) {
+    let indexOfNextActiveDropdownItem = findIndexOfNextActiveDropdownItem(
+      indexOfSelectionInDropdownItems
+    );
+
+    if (indexOfNextActiveDropdownItem > -1) {
       newDropdownItemsState = newDropdownItemsState.map((item, i) => {
         let newItem = { ...item };
-        if (i === indexOfNextActiveItemInDropdown) {
+        if (i === indexOfNextActiveDropdownItem) {
           newItem = Object.assign({}, newItem, { isActive: true });
         }
         return newItem;
@@ -418,33 +435,9 @@ export default function PortfolioPage() {
             }
             return newItem;
           });
-          for (
-            let i = indexOfActiveItemInSearchBarDropdownItems + 1;
-            i < searchBarDropdownItems.length &&
-            indexOfNextActiveItemInDropdown === -1;
-            i++
-          ) {
-            if (
-              !searchBarDropdownItems[i].isFiltered &&
-              !searchBarDropdownItems[i].isSelected
-            ) {
-              indexOfNextActiveItemInDropdown = i;
-            }
-          }
-          if (!(indexOfNextActiveItemInDropdown > -1)) {
-            for (
-              let i = indexOfActiveItemInSearchBarDropdownItems - 1;
-              i >= 0 && indexOfNextActiveItemInDropdown === -1;
-              i--
-            ) {
-              if (
-                !searchBarDropdownItems[i].isFiltered &&
-                !searchBarDropdownItems[i].isSelected
-              ) {
-                indexOfNextActiveItemInDropdown = i;
-              }
-            }
-          }
+          indexOfNextActiveItemInDropdown = findIndexOfNextActiveDropdownItem(
+            indexOfActiveItemInSearchBarDropdownItems
+          );
           if (indexOfNextActiveItemInDropdown > -1) {
             newDropdownItemsState = newDropdownItemsState.map((item, i) => {
               let newItem = { ...item };
@@ -530,7 +523,6 @@ export default function PortfolioPage() {
           setSearchBarDropdownItems(newDropdownItemsState);
           break;
         default:
-          console.log("default reached");
           break;
       }
     };
@@ -539,7 +531,11 @@ export default function PortfolioPage() {
     return () => {
       document.removeEventListener("keydown", onKeyDownHandler);
     };
-  });
+  }, [
+    findIndexOfNextActiveDropdownItem,
+    searchBarDropdownItems,
+    searchBarSelectedTags,
+  ]);
 
   // handle closing the dropdown on click outside
   useEffect(() => {
@@ -588,7 +584,7 @@ export default function PortfolioPage() {
           </span>
         ))}
         <input
-          placeholder="Tags"
+          placeholder={searchBarSelectedTags.size === 0 ? "Tags" : ""}
           type="search"
           ref={searchBarSearchInputRef}
           value={searchBarSearchInputValue}
