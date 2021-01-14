@@ -293,56 +293,38 @@ export default function PortfolioPage() {
     const newSelectedTagsSet = new Set(searchBarSelectedTags);
     newSelectedTagsSet.add(selection);
     setSearchBarSelectedTags(newSelectedTagsSet);
-
     let newDropdownItemsState = new Map(searchBarDropdownItems);
-    newDropdownItemsState.set(
-      selection,
-      Object.assign({}, newDropdownItemsState.get(selection), {
-        isSelected: true,
-      })
-    );
-    for (let [tag, { isActive }] of newDropdownItemsState) {
-      if (isActive) {
-        newDropdownItemsState.set(
-          tag,
-          Object.assign({}, newDropdownItemsState.get(tag), { isActive: false })
-        );
+    newDropdownItemsState.set(selection, {
+      ...newDropdownItemsState.get(selection),
+      isSelected: true,
+    });
+    let nextPreviousActive, nextActive, foundSelection, foundLastActive;
+    for (let [tag, conditions] of newDropdownItemsState) {
+      let { isSelected, isFiltered, isActive } = conditions;
+      if (foundLastActive && nextActive) {
+        break;
       }
-    }
-    // Can this be refactored down further??
-    const arrayOfValues = [...newDropdownItemsState.values()];
-    const arrayOfKeys = [...newDropdownItemsState.keys()];
-    const indexOfSelectionInDropdownItems = arrayOfKeys.indexOf(selection);
-    let nextActiveItemKey;
-    for (
-      let i = indexOfSelectionInDropdownItems + 1;
-      i < newDropdownItemsState.size && !nextActiveItemKey;
-      i++
-    ) {
-      if (!arrayOfValues[i].isFiltered && !arrayOfValues[i].isSelected) {
-        nextActiveItemKey = arrayOfKeys[i];
+      if (isActive && !foundLastActive) {
+        foundLastActive = true;
+        newDropdownItemsState.set(tag, { ...conditions, isActive: false });
       }
-    }
-    if (!nextActiveItemKey) {
-      for (
-        let i = indexOfSelectionInDropdownItems - 1;
-        i >= 0 && !nextActiveItemKey;
-        i--
-      ) {
-        if (!arrayOfValues[i].isFiltered && !arrayOfValues[i].isSelected) {
-          nextActiveItemKey = arrayOfKeys[i];
+      if (foundSelection) {
+        if (!nextActive && !isSelected && !isFiltered) {
+          nextActive = tag;
         }
+      } else if (tag === selection) {
+        foundSelection = true;
+      } else if (!isSelected && !isFiltered) {
+        nextPreviousActive = tag;
       }
     }
-    if (newDropdownItemsState.has(nextActiveItemKey)) {
-      newDropdownItemsState.set(
-        nextActiveItemKey,
-        Object.assign({}, newDropdownItemsState.get(nextActiveItemKey), {
-          isActive: true,
-        })
-      );
+    let nextActiveKey = nextActive ? nextActive : nextPreviousActive;
+    if (nextActiveKey) {
+      newDropdownItemsState.set(nextActiveKey, {
+        ...newDropdownItemsState.get(nextActiveKey),
+        isActive: true,
+      });
     }
-    // END Can this be refactored down further??
     setSearchBarDropdownItems(newDropdownItemsState);
   };
 
@@ -351,61 +333,62 @@ export default function PortfolioPage() {
     let newSelectedTagsSet = new Set(searchBarSelectedTags);
     newSelectedTagsSet.delete(selection);
     setSearchBarSelectedTags(newSelectedTagsSet);
-    let noActiveItems = !searchBarDropdownItems.some(
-      ({ isActive }) => isActive
-    );
-    let newDropdownItemsState = searchBarDropdownItems.map((item) => {
-      let newItem = { ...item };
-      if (newItem.tag === selection) {
-        newItem = Object.assign({}, newItem, { isSelected: false });
-        if (noActiveItems) {
-          newItem = Object.assign({}, newItem, { isActive: true });
-        }
+    let newDropdownItemsState = new Map(searchBarDropdownItems);
+    let noActiveItems = true;
+    for (let { isActive } of newDropdownItemsState.values()) {
+      if (isActive) {
+        noActiveItems = false;
+        break;
       }
-      return newItem;
-    });
+    }
+    let nextConditions = {
+      ...newDropdownItemsState.get(selection),
+      isSelected: false,
+    };
+    if (noActiveItems) {
+      nextConditions = { ...nextConditions, isActive: true };
+    }
+    newDropdownItemsState.set(selection, nextConditions);
     setSearchBarDropdownItems(newDropdownItemsState);
   };
 
   const handleSearchBarSearchInputChange = (e) => {
     const value = e.target.value;
-    let filteredDropdownItems = searchBarDropdownItems.map((item) => {
-      let newItem = { ...item };
-      if (!newItem.tag.toLowerCase().includes(value.toLowerCase())) {
-        newItem = Object.assign({}, newItem, { isFiltered: true });
-      } else {
-        newItem = Object.assign({}, newItem, { isFiltered: false });
-      }
-      if (newItem.isActive) {
-        newItem = Object.assign({}, newItem, { isActive: false });
-      }
-      return newItem;
-    });
-    let indexOfNextActiveItemInDropdown = -1;
-    for (
-      let i = 0;
-      i < filteredDropdownItems.length &&
-      indexOfNextActiveItemInDropdown === -1;
-      i++
-    ) {
-      if (
-        !filteredDropdownItems[i].isFiltered &&
-        !filteredDropdownItems[i].isSelected
-      ) {
-        indexOfNextActiveItemInDropdown = i;
-      }
-    }
-    if (indexOfNextActiveItemInDropdown > -1) {
-      filteredDropdownItems = filteredDropdownItems.map((item, i) => {
-        let newItem = { ...item };
-        if (i === indexOfNextActiveItemInDropdown) {
-          newItem = Object.assign({}, newItem, { isActive: true });
-        }
-        return newItem;
-      });
-    }
-    setSearchBarDropdownItems(filteredDropdownItems);
     setSearchBarSearchInputValue(value);
+    let newDropdownItemsState = new Map(searchBarDropdownItems);
+    let foundNextActive, foundLastActive;
+    for (let [tag, conditions] of newDropdownItemsState) {
+      let { isSelected, isFiltered, isActive } = conditions;
+      const matchFound = tag.toLowerCase().includes(value.toLowerCase());
+      if (!matchFound && !isFiltered) {
+        let newConditions = { ...conditions, isFiltered: true };
+        if (!foundLastActive && isActive) {
+          foundLastActive = true;
+          newConditions = { ...newConditions, isActive: false };
+        }
+        newDropdownItemsState.set(tag, newConditions);
+      } else if (matchFound && isFiltered) {
+        let newConditions = { ...conditions, isFiltered: false };
+        if (!foundNextActive && !isSelected) {
+          foundNextActive = true;
+          newConditions = { ...newConditions, isActive: true };
+        }
+        newDropdownItemsState.set(tag, newConditions);
+      } else if (matchFound && !isFiltered) {
+        if (!foundLastActive && isActive) {
+          foundLastActive = true;
+        }
+        if (foundNextActive && !isSelected && isActive) {
+          newDropdownItemsState.set(tag, { ...conditions, isActive: false });
+        } else if (!foundNextActive && !isSelected) {
+          foundNextActive = true;
+          if (!isActive) {
+            newDropdownItemsState.set(tag, { ...conditions, isActive: true });
+          }
+        }
+      }
+    }
+    setSearchBarDropdownItems(newDropdownItemsState);
   };
 
   // handle filtering images when the selected tags change
