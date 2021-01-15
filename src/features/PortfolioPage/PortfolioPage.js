@@ -1,10 +1,4 @@
-import React, {
-  useState,
-  useReducer,
-  useCallback,
-  useRef,
-  useEffect,
-} from "react";
+import React, { useState, useReducer, useRef, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import cx from "classnames";
 
@@ -253,41 +247,6 @@ export default function PortfolioPage() {
     setSearchBarDropdownIsOpen(true);
   };
 
-  const findIndexOfNextActiveDropdownItem = useCallback(
-    (startingIndex) => {
-      let indexOfNextActiveItemInDropdown = -1;
-      for (
-        let i = startingIndex + 1;
-        i < searchBarDropdownItems.size &&
-        indexOfNextActiveItemInDropdown === -1;
-        i++
-      ) {
-        if (
-          !searchBarDropdownItems[i].isFiltered &&
-          !searchBarDropdownItems[i].isSelected
-        ) {
-          indexOfNextActiveItemInDropdown = i;
-        }
-      }
-      if (indexOfNextActiveItemInDropdown < 0) {
-        for (
-          let i = startingIndex - 1;
-          i >= 0 && indexOfNextActiveItemInDropdown === -1;
-          i--
-        ) {
-          if (
-            !searchBarDropdownItems[i].isFiltered &&
-            !searchBarDropdownItems[i].isSelected
-          ) {
-            indexOfNextActiveItemInDropdown = i;
-          }
-        }
-      }
-      return indexOfNextActiveItemInDropdown;
-    },
-    [searchBarDropdownItems]
-  );
-
   const onSearchBarDropdownItemClick = (e) => {
     const selection = e.target.dataset.value;
     const newSelectedTagsSet = new Set(searchBarSelectedTags);
@@ -353,6 +312,9 @@ export default function PortfolioPage() {
   };
 
   const handleSearchBarSearchInputChange = (e) => {
+    if (!searchBarDropdownIsOpen) {
+      setSearchBarDropdownIsOpen(true);
+    }
     const value = e.target.value;
     setSearchBarSearchInputValue(value);
     let newDropdownItemsState = new Map(searchBarDropdownItems);
@@ -360,7 +322,9 @@ export default function PortfolioPage() {
     for (let [tag, conditions] of newDropdownItemsState) {
       let { isSelected, isFiltered, isActive } = conditions;
       const matchFound = tag.toLowerCase().includes(value.toLowerCase());
-      if (!matchFound && !isFiltered) {
+      if (!matchFound && (isFiltered || isSelected)) {
+        continue;
+      } else if (!matchFound && !isFiltered) {
         let newConditions = { ...conditions, isFiltered: true };
         if (!foundLastActive && isActive) {
           foundLastActive = true;
@@ -404,54 +368,68 @@ export default function PortfolioPage() {
     }
 
     const onKeyDownHandler = (e) => {
-      const keysRequiringVisibleItemsInSearchBarDropdown = [
+      const keysRequiringOneVisibleItemInSearchBarDropdown = [
         ENTER_KEY,
         ARROW_UP_KEY,
         ARROW_DOWN_KEY,
       ];
-      const lengthOfRemainingVisibleItemsInSearchBarDropdown = searchBarDropdownItems.filter(
-        ({ isSelected, isFiltered }) => {
-          return isSelected === false && isFiltered === false;
+      const keysRequiringMoreThanOneVisibleItemsInSearchBarDropdown = [
+        ARROW_UP_KEY,
+        ARROW_DOWN_KEY,
+      ];
+      let numOfSearchBarDropdownItemsHasVisibleItem = 0;
+      for (let { isSelected, isFiltered } of searchBarDropdownItems.values()) {
+        if (!(isSelected || isFiltered)) {
+          ++numOfSearchBarDropdownItemsHasVisibleItem;
+          if (numOfSearchBarDropdownItemsHasVisibleItem > 1) {
+            break;
+          }
         }
-      ).length;
-      // skip if key pressed requires 1 item in dropdown while dropdown has 0 items
+      }
+      // skip if key pressed requires 1 visible item in dropdown while dropdown has 0 visible items, or skip if key pressed requires more than 1 visible item in dropdown while dropdown has 1 or less visible items
       if (
-        keysRequiringVisibleItemsInSearchBarDropdown.includes(e.which) &&
-        lengthOfRemainingVisibleItemsInSearchBarDropdown === 0
+        (keysRequiringOneVisibleItemInSearchBarDropdown.includes(e.which) &&
+          numOfSearchBarDropdownItemsHasVisibleItem === 0) ||
+        (keysRequiringMoreThanOneVisibleItemsInSearchBarDropdown.includes(
+          e.which
+        ) &&
+          numOfSearchBarDropdownItemsHasVisibleItem <= 1)
       ) {
         return;
       }
-      let newDropdownItemsState = [...searchBarDropdownItems];
-      let indexOfActiveItemInSearchBarDropdownItems = -1;
-      let indexOfNextActiveItemInDropdown = -1;
+
+      let newDropdownItemsState = new Map(searchBarDropdownItems);
+      let nextPreviousActive, foundLastActive;
       switch (e.which) {
         case ENTER_KEY:
-          const selectionOfActiveItem =
-            searchBarDropdownItemRef.current.dataset.value;
+          const selection = searchBarDropdownItemRef.current.dataset.value;
           const newSelectedTagsSet = new Set(searchBarSelectedTags);
-          newSelectedTagsSet.add(selectionOfActiveItem);
+          newSelectedTagsSet.add(selection);
           setSearchBarSelectedTags(newSelectedTagsSet);
-          newDropdownItemsState = newDropdownItemsState.map((item, i) => {
-            let newItem = { ...item };
-            if (newItem.isActive) {
-              indexOfActiveItemInSearchBarDropdownItems = i;
-              newItem = Object.assign({}, newItem, {
+          for (let [tag, conditions] of newDropdownItemsState) {
+            let { isSelected, isFiltered, isActive } = conditions;
+            if (isSelected || isFiltered) {
+              continue;
+            } else if (!foundLastActive && isActive) {
+              foundLastActive = true;
+              newDropdownItemsState.set(tag, {
+                ...conditions,
                 isSelected: true,
                 isActive: false,
               });
+              continue;
+            } else if (foundLastActive) {
+              nextPreviousActive = false;
+              newDropdownItemsState.set(tag, { ...conditions, isActive: true });
+              break;
+            } else {
+              nextPreviousActive = tag;
             }
-            return newItem;
-          });
-          indexOfNextActiveItemInDropdown = findIndexOfNextActiveDropdownItem(
-            indexOfActiveItemInSearchBarDropdownItems
-          );
-          if (indexOfNextActiveItemInDropdown > -1) {
-            newDropdownItemsState = newDropdownItemsState.map((item, i) => {
-              let newItem = { ...item };
-              if (i === indexOfNextActiveItemInDropdown) {
-                newItem = Object.assign({}, newItem, { isActive: true });
-              }
-              return newItem;
+          }
+          if (nextPreviousActive) {
+            newDropdownItemsState.set(nextPreviousActive, {
+              ...newDropdownItemsState.get(nextPreviousActive),
+              isActive: true,
             });
           }
           setSearchBarDropdownItems(newDropdownItemsState);
@@ -460,71 +438,63 @@ export default function PortfolioPage() {
           setSearchBarDropdownIsOpen(false);
           break;
         case ARROW_UP_KEY:
-          newDropdownItemsState = newDropdownItemsState.map((item, i) => {
-            let newItem = { ...item };
-            if (newItem.isActive) {
-              indexOfActiveItemInSearchBarDropdownItems = i;
-              newItem = Object.assign({}, newItem, { isActive: false });
-            }
-            return newItem;
-          });
-          for (
-            let i = indexOfActiveItemInSearchBarDropdownItems - 1;
-            indexOfNextActiveItemInDropdown === -1;
-            i--
-          ) {
-            if (i < 0) {
-              i = searchBarDropdownItems.length - 1;
-            }
-            if (
-              !searchBarDropdownItems[i].isFiltered &&
-              !searchBarDropdownItems[i].isSelected
-            ) {
-              indexOfNextActiveItemInDropdown = i;
+          for (let [tag, conditions] of newDropdownItemsState) {
+            let { isSelected, isFiltered, isActive } = conditions;
+            if (isSelected || isFiltered) {
+              continue;
+            } else if (!foundLastActive && isActive) {
+              foundLastActive = true;
+              newDropdownItemsState.set(tag, {
+                ...conditions,
+                isActive: false,
+              });
+              if (nextPreviousActive) {
+                newDropdownItemsState.set(nextPreviousActive, {
+                  ...newDropdownItemsState.get(nextPreviousActive),
+                  isActive: true,
+                });
+                nextPreviousActive = false;
+                break;
+              } else {
+                continue;
+              }
+            } else {
+              nextPreviousActive = tag;
             }
           }
-          if (indexOfNextActiveItemInDropdown > -1) {
-            newDropdownItemsState = newDropdownItemsState.map((item, i) => {
-              let newItem = { ...item };
-              if (i === indexOfNextActiveItemInDropdown) {
-                newItem = Object.assign({}, newItem, { isActive: true });
-              }
-              return newItem;
+          if (nextPreviousActive) {
+            newDropdownItemsState.set(nextPreviousActive, {
+              ...newDropdownItemsState.get(nextPreviousActive),
+              isActive: true,
             });
           }
           setSearchBarDropdownItems(newDropdownItemsState);
           break;
         case ARROW_DOWN_KEY:
-          newDropdownItemsState = newDropdownItemsState.map((item, i) => {
-            let newItem = { ...item };
-            if (newItem.isActive) {
-              indexOfActiveItemInSearchBarDropdownItems = i;
-              newItem = Object.assign({}, newItem, { isActive: false });
-            }
-            return newItem;
-          });
-          for (
-            let i = indexOfActiveItemInSearchBarDropdownItems + 1;
-            indexOfNextActiveItemInDropdown === -1;
-            i++
-          ) {
-            if (i >= searchBarDropdownItems.length) {
-              i = 0;
-            }
-            if (
-              !searchBarDropdownItems[i].isFiltered &&
-              !searchBarDropdownItems[i].isSelected
-            ) {
-              indexOfNextActiveItemInDropdown = i;
+          for (let [tag, conditions] of newDropdownItemsState) {
+            let { isSelected, isFiltered, isActive } = conditions;
+            if (isSelected || isFiltered) {
+              continue;
+            } else if (!isActive && !foundLastActive && !nextPreviousActive) {
+              nextPreviousActive = tag;
+              continue;
+            } else if (!foundLastActive && isActive) {
+              foundLastActive = true;
+              newDropdownItemsState.set(tag, {
+                ...conditions,
+                isActive: false,
+              });
+              continue;
+            } else if (foundLastActive) {
+              nextPreviousActive = false;
+              newDropdownItemsState.set(tag, { ...conditions, isActive: true });
+              break;
             }
           }
-          if (indexOfNextActiveItemInDropdown > -1) {
-            newDropdownItemsState = newDropdownItemsState.map((item, i) => {
-              let newItem = { ...item };
-              if (i === indexOfNextActiveItemInDropdown) {
-                newItem = Object.assign({}, newItem, { isActive: true });
-              }
-              return newItem;
+          if (nextPreviousActive) {
+            newDropdownItemsState.set(nextPreviousActive, {
+              ...newDropdownItemsState.get(nextPreviousActive),
+              isActive: true,
             });
           }
           setSearchBarDropdownItems(newDropdownItemsState);
@@ -546,12 +516,11 @@ export default function PortfolioPage() {
       return;
     }
     const onClickOutsideHandler = (e) => {
-      if (searchBarDropdownRef.current.contains(e.target)) {
-        return;
+      if (!searchBarDropdownRef.current.contains(e.target)) {
+        setSearchBarDropdownIsOpen(false);
       }
-      setSearchBarDropdownIsOpen(false);
     };
-    // NOTE mouseup rather than mousedown to seamlessly handle JSX onClick events
+    // NOTE: mouseup rather than mousedown to coincide with JSX onClick events
     document.addEventListener("mouseup", onClickOutsideHandler);
     return () => {
       document.removeEventListener("mouseup", onClickOutsideHandler);
