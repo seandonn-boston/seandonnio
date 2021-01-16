@@ -2,6 +2,7 @@ import React, { useState, useReducer, useRef, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import cx from "classnames";
 
+import DropdownItem from "./DropdownItem/DropdownItem";
 import { Header } from "../../global/ui/Header/Header";
 import { Image } from "../../global/ui/Image/Image";
 
@@ -35,9 +36,6 @@ import {
   portfolioPageSearchBarSearchInput,
   portfolioPageSearchBarDropdown,
   portfolioPageSearchBarDropdownVisible,
-  portfolioPageSearchBarDropdownItem,
-  portfolioPageSearchBarDropdownItemActive,
-  portfolioPageSearchBarDropdownItemHidden,
   portfolioPageImages,
   portfolioPageFigure,
   portfolioPageFigureHidden,
@@ -210,10 +208,29 @@ const initialImagesState = [
   },
 ];
 
+let tagsMap = new Map();
+// let tagsSet = new Set([].concat(...initialImagesState.map(({ tags }) => tags)));
+// [...tagsSet].forEach((tag, i) => {
+//   tagsMap.set(tag, {
+//     isSelected: false,
+//     isFiltered: false,
+//     isActive: i === 0 ? true : false,
+//   });
+// });
+let wanShiTong = new Array(10000);
+[...wanShiTong].forEach((_, i) => {
+  tagsMap.set(`${i}`, {
+    isSelected: false,
+    isFiltered: false,
+    isActive: i === 0 ? true : false,
+  });
+});
+
 export default function PortfolioPage() {
   const dispatch = useDispatch();
 
   const imagesReducer = (state) => {
+    console.log("imagesReducer");
     if (searchBarSelectedTags.size === 0) {
       return initialImagesState;
     }
@@ -230,9 +247,7 @@ export default function PortfolioPage() {
   );
   const [searchBarSelectedTags, setSearchBarSelectedTags] = useState(new Set());
   const [searchBarDropdownIsOpen, setSearchBarDropdownIsOpen] = useState(false);
-  const [searchBarDropdownItems, setSearchBarDropdownItems] = useState(
-    new Map()
-  );
+  const [searchBarDropdownItems, setSearchBarDropdownItems] = useState(tagsMap);
   const [images, dispatchImagesReducer] = useReducer(
     imagesReducer,
     initialImagesState
@@ -243,11 +258,13 @@ export default function PortfolioPage() {
   const searchBarDropdownItemRef = useRef(null);
 
   const onSearchBarClick = () => {
+    console.log("onSearchBarClick");
     searchBarSearchInputRef.current.focus();
     setSearchBarDropdownIsOpen(true);
   };
 
   const onSearchBarDropdownItemClick = (e) => {
+    console.log("onSearchBarDropdownItemClick");
     const selection = e.target.dataset.value;
     const newSelectedTagsSet = new Set(searchBarSelectedTags);
     newSelectedTagsSet.add(selection);
@@ -257,6 +274,7 @@ export default function PortfolioPage() {
       ...newDropdownItemsState.get(selection),
       isSelected: true,
     });
+    console.log(newDropdownItemsState);
     let nextPreviousActive, nextActive, foundSelection, foundLastActive;
     for (let [tag, conditions] of newDropdownItemsState) {
       let { isSelected, isFiltered, isActive } = conditions;
@@ -288,6 +306,7 @@ export default function PortfolioPage() {
   };
 
   const onSearchBarSelectedTagClick = (e) => {
+    console.log("onSearchBarSelectedTagClick");
     const selection = e.target.dataset.value;
     let newSelectedTagsSet = new Set(searchBarSelectedTags);
     newSelectedTagsSet.delete(selection);
@@ -312,6 +331,7 @@ export default function PortfolioPage() {
   };
 
   const handleSearchBarSearchInputChange = (e) => {
+    console.log("handleSearchBarSearchInputChange");
     if (!searchBarDropdownIsOpen) {
       setSearchBarDropdownIsOpen(true);
     }
@@ -357,11 +377,13 @@ export default function PortfolioPage() {
 
   // handle filtering images when the selected tags change
   useEffect(() => {
+    console.log("handle filtering");
     dispatchImagesReducer();
   }, [searchBarSelectedTags]);
 
   // handle certain keyboard events for dropdown
   useEffect(() => {
+    console.log("keyboard events");
     // skip if search bar is not in focus
     if (document.activeElement !== searchBarSearchInputRef.current) {
       return;
@@ -512,6 +534,7 @@ export default function PortfolioPage() {
 
   // handle closing the dropdown on click outside
   useEffect(() => {
+    console.log("dropdown closed");
     if (!searchBarDropdownIsOpen) {
       return;
     }
@@ -526,22 +549,6 @@ export default function PortfolioPage() {
       document.removeEventListener("mouseup", onClickOutsideHandler);
     };
   }, [searchBarDropdownIsOpen]);
-
-  // handle initializing data on page load
-  useEffect(() => {
-    const tagsSet = new Set(
-      [].concat(...initialImagesState.map(({ tags }) => tags))
-    );
-    let tagsMap = new Map();
-    [...tagsSet].forEach((tag, i) => {
-      tagsMap.set(tag, {
-        isSelected: false,
-        isFiltered: false,
-        isActive: i === 0 ? true : false,
-      });
-    });
-    setSearchBarDropdownItems(tagsMap);
-  }, [setSearchBarDropdownItems]);
 
   return (
     <>
@@ -573,20 +580,16 @@ export default function PortfolioPage() {
             ref={searchBarDropdownRef}
           >
             {[...searchBarDropdownItems].map(
-              ([tag, { isSelected, isFiltered, isActive }]) => (
-                <div
-                  key={tag}
-                  className={cx(portfolioPageSearchBarDropdownItem, {
-                    [portfolioPageSearchBarDropdownItemHidden]:
-                      isSelected || isFiltered,
-                    [portfolioPageSearchBarDropdownItemActive]: isActive,
-                  })}
-                  data-value={tag}
+              ([tag, { isSelected, isFiltered, isActive }], i) => (
+                <DropdownItem
                   ref={isActive ? searchBarDropdownItemRef : null}
-                  onClick={onSearchBarDropdownItemClick}
-                >
-                  {tag}
-                </div>
+                  key={i}
+                  tag={tag}
+                  isSelected={isSelected}
+                  isFiltered={isFiltered}
+                  isActive={isActive}
+                  onClickHandler={onSearchBarDropdownItemClick}
+                />
               )
             )}
           </div>
