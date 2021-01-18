@@ -1,12 +1,11 @@
 import React, { useState, useReducer, useRef, useEffect } from "react";
-import { useDispatch } from "react-redux";
 import cx from "classnames";
 
-import DropdownItem from "./DropdownItem/DropdownItem";
+import { DropdownItem } from "./DropdownItem/DropdownItem";
 import { Header } from "../../global/ui/Header/Header";
+import { Figure } from "../../global/ui/Figure/Figure";
+import { Figcaption } from "../../global/ui/Figure/Figcaption/Figcaption";
 import { Image } from "../../global/ui/Image/Image";
-
-import { modalStateUpdated } from "../../app/Modal/modalSlice";
 
 // TODO: Solve this - lazy load them and consider a backend and AWS for image solutions. An image object would be best to serve
 import AdvTypePoster from "../../global/assets/img/adv_typography_poster.gif";
@@ -37,13 +36,6 @@ import {
   portfolioPageSearchBarDropdown,
   portfolioPageSearchBarDropdownVisible,
   portfolioPageImages,
-  portfolioPageFigure,
-  portfolioPageFigureHidden,
-  portfolioPageFigcaption,
-  portfolioPageFigcaptionHeader,
-  portfolioPageFigcaptionDescription,
-  portfolioPageFigcaptionTags,
-  portfolioPageFigcaptionTagsTag,
 } from "./PortfolioPage.scss";
 
 const ENTER_KEY = 13;
@@ -227,10 +219,8 @@ let wanShiTong = new Array(10000);
 });
 
 export default function PortfolioPage() {
-  const dispatch = useDispatch();
-
   const imagesReducer = (state) => {
-    console.log("imagesReducer");
+    console.log("a");
     if (searchBarSelectedTags.size === 0) {
       return initialImagesState;
     }
@@ -242,29 +232,41 @@ export default function PortfolioPage() {
     });
   };
 
+  const isOpenReducer = (_, action) => {
+    console.log("b");
+    switch (action.type) {
+      case "close":
+        return false;
+      case "open":
+        return true;
+      default:
+        break;
+    }
+  };
+
   const [searchBarSearchInputValue, setSearchBarSearchInputValue] = useState(
     ""
   );
   const [searchBarSelectedTags, setSearchBarSelectedTags] = useState(new Set());
-  const [searchBarDropdownIsOpen, setSearchBarDropdownIsOpen] = useState(false);
   const [searchBarDropdownItems, setSearchBarDropdownItems] = useState(tagsMap);
   const [images, dispatchImagesReducer] = useReducer(
     imagesReducer,
     initialImagesState
   );
+  const [isOpen, dispatchIsOpenReducer] = useReducer(isOpenReducer, false);
 
   const searchBarSearchInputRef = useRef(null);
   const searchBarDropdownRef = useRef(null);
   const searchBarDropdownItemRef = useRef(null);
 
   const onSearchBarClick = () => {
-    console.log("onSearchBarClick");
+    console.log("c");
     searchBarSearchInputRef.current.focus();
-    setSearchBarDropdownIsOpen(true);
+    dispatchIsOpenReducer({ type: "open" });
   };
 
   const onSearchBarDropdownItemClick = (e) => {
-    console.log("onSearchBarDropdownItemClick");
+    console.log("d");
     const selection = e.target.dataset.value;
     const newSelectedTagsSet = new Set(searchBarSelectedTags);
     newSelectedTagsSet.add(selection);
@@ -306,7 +308,7 @@ export default function PortfolioPage() {
   };
 
   const onSearchBarSelectedTagClick = (e) => {
-    console.log("onSearchBarSelectedTagClick");
+    console.log("e");
     const selection = e.target.dataset.value;
     let newSelectedTagsSet = new Set(searchBarSelectedTags);
     newSelectedTagsSet.delete(selection);
@@ -331,9 +333,9 @@ export default function PortfolioPage() {
   };
 
   const handleSearchBarSearchInputChange = (e) => {
-    console.log("handleSearchBarSearchInputChange");
-    if (!searchBarDropdownIsOpen) {
-      setSearchBarDropdownIsOpen(true);
+    console.log("f");
+    if (!isOpen) {
+      dispatchIsOpenReducer({ type: "open" });
     }
     const value = e.target.value;
     setSearchBarSearchInputValue(value);
@@ -375,180 +377,165 @@ export default function PortfolioPage() {
     setSearchBarDropdownItems(newDropdownItemsState);
   };
 
-  // handle filtering images when the selected tags change
-  useEffect(() => {
-    console.log("handle filtering");
-    dispatchImagesReducer();
-  }, [searchBarSelectedTags]);
-
-  // handle certain keyboard events for dropdown
-  useEffect(() => {
-    console.log("keyboard events");
-    // skip if search bar is not in focus
-    if (document.activeElement !== searchBarSearchInputRef.current) {
+  const handleOnKeyDown = (e) => {
+    console.log("g");
+    const keysRequiringOneVisibleItemInSearchBarDropdown = [
+      ENTER_KEY,
+      ARROW_UP_KEY,
+      ARROW_DOWN_KEY,
+    ];
+    const keysRequiringMoreThanOneVisibleItemsInSearchBarDropdown = [
+      ARROW_UP_KEY,
+      ARROW_DOWN_KEY,
+    ];
+    let numOfSearchBarDropdownItemsHasVisibleItem = 0;
+    for (let { isSelected, isFiltered } of searchBarDropdownItems.values()) {
+      if (!(isSelected || isFiltered)) {
+        ++numOfSearchBarDropdownItemsHasVisibleItem;
+        if (numOfSearchBarDropdownItemsHasVisibleItem > 1) {
+          break;
+        }
+      }
+    }
+    // skip if key pressed requires 1 visible item in dropdown while dropdown has 0 visible items, or skip if key pressed requires more than 1 visible item in dropdown while dropdown has 1 or less visible items
+    if (
+      (keysRequiringOneVisibleItemInSearchBarDropdown.includes(e.which) &&
+        numOfSearchBarDropdownItemsHasVisibleItem === 0) ||
+      (keysRequiringMoreThanOneVisibleItemsInSearchBarDropdown.includes(
+        e.which
+      ) &&
+        numOfSearchBarDropdownItemsHasVisibleItem <= 1)
+    ) {
       return;
     }
 
-    const onKeyDownHandler = (e) => {
-      const keysRequiringOneVisibleItemInSearchBarDropdown = [
-        ENTER_KEY,
-        ARROW_UP_KEY,
-        ARROW_DOWN_KEY,
-      ];
-      const keysRequiringMoreThanOneVisibleItemsInSearchBarDropdown = [
-        ARROW_UP_KEY,
-        ARROW_DOWN_KEY,
-      ];
-      let numOfSearchBarDropdownItemsHasVisibleItem = 0;
-      for (let { isSelected, isFiltered } of searchBarDropdownItems.values()) {
-        if (!(isSelected || isFiltered)) {
-          ++numOfSearchBarDropdownItemsHasVisibleItem;
-          if (numOfSearchBarDropdownItemsHasVisibleItem > 1) {
+    let newDropdownItemsState = new Map(searchBarDropdownItems);
+    let nextPreviousActive, foundLastActive;
+    switch (e.which) {
+      case ENTER_KEY:
+        const selection = searchBarDropdownItemRef.current.dataset.value;
+        const newSelectedTagsSet = new Set(searchBarSelectedTags);
+        newSelectedTagsSet.add(selection);
+        setSearchBarSelectedTags(newSelectedTagsSet);
+        for (let [tag, conditions] of newDropdownItemsState) {
+          let { isSelected, isFiltered, isActive } = conditions;
+          if (isSelected || isFiltered) {
+            continue;
+          } else if (!foundLastActive && isActive) {
+            foundLastActive = true;
+            newDropdownItemsState.set(tag, {
+              ...conditions,
+              isSelected: true,
+              isActive: false,
+            });
+            continue;
+          } else if (foundLastActive) {
+            nextPreviousActive = false;
+            newDropdownItemsState.set(tag, { ...conditions, isActive: true });
+            break;
+          } else {
+            nextPreviousActive = tag;
+          }
+        }
+        if (nextPreviousActive) {
+          newDropdownItemsState.set(nextPreviousActive, {
+            ...newDropdownItemsState.get(nextPreviousActive),
+            isActive: true,
+          });
+        }
+        setSearchBarDropdownItems(newDropdownItemsState);
+        break;
+      case ESCAPE_KEY:
+        dispatchIsOpenReducer({ type: "close" });
+        break;
+      case ARROW_UP_KEY:
+        for (let [tag, conditions] of newDropdownItemsState) {
+          let { isSelected, isFiltered, isActive } = conditions;
+          if (isSelected || isFiltered) {
+            continue;
+          } else if (!foundLastActive && isActive) {
+            foundLastActive = true;
+            newDropdownItemsState.set(tag, {
+              ...conditions,
+              isActive: false,
+            });
+            if (nextPreviousActive) {
+              newDropdownItemsState.set(nextPreviousActive, {
+                ...newDropdownItemsState.get(nextPreviousActive),
+                isActive: true,
+              });
+              nextPreviousActive = false;
+              break;
+            } else {
+              continue;
+            }
+          } else {
+            nextPreviousActive = tag;
+          }
+        }
+        if (nextPreviousActive) {
+          newDropdownItemsState.set(nextPreviousActive, {
+            ...newDropdownItemsState.get(nextPreviousActive),
+            isActive: true,
+          });
+        }
+        setSearchBarDropdownItems(newDropdownItemsState);
+        break;
+      case ARROW_DOWN_KEY:
+        for (let [tag, conditions] of newDropdownItemsState) {
+          let { isSelected, isFiltered, isActive } = conditions;
+          if (isSelected || isFiltered) {
+            continue;
+          } else if (!isActive && !foundLastActive && !nextPreviousActive) {
+            nextPreviousActive = tag;
+            continue;
+          } else if (!foundLastActive && isActive) {
+            foundLastActive = true;
+            newDropdownItemsState.set(tag, {
+              ...conditions,
+              isActive: false,
+            });
+            continue;
+          } else if (foundLastActive) {
+            nextPreviousActive = false;
+            newDropdownItemsState.set(tag, { ...conditions, isActive: true });
             break;
           }
         }
-      }
-      // skip if key pressed requires 1 visible item in dropdown while dropdown has 0 visible items, or skip if key pressed requires more than 1 visible item in dropdown while dropdown has 1 or less visible items
-      if (
-        (keysRequiringOneVisibleItemInSearchBarDropdown.includes(e.which) &&
-          numOfSearchBarDropdownItemsHasVisibleItem === 0) ||
-        (keysRequiringMoreThanOneVisibleItemsInSearchBarDropdown.includes(
-          e.which
-        ) &&
-          numOfSearchBarDropdownItemsHasVisibleItem <= 1)
-      ) {
-        return;
-      }
+        if (nextPreviousActive) {
+          newDropdownItemsState.set(nextPreviousActive, {
+            ...newDropdownItemsState.get(nextPreviousActive),
+            isActive: true,
+          });
+        }
+        setSearchBarDropdownItems(newDropdownItemsState);
+        break;
+      default:
+        break;
+    }
+  };
 
-      let newDropdownItemsState = new Map(searchBarDropdownItems);
-      let nextPreviousActive, foundLastActive;
-      switch (e.which) {
-        case ENTER_KEY:
-          const selection = searchBarDropdownItemRef.current.dataset.value;
-          const newSelectedTagsSet = new Set(searchBarSelectedTags);
-          newSelectedTagsSet.add(selection);
-          setSearchBarSelectedTags(newSelectedTagsSet);
-          for (let [tag, conditions] of newDropdownItemsState) {
-            let { isSelected, isFiltered, isActive } = conditions;
-            if (isSelected || isFiltered) {
-              continue;
-            } else if (!foundLastActive && isActive) {
-              foundLastActive = true;
-              newDropdownItemsState.set(tag, {
-                ...conditions,
-                isSelected: true,
-                isActive: false,
-              });
-              continue;
-            } else if (foundLastActive) {
-              nextPreviousActive = false;
-              newDropdownItemsState.set(tag, { ...conditions, isActive: true });
-              break;
-            } else {
-              nextPreviousActive = tag;
-            }
-          }
-          if (nextPreviousActive) {
-            newDropdownItemsState.set(nextPreviousActive, {
-              ...newDropdownItemsState.get(nextPreviousActive),
-              isActive: true,
-            });
-          }
-          setSearchBarDropdownItems(newDropdownItemsState);
-          break;
-        case ESCAPE_KEY:
-          setSearchBarDropdownIsOpen(false);
-          break;
-        case ARROW_UP_KEY:
-          for (let [tag, conditions] of newDropdownItemsState) {
-            let { isSelected, isFiltered, isActive } = conditions;
-            if (isSelected || isFiltered) {
-              continue;
-            } else if (!foundLastActive && isActive) {
-              foundLastActive = true;
-              newDropdownItemsState.set(tag, {
-                ...conditions,
-                isActive: false,
-              });
-              if (nextPreviousActive) {
-                newDropdownItemsState.set(nextPreviousActive, {
-                  ...newDropdownItemsState.get(nextPreviousActive),
-                  isActive: true,
-                });
-                nextPreviousActive = false;
-                break;
-              } else {
-                continue;
-              }
-            } else {
-              nextPreviousActive = tag;
-            }
-          }
-          if (nextPreviousActive) {
-            newDropdownItemsState.set(nextPreviousActive, {
-              ...newDropdownItemsState.get(nextPreviousActive),
-              isActive: true,
-            });
-          }
-          setSearchBarDropdownItems(newDropdownItemsState);
-          break;
-        case ARROW_DOWN_KEY:
-          for (let [tag, conditions] of newDropdownItemsState) {
-            let { isSelected, isFiltered, isActive } = conditions;
-            if (isSelected || isFiltered) {
-              continue;
-            } else if (!isActive && !foundLastActive && !nextPreviousActive) {
-              nextPreviousActive = tag;
-              continue;
-            } else if (!foundLastActive && isActive) {
-              foundLastActive = true;
-              newDropdownItemsState.set(tag, {
-                ...conditions,
-                isActive: false,
-              });
-              continue;
-            } else if (foundLastActive) {
-              nextPreviousActive = false;
-              newDropdownItemsState.set(tag, { ...conditions, isActive: true });
-              break;
-            }
-          }
-          if (nextPreviousActive) {
-            newDropdownItemsState.set(nextPreviousActive, {
-              ...newDropdownItemsState.get(nextPreviousActive),
-              isActive: true,
-            });
-          }
-          setSearchBarDropdownItems(newDropdownItemsState);
-          break;
-        default:
-          break;
-      }
-    };
-
-    document.addEventListener("keydown", onKeyDownHandler);
-    return () => {
-      document.removeEventListener("keydown", onKeyDownHandler);
-    };
-  });
-
-  // handle closing the dropdown on click outside
+  // handle filtering images when the selected tags change
   useEffect(() => {
-    console.log("dropdown closed");
-    if (!searchBarDropdownIsOpen) {
+    console.log("h");
+    dispatchImagesReducer();
+  }, [searchBarSelectedTags]);
+
+  useEffect(() => {
+    console.log("i");
+    if (!isOpen) {
       return;
     }
     const onClickOutsideHandler = (e) => {
       if (!searchBarDropdownRef.current.contains(e.target)) {
-        setSearchBarDropdownIsOpen(false);
+        dispatchIsOpenReducer({ type: "close" });
       }
     };
-    // NOTE: mouseup rather than mousedown to coincide with JSX onClick events
     document.addEventListener("mouseup", onClickOutsideHandler);
     return () => {
       document.removeEventListener("mouseup", onClickOutsideHandler);
     };
-  }, [searchBarDropdownIsOpen]);
+  }, [isOpen, dispatchIsOpenReducer]);
 
   return (
     <>
@@ -571,11 +558,12 @@ export default function PortfolioPage() {
           value={searchBarSearchInputValue}
           className={portfolioPageSearchBarSearchInput}
           onChange={handleSearchBarSearchInputChange}
+          onKeyDown={handleOnKeyDown}
         />
-        {searchBarDropdownIsOpen && (
+        {isOpen && (
           <div
             className={cx(portfolioPageSearchBarDropdown, {
-              [portfolioPageSearchBarDropdownVisible]: searchBarDropdownIsOpen,
+              [portfolioPageSearchBarDropdownVisible]: isOpen,
             })}
             ref={searchBarDropdownRef}
           >
@@ -597,30 +585,10 @@ export default function PortfolioPage() {
       </div>
       <div className={portfolioPageImages}>
         {images.map(({ src, alt, title, description, tags, isFiltered }, i) => (
-          <figure
-            key={i}
-            className={cx(portfolioPageFigure, {
-              [portfolioPageFigureHidden]: isFiltered,
-            })}
-            onClick={() =>
-              dispatch(modalStateUpdated({ type: "img", file: src }))
-            }
-          >
+          <Figure key={i} isHidden={isFiltered} modalSrc={src}>
             <Image alt={alt} src={src} width="100%" />
-            <figcaption className={portfolioPageFigcaption}>
-              <h3 className={portfolioPageFigcaptionHeader}>{title}</h3>
-              <p className={portfolioPageFigcaptionDescription}>
-                {description}
-              </p>
-              <ul className={portfolioPageFigcaptionTags}>
-                {tags.map((tag, i) => (
-                  <li key={i} className={portfolioPageFigcaptionTagsTag}>
-                    {tag}
-                  </li>
-                ))}
-              </ul>
-            </figcaption>
-          </figure>
+            <Figcaption title={title} description={description} tags={tags} />
+          </Figure>
         ))}
       </div>
     </>

@@ -7,21 +7,18 @@ import {
   dropdownItemActive,
 } from "./DropdownItem.scss";
 
-const DropdownItem = (
-  { isSelected, isFiltered, isActive, tag, onClickHandler },
-  ref
-) => (
-  <div
-    ref={ref}
-    className={cx(dropdownItem, {
-      [dropdownItemHidden]: isSelected || isFiltered,
-      [dropdownItemActive]: isActive,
-    })}
-    data-value={tag}
-    onClick={(e) => onClickHandler(e)}
-  >
-    {tag}
-  </div>
+export const DropdownItem = forwardRef(
+  ({ isSelected, isFiltered, isActive, tag, onClickHandler }, ref) => (
+    <div
+      ref={ref}
+      className={cx(dropdownItem, {
+        [dropdownItemHidden]: isSelected || isFiltered,
+        [dropdownItemActive]: isActive,
+      })}
+      data-value={tag}
+      onClick={(e) => onClickHandler(e)}
+    >
+      {tag}
+    </div>
+  )
 );
-
-export default forwardRef(DropdownItem);

@@ -1,0 +1,67 @@
+@use "sass:math";
+
+@use "../../../styles/_config.scss";
+@use "../../../styles/mixins/_visuallyHidden.scss";
+
+.Figcaption {
+  @include visuallyHidden.visuallyHidden;
+  :hover > & {
+    @include visuallyHidden.visuallyHiddenReset;
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    padding: 0 12px;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    text-align: center;
+    cursor: pointer;
+    overflow: hidden;
+  }
+  &-header,
+  &-description {
+    margin: auto 0;
+  }
+  &-tags {
+    list-style: none;
+    margin: auto 0;
+    padding: 0;
+    &-tag {
+      font-size: 11px;
+      position: relative;
+      display: inline-block;
+      line-height: 1;
+      padding: 0.5em 1.5em;
+      margin: 0 calc(1em / 6) calc(1em / 3) 1em;
+      border-radius: 0 calc(1em / 3) calc(1em / 3) 0;
+      background-color: blue;
+      &::before {
+        position: absolute;
+        display: block;
+        content: "";
+        height: 2em / math.sqrt(2);
+        width: 2em / math.sqrt(2);
+        top: 50%;
+        right: 100%;
+        transform: translateY(-50%) translateX(50%) rotate(45deg);
+        background-color: inherit;
+      }
+      &::after {
+        position: absolute;
+        display: block;
+        content: "";
+        height: 0.5em;
+        width: 0.5em;
+        top: 50%;
+        left: -0.25em;
+        background-color: white;
+        box-shadow: 0px -1px 1px 0px rgba(0, 0, 0, 0.3);
+        border-radius: 0.25em;
+        transform: translateY(-50%) translateX(50%);
+      }
+    }
+  }
+}

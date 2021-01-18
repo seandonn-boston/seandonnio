@@ -1,0 +1,12 @@
+@use "../../styles/_config.scss";
+
+.Figure {
+  height: 100%;
+  position: relative;
+  place-self: stretch end;
+  margin: auto;
+  display: flex;
+  &--Hidden {
+    display: none;
+  }
+}
