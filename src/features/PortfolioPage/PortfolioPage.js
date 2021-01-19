@@ -209,7 +209,7 @@ let tagsMap = new Map();
 //     isActive: i === 0 ? true : false,
 //   });
 // });
-let wanShiTong = new Array(10000);
+let wanShiTong = Array.from({ length: 10000 });
 [...wanShiTong].forEach((_, i) => {
   tagsMap.set(`${i}`, {
     isSelected: false,
@@ -249,11 +249,11 @@ export default function PortfolioPage() {
   );
   const [searchBarSelectedTags, setSearchBarSelectedTags] = useState(new Set());
   const [searchBarDropdownItems, setSearchBarDropdownItems] = useState(tagsMap);
+  const [isOpen, dispatchIsOpenReducer] = useReducer(isOpenReducer, false);
   const [images, dispatchImagesReducer] = useReducer(
     imagesReducer,
     initialImagesState
   );
-  const [isOpen, dispatchIsOpenReducer] = useReducer(isOpenReducer, false);
 
   const searchBarSearchInputRef = useRef(null);
   const searchBarDropdownRef = useRef(null);
@@ -276,7 +276,6 @@ export default function PortfolioPage() {
       ...newDropdownItemsState.get(selection),
       isSelected: true,
     });
-    console.log(newDropdownItemsState);
     let nextPreviousActive, nextActive, foundSelection, foundLastActive;
     for (let [tag, conditions] of newDropdownItemsState) {
       let { isSelected, isFiltered, isActive } = conditions;
