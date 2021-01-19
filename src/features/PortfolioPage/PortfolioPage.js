@@ -328,9 +328,11 @@ export default function PortfolioPage() {
         break;
       }
     }
+
     if (noActiveItems) {
       nextConditions = { ...nextConditions, isActive: true };
     }
+
     if (inputValue) {
       if (!selection.toLowerCase().includes(inputValue.toLowerCase())) {
         nextConditions = { ...nextConditions, isFiltered: true };
@@ -386,6 +388,7 @@ export default function PortfolioPage() {
         }
       }
     }
+
     setInputValue(value);
     setDropdownItems(newDropdownItems);
   };
@@ -423,7 +426,7 @@ export default function PortfolioPage() {
     let newDropdownItems = new Map(dropdownItems),
       nextPreviousActive,
       foundLastActive;
-      
+
     switch (e.which) {
       case ENTER_KEY:
         let selection = dropdownItemRef.current.dataset.value,
@@ -489,12 +492,14 @@ export default function PortfolioPage() {
             nextPreviousActive = tag;
           }
         }
+
         if (nextPreviousActive) {
           newDropdownItems.set(nextPreviousActive, {
             ...newDropdownItems.get(nextPreviousActive),
             isActive: true,
           });
         }
+
         setDropdownItems(newDropdownItems);
         break;
       case ARROW_DOWN_KEY:
@@ -518,12 +523,14 @@ export default function PortfolioPage() {
             break;
           }
         }
+        
         if (nextPreviousActive) {
           newDropdownItems.set(nextPreviousActive, {
             ...newDropdownItems.get(nextPreviousActive),
             isActive: true,
           });
         }
+
         setDropdownItems(newDropdownItems);
         break;
       default:
