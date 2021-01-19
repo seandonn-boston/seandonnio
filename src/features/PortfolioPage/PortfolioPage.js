@@ -523,7 +523,7 @@ export default function PortfolioPage() {
             break;
           }
         }
-        
+
         if (nextPreviousActive) {
           newDropdownItems.set(nextPreviousActive, {
             ...newDropdownItems.get(nextPreviousActive),
