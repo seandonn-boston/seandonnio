@@ -345,7 +345,7 @@ export default function PortfolioPage() {
     setDropdownItems(newDropdownItems);
   };
 
-  const onInputValueChange = (e) => {
+  const onInputChange = (e) => {
     if (!isOpen) {
       dispatchIsOpenReducer({ type: "open" });
     }
@@ -393,7 +393,7 @@ export default function PortfolioPage() {
     setDropdownItems(newDropdownItems);
   };
 
-  const handleOnKeyDown = (e) => {
+  const onInputKeyDown = (e) => {
     let keysRequiringOneVisibleDropdownItem = [
         ENTER_KEY,
         ARROW_UP_KEY,
@@ -580,8 +580,8 @@ export default function PortfolioPage() {
           ref={inputRef}
           value={inputValue}
           className={portfolioPageSearchBarSearchInput}
-          onChange={onInputValueChange}
-          onKeyDown={handleOnKeyDown}
+          onChange={onInputChange}
+          onKeyDown={onInputKeyDown}
         />
         {isOpen && (
           <div
