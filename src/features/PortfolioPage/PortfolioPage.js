@@ -200,19 +200,10 @@ const initImagesState = [
   },
 ];
 
-// let initTagsMap = new Map(),
-//   tagsSet = new Set([].concat(...initImagesState.map(({ tags }) => tags)));
-// [...tagsSet].forEach((tag, i) => {
-//   initTagsMap.set(tag, {
-//     isSelected: false,
-//     isFiltered: false,
-//     isActive: i === 0 ? true : false,
-//   });
-// });
 let initTagsMap = new Map(),
-  wanShiTong = Array.from({ length: 10000 });
-[...wanShiTong].forEach((_, i) => {
-  initTagsMap.set(`${i}`, {
+  tagsSet = new Set([].concat(...initImagesState.map(({ tags }) => tags)));
+[...tagsSet].forEach((tag, i) => {
+  initTagsMap.set(tag, {
     isSelected: false,
     isFiltered: false,
     isActive: i === 0 ? true : false,
@@ -249,8 +240,6 @@ export default function PortfolioPage() {
     imagesReducer,
     initImagesState
   );
-  // const [resultsPerPage, setResultsPerPage] = useState(8);
-  // const [page, setPage] = useState(1);
 
   const inputRef = useRef(null);
   const dropdownRef = useRef(null);
@@ -544,7 +533,7 @@ export default function PortfolioPage() {
     }
   };
 
-  // handle closing dropdown when user clicks somewhere outside of it while its open
+  // close dropdown when user clicks somewhere outside of it while its open
   useEffect(() => {
     if (!isOpen) {
       return;
@@ -555,7 +544,7 @@ export default function PortfolioPage() {
     };
   }, [isOpen, dispatchIsOpenReducer]);
 
-  // handle filtering images when the selected tags change
+  // filter images when the selected tags change
   useEffect(() => {
     dispatchImagesReducer();
   }, [selectedTags]);
