@@ -221,21 +221,10 @@ export default function PortfolioPage() {
     });
   };
 
-  const isOpenReducer = (_, action) => {
-    switch (action.type) {
-      case "close":
-        return false;
-      case "open":
-        return true;
-      default:
-        break;
-    }
-  };
-
   const [inputValue, setInputValue] = useState("");
   const [selectedTags, setSelectedTags] = useState(new Set());
   const [dropdownItems, setDropdownItems] = useState(initTagsMap);
-  const [isOpen, dispatchIsOpenReducer] = useReducer(isOpenReducer, false);
+  const [isOpen, setIsOpen] = useState(false);
   const [images, dispatchImagesReducer] = useReducer(
     imagesReducer,
     initImagesState
@@ -247,7 +236,7 @@ export default function PortfolioPage() {
 
   const onSearchBarClick = () => {
     inputRef.current.focus();
-    dispatchIsOpenReducer({ type: "open" });
+    if (!isOpen) setIsOpen(true);
   };
 
   const onDropdownItemClick = (e) => {
@@ -335,9 +324,7 @@ export default function PortfolioPage() {
   };
 
   const onInputChange = (e) => {
-    if (!isOpen) {
-      dispatchIsOpenReducer({ type: "open" });
-    }
+    if (!isOpen) setIsOpen(true);
 
     let value = e.target.value,
       newDropdownItems = new Map(dropdownItems),
@@ -454,7 +441,7 @@ export default function PortfolioPage() {
         setDropdownItems(newDropdownItems);
         break;
       case ESCAPE_KEY:
-        dispatchIsOpenReducer({ type: "close" });
+        setIsOpen(false);
         break;
       case ARROW_UP_KEY:
         for (let [tag, conditions] of newDropdownItems) {
@@ -528,9 +515,7 @@ export default function PortfolioPage() {
   };
 
   const onOutsideDropdownClick = (e) => {
-    if (!dropdownRef.current.contains(e.target)) {
-      dispatchIsOpenReducer({ type: "close" });
-    }
+    if (!dropdownRef.current.contains(e.target)) setIsOpen(false);
   };
 
   // close dropdown when user clicks somewhere outside of it while its open
@@ -542,7 +527,7 @@ export default function PortfolioPage() {
     return () => {
       document.removeEventListener("mouseup", onOutsideDropdownClick);
     };
-  }, [isOpen, dispatchIsOpenReducer]);
+  }, [isOpen]);
 
   // filter images when the selected tags change
   useEffect(() => {
