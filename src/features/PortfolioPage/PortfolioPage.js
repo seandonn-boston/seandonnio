@@ -43,7 +43,7 @@ const ENTER_KEY = 13,
   ARROW_UP_KEY = 38,
   ARROW_DOWN_KEY = 40;
 
-const initImagesState = [
+const initImages = [
   {
     src: AdvTypePoster,
     isFiltered: false,
@@ -201,7 +201,7 @@ const initImagesState = [
 ];
 
 let initTagsMap = new Map(),
-  tagsSet = new Set([].concat(...initImagesState.map(({ tags }) => tags)));
+  tagsSet = new Set([].concat(...initImages.map(({ tags }) => tags)));
 [...tagsSet].forEach((tag, i) => {
   initTagsMap.set(tag, {
     isSelected: false,
@@ -213,7 +213,7 @@ let initTagsMap = new Map(),
 export default function PortfolioPage() {
   const imagesReducer = (state) => {
     if (selectedTags.size === 0) {
-      return initImagesState;
+      return initImages;
     }
     return state.map((item) => {
       const isFiltered = !item.tags.some((tag) => selectedTags.has(tag));
@@ -225,10 +225,7 @@ export default function PortfolioPage() {
   const [selectedTags, setSelectedTags] = useState(new Set());
   const [dropdownItems, setDropdownItems] = useState(initTagsMap);
   const [isOpen, setIsOpen] = useState(false);
-  const [images, dispatchImagesReducer] = useReducer(
-    imagesReducer,
-    initImagesState
-  );
+  const [images, dispatchImagesReducer] = useReducer(imagesReducer, initImages);
 
   const inputRef = useRef(null);
   const dropdownRef = useRef(null);
