@@ -3,26 +3,9 @@
 @use "../../global/styles/config.scss";
 @use "../../global/styles/mixins/_visuallyHidden.scss";
 
-// It would be pretty cool to provide the user a toggle between css columns, flexbox, and css grid. Yup, this could be very cool, show a small animation on every transition
+// It would be pretty cool to provide the user a toggle between css columns, flexbox, and css grid.
 .PortfolioPage {
-  &-searchBar {
-    display: block;
-    width: 100%;
-    border: solid 1px config.$black;
-    &-selectedTag {
-      display: inline-block;
-    }
-    &-searchInput {
-      border: none;
-    }
-    &-dropdown {
-      display: none;
-      &-visible {
-        display: block;
-      }
-    }
-  }
-  &-images {
+  &-imagesContainer {
     display: grid;
     grid: auto / repeat(auto-fit, minmax(240px, 1fr));
     gap: 1em;
