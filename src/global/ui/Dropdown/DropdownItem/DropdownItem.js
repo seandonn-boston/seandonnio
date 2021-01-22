@@ -1,13 +1,12 @@
 import React, { forwardRef } from "react";
-import cx from "classnames";
 import PropTypes from "prop-types";
+import cx from "classnames";
 
 import {
   dropdownItem,
   dropdownItemHidden,
   dropdownItemActive,
 } from "./DropdownItem.scss";
-import { Dropdown } from "../Dropdown";
 
 export const DropdownItem = forwardRef(
   (
@@ -32,7 +31,7 @@ export const DropdownItem = forwardRef(
   )
 );
 
-Dropdown.propTypes = {
+DropdownItem.propTypes = {
   option: PropTypes.string.isRequired,
   conditions: PropTypes.shape({
     isActive: PropTypes.bool.isRequired,
@@ -42,6 +41,6 @@ Dropdown.propTypes = {
   onClickHandler: PropTypes.func,
 };
 
-Dropdown.defaultProps = {
+DropdownItem.defaultProps = {
   onClickHandler: () => {},
 };

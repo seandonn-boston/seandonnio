@@ -3,11 +3,13 @@
 .Tag {
   font-size: 11px;
   position: relative;
+  display: inline-block;
   line-height: 1;
   padding: 0.5em 1.5em;
   margin: 0 calc(1em / 6) calc(1em / 3) 1em;
   border-radius: 0 calc(1em / 3) calc(1em / 3) 0;
   background-color: blue;
+  color: white;
   &::before {
     position: absolute;
     display: block;

@@ -322,7 +322,7 @@ export const MultiSelectSearch = ({ values, inputPlaceholder, sideEffect }) => {
   // trigger sideEffect when selections change
   useEffect(() => {
     sideEffect();
-  }, [selections]);
+  }, [selections, sideEffect]);
 
   // initialize dropdownOptions Map
   useEffect(() => {
@@ -335,7 +335,7 @@ export const MultiSelectSearch = ({ values, inputPlaceholder, sideEffect }) => {
       });
     });
     setDropdownOptions(initDropdownOptions);
-  }, [setDropdownOptions]);
+  }, [setDropdownOptions, values]);
 
   return (
     <div className={multiSelectSearch} onClick={onSearchBarClick}>

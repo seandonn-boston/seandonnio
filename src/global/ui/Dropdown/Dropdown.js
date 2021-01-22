@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 
 import { DropdownItem } from "./DropdownItem/DropdownItem";
 
-import { dropdown } from "Dropdown.scss";
+import { dropdown } from "./Dropdown.scss";
 
 export const Dropdown = forwardRef(
   ({ options, optionRef, onOptionClickHandler }, ref) => (
@@ -25,7 +25,7 @@ Dropdown.propTypes = {
   options: PropTypes.array.isRequired,
   optionRef: PropTypes.oneOfType([
     PropTypes.func,
-    PropTypes.shape({ current: PropTypes.instanceOf(DropdownItem) }),
+    PropTypes.shape({ current: PropTypes.instanceOf(Element) }),
   ]),
   onOptionClickHandler: PropTypes.func,
 };
