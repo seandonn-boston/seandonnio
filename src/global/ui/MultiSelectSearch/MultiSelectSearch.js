@@ -2,12 +2,20 @@ import React, { useState, useRef, useEffect } from "react";
 import PropTypes from "prop-types";
 
 import { Tag as Selection } from "../Tag/Tag";
-import { Dropdown } from "../Dropdown/Dropdown";
+// import { Dropdown } from "../Dropdown/Dropdown";
 
 import {
   multiSelectSearch,
   multiSelectSearchInput,
 } from "./MultiSelectSearch.scss";
+
+import cx from "classnames";
+import { dropdown } from "../Dropdown/Dropdown.scss";
+import {
+  dropdownItem,
+  dropdownItemHidden,
+  dropdownItemActive,
+} from "../Dropdown/DropdownItem/DropdownItem.scss";
 
 const ENTER_KEY = 13,
   ESCAPE_KEY = 27,
@@ -61,6 +69,7 @@ export const MultiSelectSearch = ({ values, inputPlaceholder, sideEffect }) => {
 
     newSelections.delete(selection);
     setSelections(newSelections);
+
     newDropdownOptions.set(selection, selectionConditions);
     setDropdownOptions(newDropdownOptions);
   };
@@ -271,18 +280,15 @@ export const MultiSelectSearch = ({ values, inputPlaceholder, sideEffect }) => {
       case ARROW_DOWN_KEY:
         for (let [option, conditions] of newdropdownOptions) {
           let { isSelected, isFiltered, isActive } = conditions;
-          if (isSelected || isFiltered) {
-            continue;
-          } else if (!isActive && !foundLastActive && !nextPreviousActive) {
+          if (isSelected || isFiltered) continue;
+          if (!isActive && !foundLastActive && !nextPreviousActive) {
             nextPreviousActive = option;
-            continue;
           } else if (!foundLastActive && isActive) {
             foundLastActive = true;
             newdropdownOptions.set(option, {
               ...conditions,
               isActive: false,
             });
-            continue;
           } else if (foundLastActive) {
             nextPreviousActive = false;
             newdropdownOptions.set(option, { ...conditions, isActive: true });
@@ -351,13 +357,37 @@ export const MultiSelectSearch = ({ values, inputPlaceholder, sideEffect }) => {
         onChange={onInputChange}
         onKeyDown={onInputKeyDown}
       />
-      {isOpen && (
+      {/* {isOpen && (
         <Dropdown
           ref={dropdownRef}
           options={[...dropdownOptions]}
           optionRef={dropdownOptionRef}
           onOptionClickHandler={onDropdownOptionClick}
         />
+      )} */}
+      {isOpen && (
+        <select
+          className={dropdown}
+          name="multiSelectSearch"
+          id="multiSelectSearch"
+          multiple
+          value={[selections]}
+        >
+          {[...dropdownOptions].map(([option, conditions], i) => (
+            <option
+              key={i}
+              className={cx(dropdownItem, {
+                [dropdownItemHidden]:
+                  conditions.isSelected || conditions.isFiltered,
+                [dropdownItemActive]: conditions.isActive,
+              })}
+              onClick={onDropdownOptionClick}
+              value={option}
+            >
+              {option}
+            </option>
+          ))}
+        </select>
       )}
     </div>
   );

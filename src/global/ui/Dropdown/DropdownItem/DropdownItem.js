@@ -1,4 +1,4 @@
-import React, { forwardRef } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 import cx from "classnames";
 
@@ -8,27 +8,21 @@ import {
   dropdownItemActive,
 } from "./DropdownItem.scss";
 
-export const DropdownItem = forwardRef(
-  (
-    {
-      option,
-      conditions: { isActive, isSelected, isFiltered },
-      onClickHandler,
-    },
-    ref
-  ) => (
-    <div
-      ref={ref}
-      className={cx(dropdownItem, {
-        [dropdownItemHidden]: isSelected || isFiltered,
-        [dropdownItemActive]: isActive,
-      })}
-      data-value={option}
-      onClick={(e) => onClickHandler(e)}
-    >
-      {option}
-    </div>
-  )
+export const DropdownItem = ({
+  option,
+  conditions: { isActive, isSelected, isFiltered },
+  onClickHandler,
+}) => (
+  <option
+    className={cx(dropdownItem, {
+      [dropdownItemHidden]: isSelected || isFiltered,
+      [dropdownItemActive]: isActive,
+    })}
+    onClick={(e) => onClickHandler(e)}
+    value={option}
+  >
+    {option}
+  </option>
 );
 
 DropdownItem.propTypes = {

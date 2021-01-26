@@ -13,3 +13,29 @@
     place-items: stretch;
   }
 }
+.MultiSelectSearch {
+  display: block;
+  border: 1px solid black;
+  &-label {
+    @include visuallyHidden.visuallyHidden;
+  }
+  &-input {
+    border: none;
+  }
+}
+.Select {
+  display: block;
+  width: 100%;
+}
+.Option {
+  display: block;
+  &:hover {
+    background-color: green;
+  }
+  &--hidden {
+    display: none;
+  }
+  &--highlight {
+    background-color: red;
+  }
+}
