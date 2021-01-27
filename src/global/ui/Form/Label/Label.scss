@@ -7,6 +7,9 @@
   text-align: right;
   padding: 3px 3px 3px 0;
   margin-left: auto;
+  &--hidden {
+    @include visuallyHidden.visuallyHidden;
+  }
 }
 
 // Accessibly hide labels on small screens

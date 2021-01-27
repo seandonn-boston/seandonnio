@@ -1,0 +1,9 @@
+@use "../../../styles/_config.scss";
+
+.Select {
+  display: block;
+  width: 100%;
+  &--hidden {
+    display: none;
+  }
+}

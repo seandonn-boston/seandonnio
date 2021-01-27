@@ -3,11 +3,10 @@
 .Textarea {
   grid-column: 3 / 1;
   display: block;
-  border-width: 2px;
+  border: solid 1px grey;
   padding: 1px;
   height: auto;
 }
-
 
 @media only screen and (min-width: config.$bp-m-px) {
   .Textarea {

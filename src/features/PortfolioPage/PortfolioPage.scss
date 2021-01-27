@@ -1,7 +1,4 @@
-@use "sass:math";
-
-@use "../../global/styles/config.scss";
-@use "../../global/styles/mixins/_visuallyHidden.scss";
+@use "../../global/styles/_config.scss";
 
 // It would be pretty cool to provide the user a toggle between css columns, flexbox, and css grid.
 .PortfolioPage {
@@ -11,34 +8,5 @@
     gap: 1em;
     place-content: start;
     place-items: stretch;
-  }
-}
-.MultiSelectSearch {
-  display: block;
-  border: 1px solid black;
-  &-label {
-    @include visuallyHidden.visuallyHidden;
-  }
-  &-input {
-    border: none;
-  }
-}
-.Select {
-  display: block;
-  width: 100%;
-  &--hidden {
-    display: none;
-  }
-}
-.Option {
-  display: block;
-  &:hover {
-    background-color: green;
-  }
-  &--hidden {
-    display: none;
-  }
-  &--highlight {
-    background-color: red;
   }
 }

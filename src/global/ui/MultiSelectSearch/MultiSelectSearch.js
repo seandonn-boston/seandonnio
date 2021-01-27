@@ -1,174 +1,37 @@
 import React, { useState, useRef, useEffect } from "react";
-import PropTypes from "prop-types";
 
 import { Tag as Selection } from "../Tag/Tag";
-// import { Dropdown } from "../Dropdown/Dropdown";
+import { Select } from "../Form/Select/Select";
+import { Label } from "../Form/Label/Label";
+import { Input } from "../Form/Input/Input";
 
-import {
-  multiSelectSearch,
-  multiSelectSearchInput,
-} from "./MultiSelectSearch.scss";
-
-import cx from "classnames";
-import { dropdown } from "../Dropdown/Dropdown.scss";
-import {
-  dropdownItem,
-  dropdownItemHidden,
-  dropdownItemActive,
-} from "../Dropdown/DropdownItem/DropdownItem.scss";
+import { multiSelectSearch } from "./MultiSelectSearch.scss";
 
 const ENTER_KEY = 13,
   ESCAPE_KEY = 27,
   ARROW_UP_KEY = 38,
   ARROW_DOWN_KEY = 40;
 
-export const MultiSelectSearch = ({ values, inputPlaceholder, sideEffect }) => {
-  const [selections, setSelections] = useState(new Set());
+const MULTI_SELECT_SEARCH = "multiSelectSearch";
+
+export const MultiSelectSearch = ({ values, inputPlaceholder }) => {
+  const [selectedOptions, setSelectedOptions] = useState(new Set());
   const [inputValue, setInputValue] = useState("");
+  const [options, setOptions] = useState(new Map());
+  const [visibleOptions, setVisibleOptions] = useState(0);
   const [isOpen, setIsOpen] = useState(false);
-  const [dropdownOptions, setDropdownOptions] = useState(new Map());
 
+  const multiSelectSearchRef = useRef(null);
   const inputRef = useRef(null);
-  const dropdownRef = useRef(null);
-  const dropdownOptionRef = useRef(null);
+  const selectRef = useRef(null);
+  const optionRef = useRef(null);
 
-  const onSearchBarClick = () => {
+  const onMultiSelectSearchClick = () => {
     inputRef.current.focus();
     if (!isOpen) setIsOpen(true);
   };
 
-  const onSelectionClick = (e) => {
-    let selection = e.target.dataset.value,
-      newSelections = new Set(selections),
-      newDropdownOptions = new Map(dropdownOptions),
-      noActiveItems = true,
-      selectionConditions;
-
-    selectionConditions = {
-      ...newDropdownOptions.get(selection),
-      isSelected: false,
-    };
-
-    for (let { isActive } of newDropdownOptions.values()) {
-      if (isActive) {
-        noActiveItems = false;
-        // exit early - only one instance of an active item is necessary
-        break;
-      }
-    }
-
-    if (noActiveItems) {
-      selectionConditions = { ...selectionConditions, isActive: true };
-    }
-
-    if (inputValue) {
-      if (!selection.toLowerCase().includes(inputValue.toLowerCase())) {
-        selectionConditions = { ...selectionConditions, isFiltered: true };
-      }
-    }
-
-    newSelections.delete(selection);
-    setSelections(newSelections);
-
-    newDropdownOptions.set(selection, selectionConditions);
-    setDropdownOptions(newDropdownOptions);
-  };
-
-  const onDropdownOptionClick = (e) => {
-    let selection = e.target.dataset.value,
-      newSelections = new Set(selections),
-      newDropdownOptions = new Map(dropdownOptions),
-      nextPreviousActive,
-      nextActive,
-      foundSelection,
-      foundLastActive,
-      nextActiveKey;
-
-    newDropdownOptions.set(selection, {
-      ...newDropdownOptions.get(selection),
-      isSelected: true,
-    });
-
-    for (let [option, conditions] of newDropdownOptions) {
-      let { isSelected, isFiltered, isActive } = conditions;
-      if (foundLastActive && nextActive) {
-        break;
-      }
-      if (isActive && !foundLastActive) {
-        foundLastActive = true;
-        newDropdownOptions.set(option, { ...conditions, isActive: false });
-      }
-      if (foundSelection) {
-        if (!nextActive && !isSelected && !isFiltered) {
-          nextActive = option;
-        }
-      } else if (option === selection) {
-        foundSelection = true;
-      } else if (!isSelected && !isFiltered) {
-        nextPreviousActive = option;
-      }
-    }
-
-    nextActiveKey = nextActive ? nextActive : nextPreviousActive;
-    if (nextActiveKey) {
-      newDropdownOptions.set(nextActiveKey, {
-        ...newDropdownOptions.get(nextActiveKey),
-        isActive: true,
-      });
-    }
-
-    newSelections.add(selection);
-    setSelections(newSelections);
-    setDropdownOptions(newDropdownOptions);
-  };
-
-  const onInputChange = (e) => {
-    if (!isOpen) setIsOpen(true);
-
-    let value = e.target.value,
-      newDropdownOptions = new Map(dropdownOptions),
-      foundNextActive,
-      foundLastActive;
-
-    for (let [option, conditions] of newDropdownOptions) {
-      let { isSelected, isFiltered, isActive } = conditions,
-        matchFound = option.toLowerCase().includes(value.toLowerCase());
-      if (!matchFound && (isFiltered || isSelected)) {
-        continue;
-      } else if (!matchFound && !isFiltered) {
-        let newConditions = { ...conditions, isFiltered: true };
-        if (!foundLastActive && isActive) {
-          foundLastActive = true;
-          newConditions = { ...newConditions, isActive: false };
-        }
-        newDropdownOptions.set(option, newConditions);
-      } else if (matchFound && isFiltered) {
-        let newConditions = { ...conditions, isFiltered: false };
-        if (!foundNextActive && !isSelected) {
-          foundNextActive = true;
-          newConditions = { ...newConditions, isActive: true };
-        }
-        newDropdownOptions.set(option, newConditions);
-      } else if (matchFound && !isFiltered) {
-        if (!foundLastActive && isActive) {
-          foundLastActive = true;
-        }
-        if (foundNextActive && !isSelected && isActive) {
-          newDropdownOptions.set(option, { ...conditions, isActive: false });
-        } else if (!foundNextActive && !isSelected) {
-          foundNextActive = true;
-          if (!isActive) {
-            newDropdownOptions.set(option, { ...conditions, isActive: true });
-          }
-        }
-      }
-    }
-
-    setInputValue(value);
-    setDropdownOptions(newDropdownOptions);
-  };
-
-  const onInputKeyDown = (e) => {
+  const onMultiSelectSearchKeyDown = (e) => {
     let keysRequiringOneVisibleDropdownOption = [
         ENTER_KEY,
         ARROW_UP_KEY,
@@ -178,50 +41,47 @@ export const MultiSelectSearch = ({ values, inputPlaceholder, sideEffect }) => {
         ARROW_UP_KEY,
         ARROW_DOWN_KEY,
       ],
-      numOfVisibleDropdownOptions = 0;
-    for (let { isSelected, isFiltered } of dropdownOptions.values()) {
-      if (!(isSelected || isFiltered)) {
-        ++numOfVisibleDropdownOptions;
-        if (numOfVisibleDropdownOptions > 1) {
-          // Exit early - any amount over 2 won't matter
+      keyPressed = e.which;
+    if (
+      (keysRequiringOneVisibleDropdownOption.includes(keyPressed) &&
+        visibleOptions === 0) ||
+      (keysRequiringMoreThanOneVisibleDropdownOptions.includes(keyPressed) &&
+        visibleOptions <= 1)
+    )
+      return;
+
+    let newOptions = new Map(options),
+      newVisibleOptions = visibleOptions - 1,
+      nextPreviousActive,
+      foundLastActive,
+      selectElement = selectRef.current,
+      nextActiveElement;
+
+    switch (keyPressed) {
+      case ENTER_KEY:
+        if (!isOpen) {
+          setIsOpen(true);
           break;
         }
-      }
-    }
-    // skip if key pressed requires 1 visible item in dropdown while dropdown has 0 visible items, or skip if key pressed requires more than 1 visible item in dropdown while dropdown has 1 or less visible items
-    if (
-      (keysRequiringOneVisibleDropdownOption.includes(e.which) &&
-        numOfVisibleDropdownOptions === 0) ||
-      (keysRequiringMoreThanOneVisibleDropdownOptions.includes(e.which) &&
-        numOfVisibleDropdownOptions <= 1)
-    ) {
-      return;
-    }
-
-    let newdropdownOptions = new Map(dropdownOptions),
-      nextPreviousActive,
-      foundLastActive;
-
-    switch (e.which) {
-      case ENTER_KEY:
-        let selection = dropdownOptionRef.current.dataset.value,
-          newSelections = new Set(selections);
-
-        for (let [option, conditions] of newdropdownOptions) {
-          let { isSelected, isFiltered, isActive } = conditions;
-          if (isSelected || isFiltered) {
+        let selectedOption,
+          newSelectedOptions = new Set(selectedOptions);
+        for (let [option, { isActive }] of newOptions) {
+          if (
+            selectedOptions.has(option) ||
+            (inputValue &&
+              !option.toLowerCase().includes(inputValue.toLowerCase()))
+          )
             continue;
-          } else if (!foundLastActive && isActive) {
+
+          if (!foundLastActive && isActive) {
             foundLastActive = true;
-            newdropdownOptions.set(option, {
-              ...conditions,
-              isSelected: true,
+            selectedOption = option;
+            newOptions.set(option, {
               isActive: false,
             });
-            continue;
           } else if (foundLastActive) {
             nextPreviousActive = false;
-            newdropdownOptions.set(option, { ...conditions, isActive: true });
+            newOptions.set(option, { isActive: true });
             break;
           } else {
             nextPreviousActive = option;
@@ -229,90 +89,223 @@ export const MultiSelectSearch = ({ values, inputPlaceholder, sideEffect }) => {
         }
 
         if (nextPreviousActive) {
-          newdropdownOptions.set(nextPreviousActive, {
-            ...newdropdownOptions.get(nextPreviousActive),
+          newOptions.set(nextPreviousActive, {
             isActive: true,
           });
         }
 
-        newSelections.add(selection);
-        setSelections(newSelections);
-        setDropdownOptions(newdropdownOptions);
+        newSelectedOptions.add(selectedOption);
+        setSelectedOptions(newSelectedOptions);
+        setOptions(newOptions);
+        setVisibleOptions(newVisibleOptions);
         break;
       case ESCAPE_KEY:
+        // TODO: what happens when the dropdown closes and the active element isn't the first key?
         setIsOpen(false);
         break;
       case ARROW_UP_KEY:
-        for (let [option, conditions] of newdropdownOptions) {
-          let { isSelected, isFiltered, isActive } = conditions;
-          if (isSelected || isFiltered) {
+        if (!isOpen) break;
+        for (let [option, { isActive }] of newOptions) {
+          if (
+            selectedOptions.has(option) ||
+            (inputValue &&
+              !option.toLowerCase().includes(inputValue.toLowerCase()))
+          )
             continue;
-          } else if (!foundLastActive && isActive) {
+          if (!foundLastActive && isActive) {
             foundLastActive = true;
-            newdropdownOptions.set(option, {
-              ...conditions,
+            newOptions.set(option, {
               isActive: false,
             });
-            if (nextPreviousActive) {
-              newdropdownOptions.set(nextPreviousActive, {
-                ...newdropdownOptions.get(nextPreviousActive),
-                isActive: true,
-              });
-              nextPreviousActive = false;
-              break;
-            } else {
-              continue;
-            }
-          } else {
-            nextPreviousActive = option;
-          }
+            if (nextPreviousActive) break;
+          } else nextPreviousActive = option;
         }
-
-        if (nextPreviousActive) {
-          newdropdownOptions.set(nextPreviousActive, {
-            ...newdropdownOptions.get(nextPreviousActive),
+        if (nextPreviousActive)
+          newOptions.set(nextPreviousActive, {
             isActive: true,
           });
+        // TODO: solve for firstVisibleChild and lastVisibleChild
+        // nextActiveElement is the current elements previous sibiling. If there is no previous sibiling, and if the current option is the first visible option of the parent, nextActiveElement will wrap to be the last visible option of the parent, otherwise it will be the current option
+        if (optionRef.current.previousElementSibling) {
+          nextActiveElement = optionRef.current.previousElementSibling;
+        } else if (selectElement.firstChild === optionRef.current) {
+          nextActiveElement = selectElement.lastChild;
+        } else {
+          nextActiveElement = optionRef.current;
         }
-
-        setDropdownOptions(newdropdownOptions);
+        // scroll selectElement down such that the next option remains visible beneath current active option, unless current active option is last option in the list, and scroll to top if active element wraps from last to first
+        if (
+          nextActiveElement.getBoundingClientRect().top -
+            nextActiveElement.offsetHeight <
+          selectElement.getBoundingClientRect().top
+        ) {
+          selectElement.scrollTop =
+            selectElement.scrollTop -
+            (nextActiveElement.previousElementSibling
+              ? nextActiveElement.previousElementSibling.clientHeight
+              : 0);
+        } else if (
+          nextActiveElement.getBoundingClientRect().bottom >
+          selectElement.getBoundingClientRect().bottom
+        ) {
+          selectElement.scrollTop = selectElement.scrollHeight;
+        }
+        setOptions(newOptions);
         break;
       case ARROW_DOWN_KEY:
-        for (let [option, conditions] of newdropdownOptions) {
-          let { isSelected, isFiltered, isActive } = conditions;
-          if (isSelected || isFiltered) continue;
+        if (!isOpen) {
+          setIsOpen(true);
+          break;
+        }
+        for (let [option, { isActive }] of newOptions) {
+          if (
+            selectedOptions.has(option) ||
+            (inputValue &&
+              !option.toLowerCase().includes(inputValue.toLowerCase()))
+          )
+            continue;
           if (!isActive && !foundLastActive && !nextPreviousActive) {
             nextPreviousActive = option;
           } else if (!foundLastActive && isActive) {
             foundLastActive = true;
-            newdropdownOptions.set(option, {
-              ...conditions,
+            newOptions.set(option, {
               isActive: false,
             });
           } else if (foundLastActive) {
             nextPreviousActive = false;
-            newdropdownOptions.set(option, { ...conditions, isActive: true });
+            newOptions.set(option, { isActive: true });
             break;
           }
         }
-
-        if (nextPreviousActive) {
-          newdropdownOptions.set(nextPreviousActive, {
-            ...newdropdownOptions.get(nextPreviousActive),
+        if (nextPreviousActive)
+          newOptions.set(nextPreviousActive, {
             isActive: true,
           });
+        // TODO: solve for firstVisibleChild and lastVisibleChild
+        if (optionRef.current.nextElementSibling) {
+          nextActiveElement = optionRef.current.nextElementSibling;
+        } else if (selectElement.lastChild === optionRef.current) {
+          nextActiveElement = selectElement.firstChild;
+        } else {
+          nextActiveElement = optionRef.current;
         }
-
-        setDropdownOptions(newdropdownOptions);
+        // scroll selectElement up such that the previous option remains visible above current active option, unless current active option is first option in the list, and scroll to bottom if active wraps from first to last
+        if (
+          nextActiveElement.getBoundingClientRect().bottom +
+            (nextActiveElement.nextElementSibling
+              ? nextActiveElement.nextElementSibling.clientHeight
+              : 0) >
+          selectElement.getBoundingClientRect().bottom
+        ) {
+          selectElement.scrollTop = Math.min(
+            nextActiveElement.offsetTop -
+              nextActiveElement.clientHeight -
+              (nextActiveElement.nextElementSibling
+                ? nextActiveElement.nextElementSibling.clientHeight
+                : 0) -
+              selectElement.offsetHeight,
+            selectElement.scrollHeight
+          );
+        } else if (
+          nextActiveElement.getBoundingClientRect().top <
+          selectElement.getBoundingClientRect().top
+        ) {
+          selectElement.scrollTop = 0;
+        }
+        setOptions(newOptions);
         break;
       default:
         break;
     }
   };
 
+  const onSelectionClick = (e) => {
+    let selection = e.target.dataset.value,
+      newSelectedOptions = new Set(selectedOptions),
+      newOptions = new Map(options),
+      noActiveItems = true;
+
+    for (let isActive of newOptions.values()) {
+      if (isActive) {
+        noActiveItems = false;
+        break;
+      }
+    }
+
+    if (noActiveItems) newOptions.set(selection, { isActive: true });
+
+    setOptions(newOptions);
+    newSelectedOptions.delete(selection);
+    setSelectedOptions(newSelectedOptions);
+    if (
+      !inputValue ||
+      selection.toLowerCase().includes(inputValue.toLowerCase())
+    )
+      setVisibleOptions(visibleOptions + 1);
+  };
+
+  const onSelectedOptionsChange = (e) => {
+    let selectedOption = e.target.value,
+      newSelectedOptions = new Set(selectedOptions),
+      newOptions = new Map(options),
+      foundLastActiveOption,
+      foundSelection,
+      nextPreviousActiveOption,
+      nextActiveOption;
+    for (let [option, { isActive }] of newOptions) {
+      if (foundLastActiveOption && nextActiveOption) break;
+      if (
+        newSelectedOptions.has(option) ||
+        (inputValue && !option.toLowerCase().includes(inputValue.toLowerCase()))
+      )
+        continue;
+      if (isActive && !foundLastActiveOption) {
+        foundLastActiveOption = true;
+        newOptions.set(option, { isActive: false });
+      }
+      if (foundSelection && !nextActiveOption) {
+        nextPreviousActiveOption = false;
+        nextActiveOption = option;
+      } else if (option === selectedOption) foundSelection = true;
+      else nextPreviousActiveOption = option;
+    }
+    nextActiveOption = nextActiveOption
+      ? nextActiveOption
+      : nextPreviousActiveOption;
+    if (nextActiveOption) newOptions.set(nextActiveOption, { isActive: true });
+    newSelectedOptions.add(selectedOption);
+    setSelectedOptions(newSelectedOptions);
+    setOptions(newOptions);
+    setVisibleOptions(visibleOptions - 1);
+  };
+
+  const onInputChange = (e) => {
+    if (!isOpen) setIsOpen(true);
+    let value = e.target.value,
+      newOptions = new Map(options),
+      newVisibleOptions = 0,
+      foundNextActive;
+    for (let [option, { isActive }] of newOptions) {
+      if (isActive) newOptions.set(option, { isActive: false });
+      if (
+        !selectedOptions.has(option) &&
+        !(value && !option.toLowerCase().includes(value.toLowerCase()))
+      ) {
+        newVisibleOptions++;
+        if (!foundNextActive) {
+          foundNextActive = true;
+          newOptions.set(option, { isActive: true });
+        }
+      }
+    }
+    setInputValue(value);
+    setVisibleOptions(newVisibleOptions);
+    setOptions(newOptions);
+  };
+
   // TODO move to hook?
   const onOutsideDropdownClick = (e) => {
-    if (!dropdownRef.current.contains(e.target)) setIsOpen(false);
+    if (!selectRef.current.contains(e.target)) setIsOpen(false);
   };
 
   // close dropdown when user clicks somewhere outside of it while its open
@@ -325,80 +318,50 @@ export const MultiSelectSearch = ({ values, inputPlaceholder, sideEffect }) => {
     };
   }, [isOpen]);
 
-  // trigger sideEffect when selections change
-  useEffect(() => {
-    sideEffect();
-  }, [selections, sideEffect]);
-
   // initialize dropdownOptions Map
   useEffect(() => {
-    let initDropdownOptions = new Map();
+    let initOptions = new Map();
     [...values].forEach((option, i) => {
-      initDropdownOptions.set(option, {
-        isSelected: false,
-        isFiltered: false,
-        isActive: i === 0 ? true : false,
-      });
+      initOptions.set(option, { isActive: i === 0 ? true : false });
     });
-    setDropdownOptions(initDropdownOptions);
-  }, [setDropdownOptions, values]);
+    setOptions(initOptions);
+    setVisibleOptions(initOptions.size);
+  }, [setOptions, setVisibleOptions, values]);
 
   return (
-    <div className={multiSelectSearch} onClick={onSearchBarClick}>
-      {[...selections].map((selection, i) => (
+    <div
+      className={multiSelectSearch}
+      onClick={onMultiSelectSearchClick}
+      ref={multiSelectSearchRef}
+      onKeyDown={onMultiSelectSearchKeyDown}
+    >
+      {[...selectedOptions].map((selection, i) => (
         <Selection key={i} onClickHandler={onSelectionClick} data={selection} />
       ))}
-      <input
-        className={multiSelectSearchInput}
-        placeholder={selections.size === 0 ? `${inputPlaceholder}` : ""}
+      <Label title="Search" htmlFor={MULTI_SELECT_SEARCH} isHidden={true} />
+      <Input
+        id={MULTI_SELECT_SEARCH}
+        autoComplete="off"
+        autoCorrect="off"
+        results={0}
+        inputMode="search"
+        placeholder={selectedOptions.size === 0 ? inputPlaceholder : ""}
         type="search"
-        ref={inputRef}
         value={inputValue}
-        onChange={onInputChange}
-        onKeyDown={onInputKeyDown}
+        handleChange={onInputChange}
+        ref={inputRef}
       />
-      {/* {isOpen && (
-        <Dropdown
-          ref={dropdownRef}
-          options={[...dropdownOptions]}
-          optionRef={dropdownOptionRef}
-          onOptionClickHandler={onDropdownOptionClick}
-        />
-      )} */}
-      {isOpen && (
-        <select
-          className={dropdown}
-          name="multiSelectSearch"
-          id="multiSelectSearch"
-          multiple
-          value={[selections]}
-        >
-          {[...dropdownOptions].map(([option, conditions], i) => (
-            <option
-              key={i}
-              className={cx(dropdownItem, {
-                [dropdownItemHidden]:
-                  conditions.isSelected || conditions.isFiltered,
-                [dropdownItemActive]: conditions.isActive,
-              })}
-              onClick={onDropdownOptionClick}
-              value={option}
-            >
-              {option}
-            </option>
-          ))}
-        </select>
-      )}
+      <Select
+        selectedOptions={selectedOptions}
+        onChangeHandler={onSelectedOptionsChange}
+        multiple={true}
+        isHidden={!isOpen}
+        ref={selectRef}
+        options={[...options]}
+        visibleOptions={visibleOptions}
+        inputValue={inputValue}
+        optionRef={optionRef}
+      />
     </div>
   );
-};
-
-MultiSelectSearch.propTypes = {
-  values: PropTypes.array.isRequired,
-  inputPlaceholder: PropTypes.string.isRequired,
-  sideEffect: PropTypes.func,
-};
-
-MultiSelectSearch.defaultProps = {
-  sideEffect: () => {},
 };

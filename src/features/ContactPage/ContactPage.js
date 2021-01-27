@@ -121,6 +121,7 @@ export default function ContactPage() {
             value={state[`${FIRST_NAME}`]}
             handleChange={handleChange}
             placeholder="First Name"
+            isInGrid
           />
           <Label htmlFor={LAST_NAME} title="Last Name" />
           <Input
@@ -129,6 +130,7 @@ export default function ContactPage() {
             value={state[`${LAST_NAME}`]}
             handleChange={handleChange}
             placeholder="Last Name"
+            isInGrid
           />
           <Label htmlFor={EMAIL} title="Email" />
           <Input
@@ -137,6 +139,7 @@ export default function ContactPage() {
             value={state[`${EMAIL}`]}
             handleChange={handleChange}
             placeholder="Email"
+            isInGrid
           />
           <Label htmlFor={PHONE} title="Phone" />
           <Input
@@ -145,6 +148,7 @@ export default function ContactPage() {
             value={state[`${PHONE}`]}
             handleChange={handleChange}
             placeholder="Phone"
+            isInGrid
           />
           <Label htmlFor={EMPLOYER} title="Employer" />
           <Input
@@ -153,6 +157,7 @@ export default function ContactPage() {
             value={state[`${EMPLOYER}`]}
             handleChange={handleChange}
             placeholder="Employer"
+            isInGrid
           />
         </Fieldset>
         <Fieldset id="userMessage">
@@ -164,6 +169,7 @@ export default function ContactPage() {
             value={state[`${SUBJECT}`]}
             handleChange={handleChange}
             placeholder="Subject"
+            isInGrid
           />
           <Label htmlFor={MESSAGE} title="Message" />
           <Textarea

@@ -1,9 +1,10 @@
 import React from "react";
+import cx from "classnames";
 
-import { label } from "./Label.scss";
+import { label, labelHidden } from "./Label.scss";
 
-export const Label = ({ htmlFor, title }) => (
-  <label className={label} htmlFor={htmlFor}>
+export const Label = ({ htmlFor, title, isHidden }) => (
+  <label className={cx(label, { [labelHidden]: isHidden })} htmlFor={htmlFor}>
     {title}
   </label>
 );

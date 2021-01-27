@@ -1,0 +1,14 @@
+@use "../../../../styles/_config.scss";
+
+.Option {
+  display: block;
+  &:hover {
+    background-color: green;
+  }
+  &--highlight {
+    background-color: red;
+  }
+  &--hidden {
+    display: none;
+  }
+}

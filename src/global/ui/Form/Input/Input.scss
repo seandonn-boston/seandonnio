@@ -1,19 +1,24 @@
 @use "../../../styles/config.scss";
 
 .Input {
-  grid-column: 3 / 1;
   display: block;
-  border-width: 2px;
-  padding: 1px;
+  border: none;
   &[type="submit"],
   &[type="reset"] {
     display: inline-block;
     cursor: pointer;
   }
+  &--gridItem {
+    grid-column: 3 / 1;
+    border: solid 1px grey;
+    padding: 1px;
+  }
 }
 
 @media only screen and (min-width: config.$bp-m-px) {
   .Input {
-    grid-column: 2 / 3;
+    &--gridItem {
+      grid-column: 2 / 3;
+    }
   }
 }
