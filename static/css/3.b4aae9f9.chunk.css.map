@@ -1,0 +1,1 @@
+{"version":3,"sources":["PortfolioPage.scss"],"names":[],"mappings":"AAGE,8CACE,YAAA,CACA,yDAAA,CACA,aAAA","file":"3.b4aae9f9.chunk.css","sourcesContent":["@import \"../../global/styles/config.scss\";\n\n.PortfolioPage {\n  &-container {\n    display: grid;\n    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));\n    grid-gap: 1rem;\n  }\n}\n"]}
