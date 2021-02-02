@@ -5,6 +5,8 @@ import { Select } from "../Form/Select/Select";
 import { Label } from "../Form/Label/Label";
 import { Input } from "../Form/Input/Input";
 
+import { useOutsideClick } from "../../hooks/useOutsideClick";
+
 import { multiSelectSearch } from "./MultiSelectSearch.scss";
 
 const ENTER_KEY = 13,
@@ -52,10 +54,20 @@ export const MultiSelectSearch = ({ values, inputPlaceholder }) => {
 
     let newOptions = new Map(options),
       newVisibleOptions = visibleOptions - 1,
+      foundCurrentActive,
+      nextActive,
+      firstVisibleOption,
       nextPreviousActive,
-      foundLastActive,
+      lastVisibleOption,
       selectElement = selectRef.current,
-      nextActiveElement;
+      optionElements = selectRef.current.options,
+      activeOptionElement = optionRef.current,
+      firstVisibleOptionElement = null,
+      nextVisibleOptionElement = null,
+      nextActiveElement = null,
+      previousVisibleOptionElement = null,
+      lastVisibleOptionElement = null,
+      index = -1;
 
     switch (keyPressed) {
       case ENTER_KEY:
@@ -72,27 +84,21 @@ export const MultiSelectSearch = ({ values, inputPlaceholder }) => {
               !option.toLowerCase().includes(inputValue.toLowerCase()))
           )
             continue;
-
-          if (!foundLastActive && isActive) {
-            foundLastActive = true;
+          if (!foundCurrentActive && isActive) {
+            foundCurrentActive = true;
             selectedOption = option;
             newOptions.set(option, {
               isActive: false,
             });
-          } else if (foundLastActive) {
+          } else if (foundCurrentActive) {
             nextPreviousActive = false;
             newOptions.set(option, { isActive: true });
             break;
-          } else {
-            nextPreviousActive = option;
-          }
+          } else nextPreviousActive = option;
         }
 
-        if (nextPreviousActive) {
-          newOptions.set(nextPreviousActive, {
-            isActive: true,
-          });
-        }
+        if (nextPreviousActive)
+          newOptions.set(nextPreviousActive, { isActive: true });
 
         newSelectedOptions.add(selectedOption);
         setSelectedOptions(newSelectedOptions);
@@ -106,51 +112,63 @@ export const MultiSelectSearch = ({ values, inputPlaceholder }) => {
       case ARROW_UP_KEY:
         if (!isOpen) break;
         for (let [option, { isActive }] of newOptions) {
+          index++;
           if (
             selectedOptions.has(option) ||
             (inputValue &&
               !option.toLowerCase().includes(inputValue.toLowerCase()))
           )
             continue;
-          if (!foundLastActive && isActive) {
-            foundLastActive = true;
-            newOptions.set(option, {
-              isActive: false,
-            });
-            if (nextPreviousActive) break;
-          } else nextPreviousActive = option;
+
+          lastVisibleOptionElement = optionElements[index];
+          lastVisibleOption = option;
+          if (!firstVisibleOptionElement) {
+            firstVisibleOptionElement = optionElements[index];
+            firstVisibleOption = option;
+          }
+
+          if (!foundCurrentActive) {
+            if (isActive) {
+              foundCurrentActive = true;
+              newOptions.set(option, { isActive: false });
+            } else {
+              nextPreviousActive = option;
+              previousVisibleOptionElement = optionElements[index];
+            }
+          }
         }
+        nextPreviousActive = nextPreviousActive
+          ? nextPreviousActive
+          : lastVisibleOption;
         if (nextPreviousActive)
-          newOptions.set(nextPreviousActive, {
-            isActive: true,
-          });
-        // TODO: solve for firstVisibleChild and lastVisibleChild
-        // nextActiveElement is the current elements previous sibiling. If there is no previous sibiling, and if the current option is the first visible option of the parent, nextActiveElement will wrap to be the last visible option of the parent, otherwise it will be the current option
-        if (optionRef.current.previousElementSibling) {
-          nextActiveElement = optionRef.current.previousElementSibling;
-        } else if (selectElement.firstChild === optionRef.current) {
-          nextActiveElement = selectElement.lastChild;
-        } else {
-          nextActiveElement = optionRef.current;
-        }
-        // scroll selectElement down such that the next option remains visible beneath current active option, unless current active option is last option in the list, and scroll to top if active element wraps from last to first
-        if (
-          nextActiveElement.getBoundingClientRect().top -
-            nextActiveElement.offsetHeight <
-          selectElement.getBoundingClientRect().top
-        ) {
-          selectElement.scrollTop =
-            selectElement.scrollTop -
-            (nextActiveElement.previousElementSibling
-              ? nextActiveElement.previousElementSibling.clientHeight
-              : 0);
-        } else if (
-          nextActiveElement.getBoundingClientRect().bottom >
-          selectElement.getBoundingClientRect().bottom
-        ) {
-          selectElement.scrollTop = selectElement.scrollHeight;
-        }
+          newOptions.set(nextPreviousActive, { isActive: true });
         setOptions(newOptions);
+        if (firstVisibleOptionElement !== lastVisibleOptionElement) {
+          // nextActiveElement is the current elements previous visible sibiling. If there are no previous visible sibilings, and if the current option is the first visible option of the parent, nextActiveElement will wrap to be the last visible option of the parent, otherwise it will be the current option
+          nextActiveElement = previousVisibleOptionElement
+            ? previousVisibleOptionElement
+            : firstVisibleOptionElement === activeOptionElement
+            ? lastVisibleOptionElement
+            : activeOptionElement;
+          // scroll selectElement up such that the current active options sibiling is visible (above current active), unless current active option is first option in the list, and scroll to bottom if active wraps from first to last
+          if (
+            nextActiveElement &&
+            nextActiveElement.getBoundingClientRect().top -
+              nextActiveElement.offsetHeight <
+              selectElement.getBoundingClientRect().top
+          ) {
+            selectElement.scrollTop =
+              selectElement.scrollTop -
+              (previousVisibleOptionElement
+                ? previousVisibleOptionElement.clientHeight
+                : 0);
+          } else if (
+            nextActiveElement.getBoundingClientRect().bottom >
+            selectElement.getBoundingClientRect().bottom
+          ) {
+            selectElement.scrollTop = selectElement.scrollHeight;
+          }
+        }
         break;
       case ARROW_DOWN_KEY:
         if (!isOpen) {
@@ -158,61 +176,84 @@ export const MultiSelectSearch = ({ values, inputPlaceholder }) => {
           break;
         }
         for (let [option, { isActive }] of newOptions) {
+          index++;
           if (
             selectedOptions.has(option) ||
             (inputValue &&
               !option.toLowerCase().includes(inputValue.toLowerCase()))
           )
             continue;
-          if (!isActive && !foundLastActive && !nextPreviousActive) {
-            nextPreviousActive = option;
-          } else if (!foundLastActive && isActive) {
-            foundLastActive = true;
-            newOptions.set(option, {
-              isActive: false,
-            });
-          } else if (foundLastActive) {
+
+          lastVisibleOptionElement = optionElements[index];
+          lastVisibleOption = option;
+          if (!firstVisibleOptionElement) {
+            firstVisibleOption = option;
+            firstVisibleOptionElement = optionElements[index];
+          }
+
+          if (!foundCurrentActive && isActive) {
+            foundCurrentActive = true;
+            newOptions.set(option, { isActive: false });
+          } else if (foundCurrentActive && !isActive && !nextActive) {
             nextPreviousActive = false;
+            nextActive = option;
+            nextVisibleOptionElement = optionElements[index];
             newOptions.set(option, { isActive: true });
-            break;
           }
         }
-        if (nextPreviousActive)
-          newOptions.set(nextPreviousActive, {
-            isActive: true,
-          });
-        // TODO: solve for firstVisibleChild and lastVisibleChild
-        if (optionRef.current.nextElementSibling) {
-          nextActiveElement = optionRef.current.nextElementSibling;
-        } else if (selectElement.lastChild === optionRef.current) {
-          nextActiveElement = selectElement.firstChild;
-        } else {
-          nextActiveElement = optionRef.current;
-        }
-        // scroll selectElement up such that the previous option remains visible above current active option, unless current active option is first option in the list, and scroll to bottom if active wraps from first to last
-        if (
-          nextActiveElement.getBoundingClientRect().bottom +
-            (nextActiveElement.nextElementSibling
-              ? nextActiveElement.nextElementSibling.clientHeight
-              : 0) >
-          selectElement.getBoundingClientRect().bottom
-        ) {
-          selectElement.scrollTop = Math.min(
-            nextActiveElement.offsetTop -
-              nextActiveElement.clientHeight -
-              (nextActiveElement.nextElementSibling
-                ? nextActiveElement.nextElementSibling.clientHeight
-                : 0) -
-              selectElement.offsetHeight,
-            selectElement.scrollHeight
-          );
-        } else if (
-          nextActiveElement.getBoundingClientRect().top <
-          selectElement.getBoundingClientRect().top
-        ) {
-          selectElement.scrollTop = 0;
+        // if there is no nextActive option, wrap to the top of the list and set the firstVisible as active
+        if (!nextActive) {
+          newOptions.set(firstVisibleOption, { isActive: true });
         }
         setOptions(newOptions);
+
+        if (firstVisibleOptionElement !== lastVisibleOptionElement) {
+          // nextActiveElement is the current elements next visible sibiling. If there are no next visible sibilings, and if the current option is the last visible option of the parent, nextActiveElement will wrap to be the first visible option of the parent, otherwise it will be the current option
+          nextActiveElement = nextVisibleOptionElement
+            ? nextVisibleOptionElement
+            : lastVisibleOptionElement === activeOptionElement
+            ? firstVisibleOptionElement
+            : activeOptionElement;
+          // scroll selectElement down such that the next sibiling option is observable beneath the current active options in the selectElement clientRect frame, unless the current active option is last option in the list, then active becomes first visible in the list so scroll to top of the list to show the active item again
+
+          // TODO: Seems as though the calculations have a rounding error involved, likely a result of the offset vs client vs rect measurements, will require some extensive trial and error - I also suspect the up arrow key has these aswell but are less noticeable
+          // console.log({
+          //   nextActive: {
+          //     getBoundingClientRect: nextActiveElement.getBoundingClientRect(),
+          //     clientHeight: nextActiveElement.clientHeight,
+          //     offsetTop: nextActiveElement.offsetTop,
+          //   },
+          //   selectElement: {
+          //     getBoundingClientRect: selectElement.getBoundingClientRect(),
+          //     offsetHeight: selectElement.offsetHeight,
+          //     scrollHeight: selectElement.scrollHeight,
+          //   },
+          // });
+
+          if (
+            nextActiveElement &&
+            nextActiveElement.getBoundingClientRect().bottom +
+              (nextVisibleOptionElement
+                ? nextVisibleOptionElement.clientHeight
+                : 0) >
+              selectElement.getBoundingClientRect().bottom
+          ) {
+            selectElement.scrollTop = Math.min(
+              nextActiveElement.offsetTop -
+                nextActiveElement.clientHeight -
+                (nextVisibleOptionElement
+                  ? nextVisibleOptionElement.clientHeight
+                  : 0) -
+                selectElement.offsetHeight,
+              selectElement.scrollHeight
+            );
+          } else if (
+            nextActiveElement.getBoundingClientRect().top <
+            selectElement.getBoundingClientRect().top
+          ) {
+            selectElement.scrollTop = 0;
+          }
+        }
         break;
       default:
         break;
@@ -248,19 +289,19 @@ export const MultiSelectSearch = ({ values, inputPlaceholder }) => {
     let selectedOption = e.target.value,
       newSelectedOptions = new Set(selectedOptions),
       newOptions = new Map(options),
-      foundLastActiveOption,
+      foundCurrentActiveOption,
       foundSelection,
       nextPreviousActiveOption,
       nextActiveOption;
     for (let [option, { isActive }] of newOptions) {
-      if (foundLastActiveOption && nextActiveOption) break;
+      if (foundCurrentActiveOption && nextActiveOption) break;
       if (
         newSelectedOptions.has(option) ||
         (inputValue && !option.toLowerCase().includes(inputValue.toLowerCase()))
       )
         continue;
-      if (isActive && !foundLastActiveOption) {
-        foundLastActiveOption = true;
+      if (isActive && !foundCurrentActiveOption) {
+        foundCurrentActiveOption = true;
         newOptions.set(option, { isActive: false });
       }
       if (foundSelection && !nextActiveOption) {
@@ -303,40 +344,33 @@ export const MultiSelectSearch = ({ values, inputPlaceholder }) => {
     setOptions(newOptions);
   };
 
-  // TODO move to hook?
-  const onOutsideDropdownClick = (e) => {
-    if (!selectRef.current.contains(e.target)) setIsOpen(false);
-  };
-
-  // close dropdown when user clicks somewhere outside of it while its open
-  useEffect(() => {
-    if (!isOpen) return;
-
-    document.addEventListener("mouseup", onOutsideDropdownClick);
-    return () => {
-      document.removeEventListener("mouseup", onOutsideDropdownClick);
-    };
-  }, [isOpen]);
-
   // initialize dropdownOptions Map
   useEffect(() => {
     let initOptions = new Map();
     [...values].forEach((option, i) => {
-      initOptions.set(option, { isActive: i === 0 ? true : false });
+      initOptions.set(option, {
+        isActive: i === 0 ? true : false,
+      });
     });
     setOptions(initOptions);
     setVisibleOptions(initOptions.size);
   }, [setOptions, setVisibleOptions, values]);
 
+  useOutsideClick(isOpen, multiSelectSearchRef, () => setIsOpen(false));
+
   return (
     <div
       className={multiSelectSearch}
       onClick={onMultiSelectSearchClick}
-      ref={multiSelectSearchRef}
       onKeyDown={onMultiSelectSearchKeyDown}
+      ref={multiSelectSearchRef}
     >
-      {[...selectedOptions].map((selection, i) => (
-        <Selection key={i} onClickHandler={onSelectionClick} data={selection} />
+      {[...selectedOptions].map((selectedOption, i) => (
+        <Selection
+          key={i}
+          onClickHandler={onSelectionClick}
+          data={selectedOption}
+        />
       ))}
       <Label title="Search" htmlFor={MULTI_SELECT_SEARCH} isHidden={true} />
       <Input
@@ -356,11 +390,11 @@ export const MultiSelectSearch = ({ values, inputPlaceholder }) => {
         onChangeHandler={onSelectedOptionsChange}
         multiple={true}
         isHidden={!isOpen}
-        ref={selectRef}
         options={[...options]}
         visibleOptions={visibleOptions}
         inputValue={inputValue}
         optionRef={optionRef}
+        ref={selectRef}
       />
     </div>
   );
