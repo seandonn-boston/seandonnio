@@ -21,7 +21,10 @@ export default function AboutPage() {
         What exactly happens to my website designs after a coder has it?
         <br />
         <br />
-        <Link href="http://seandonnellan.com/images/design/flatmates_proposal.pdf">
+        <Link
+          target="_blank"
+          href="http://seandonnellan.com/images/design/flatmates_proposal.pdf"
+        >
           FlatMates, app proposal and UI Design, 2014
         </Link>
         <br />
@@ -41,11 +44,17 @@ export default function AboutPage() {
         than HTML and CSS.
         <br />
         <br />
-        <Link href="https://web.archive.org/web/20170221085142/https://www.gartner.com/marketing/">
+        <Link
+          target="_blank"
+          href="https://web.archive.org/web/20170221085142/https://www.gartner.com/marketing/"
+        >
           Gartner for Marketing Leaders, 2017
         </Link>
         <br />
-        <Link href="https://www.gartner.com/en/marketing/research/data-tools/transit-map">
+        <Link
+          target="_blank"
+          href="https://www.gartner.com/en/marketing/research/data-tools/transit-map"
+        >
           Gartner Digital Marketing Transit Map, 2017
         </Link>
         <br />
@@ -60,7 +69,7 @@ export default function AboutPage() {
         back end is.
         <br />
         <br />
-        <Link href="http://seandonnellan.com/index.html">
+        <Link target="_blank" href="http://seandonnellan.com/index.html">
           seandonnellan.com, portfolio v1, 2017
         </Link>
         <br />
@@ -82,7 +91,7 @@ export default function AboutPage() {
         program.
         <br />
         <br />
-        <Link href="www.seandonn-boston.github.io">
+        <Link target="_blank" href="www.seandonn-boston.github.io">
           seandonn-boston.github.com, portfolio v2, 2018
         </Link>
         <br />
@@ -111,7 +120,9 @@ export default function AboutPage() {
         customers who will see it.
         <br />
         <br />
-        <Link href="https://www.wayfair.com/header">Wayfair Header, 2020</Link>
+        <Link target="_blank" href="https://www.wayfair.com/header">
+          Wayfair Header, 2020
+        </Link>
         <br />
         <br />I saw an opportunity to improve our efforts as we were developing
         by including Accessibility into our components, something I have a
@@ -132,7 +143,9 @@ export default function AboutPage() {
         going smoothly.
         <br />
         <br />
-        <Link href="www.seandonn.io">seandonn.io, portfolio v3</Link>
+        <Link target="_blank" href="www.seandonn.io">
+          seandonn.io, portfolio v3
+        </Link>
         <br />
         <br />
         Until the Wayfair layoffs of Feb 2020. I, along with hundreds of others
