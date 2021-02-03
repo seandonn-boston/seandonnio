@@ -215,43 +215,28 @@ export const MultiSelectSearch = ({ values, inputPlaceholder }) => {
             ? firstVisibleOptionElement
             : activeOptionElement;
           // scroll selectElement down such that the next sibiling option is observable beneath the current active options in the selectElement clientRect frame, unless the current active option is last option in the list, then active becomes first visible in the list so scroll to top of the list to show the active item again
-
-          // TODO: Seems as though the calculations have a rounding error involved, likely a result of the offset vs client vs rect measurements, will require some extensive trial and error - I also suspect the up arrow key has these aswell but are less noticeable
-          // console.log({
-          //   nextActive: {
-          //     getBoundingClientRect: nextActiveElement.getBoundingClientRect(),
-          //     clientHeight: nextActiveElement.clientHeight,
-          //     offsetTop: nextActiveElement.offsetTop,
-          //   },
-          //   selectElement: {
-          //     getBoundingClientRect: selectElement.getBoundingClientRect(),
-          //     offsetHeight: selectElement.offsetHeight,
-          //     scrollHeight: selectElement.scrollHeight,
-          //   },
-          // });
-
-          if (
-            nextActiveElement &&
-            nextActiveElement.getBoundingClientRect().bottom +
-              (nextVisibleOptionElement
-                ? nextVisibleOptionElement.clientHeight
-                : 0) >
-              selectElement.getBoundingClientRect().bottom
-          ) {
-            selectElement.scrollTop = Math.min(
-              nextActiveElement.offsetTop -
-                nextActiveElement.clientHeight -
+          if (nextActiveElement) {
+            let nextActiveRect = nextActiveElement.getBoundingClientRect(),
+              selectRect = selectElement.getBoundingClientRect();
+            if (
+              nextActiveRect.bottom +
                 (nextVisibleOptionElement
                   ? nextVisibleOptionElement.clientHeight
-                  : 0) -
-                selectElement.offsetHeight,
-              selectElement.scrollHeight
-            );
-          } else if (
-            nextActiveElement.getBoundingClientRect().top <
-            selectElement.getBoundingClientRect().top
-          ) {
-            selectElement.scrollTop = 0;
+                  : 0) >
+              selectRect.bottom
+            ) {
+              selectElement.scrollTop = Math.min(
+                nextActiveElement.offsetTop -
+                  nextActiveRect.height -
+                  (nextVisibleOptionElement
+                    ? nextVisibleOptionElement.clientHeight
+                    : 0) -
+                  selectElement.offsetHeight,
+                selectElement.scrollHeight
+              );
+            } else if (nextActiveRect.top < selectRect.top) {
+              selectElement.scrollTop = 0;
+            }
           }
         }
         break;
