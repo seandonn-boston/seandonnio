@@ -12,7 +12,6 @@ import { portfolioPageImagesContainer } from "./PortfolioPage.scss";
 
 export default function PortfolioPage() {
   const portfolioImages = useSelector(selectPortfolioImages);
-
   return (
     <>
       <Header title="Portfolio" />
